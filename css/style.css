@@ -206,6 +206,55 @@ a:hover {
   position: relative;
   z-index: 2;
   padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* Hero Portrait */
+.hero-portrait {
+  position: relative;
+  margin-bottom: 1.5rem;
+}
+
+.portrait-frame {
+  width: 140px;
+  height: 140px;
+  border-radius: 50%;
+  padding: 4px;
+  background: linear-gradient(135deg, var(--gold), var(--gold-light), var(--gold));
+  box-shadow:
+    0 0 30px rgba(201, 168, 76, 0.3),
+    0 0 60px rgba(201, 168, 76, 0.15);
+  animation: portraitGlow 4s ease-in-out infinite;
+}
+
+.portrait-frame img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 50%;
+  border: 3px solid var(--navy);
+  filter: sepia(15%) contrast(1.05);
+}
+
+.portrait-glow {
+  position: absolute;
+  inset: -20px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(201, 168, 76, 0.2) 0%, transparent 70%);
+  animation: pulseGlow 3s ease-in-out infinite;
+  z-index: -1;
+}
+
+@keyframes portraitGlow {
+  0%, 100% { box-shadow: 0 0 30px rgba(201, 168, 76, 0.3), 0 0 60px rgba(201, 168, 76, 0.15); }
+  50% { box-shadow: 0 0 40px rgba(201, 168, 76, 0.4), 0 0 80px rgba(201, 168, 76, 0.2); }
+}
+
+@keyframes pulseGlow {
+  0%, 100% { transform: scale(1); opacity: 0.5; }
+  50% { transform: scale(1.1); opacity: 0.8; }
 }
 
 .hero-ornament-top {
@@ -213,9 +262,7 @@ a:hover {
   align-items: center;
   justify-content: center;
   gap: 1rem;
-  margin-bottom: 2rem;
-  opacity: 0;
-  animation: fadeInDown 1s var(--ease-out-expo) 0.3s forwards;
+  margin-bottom: 1rem;
 }
 
 .hero-ornament-top .line {
@@ -231,14 +278,12 @@ a:hover {
   transform: rotate(45deg);
 }
 
-.hero-year {
+.hero-dates {
   font-family: var(--font-accent);
-  font-size: clamp(0.9rem, 1.5vw, 1.1rem);
-  letter-spacing: 0.4em;
-  color: var(--gold);
-  margin-bottom: 1.5rem;
-  opacity: 0;
-  animation: fadeInUp 1s var(--ease-out-expo) 0.5s forwards;
+  font-size: clamp(0.85rem, 1.5vw, 1rem);
+  letter-spacing: 0.3em;
+  color: var(--gold-light);
+  margin-bottom: 0.5rem;
 }
 
 .hero-title {
@@ -262,37 +307,83 @@ a:hover {
 }
 
 .hero-subtitle {
-  font-family: var(--font-body);
-  font-size: clamp(1rem, 1.8vw, 1.25rem);
-  font-weight: 400;
-  font-style: italic;
+  font-family: var(--font-sans);
+  font-size: clamp(0.8rem, 1.2vw, 0.9rem);
+  font-weight: 500;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
   color: var(--mist);
-  margin-bottom: 2.5rem;
-  opacity: 0;
-  animation: fadeInUp 1s var(--ease-out-expo) 0.9s forwards;
+  margin-bottom: 0.75rem;
 }
 
-.hero-cta-line {
+.hero-tagline {
+  font-family: var(--font-body);
+  font-size: clamp(1rem, 1.6vw, 1.15rem);
+  font-style: italic;
+  color: var(--gold-light);
+  margin-bottom: 3rem;
+}
+
+/* Hero Scroll Indicator */
+.hero-scroll {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.75rem;
+  color: var(--gold);
+  text-decoration: none;
+  transition: all var(--transition-base);
+  position: absolute;
+  bottom: 3rem;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.hero-scroll:hover {
+  color: var(--gold-light);
+}
+
+.hero-scroll:hover .scroll-line {
+  height: 50px;
+  background: var(--gold-light);
+}
+
+.hero-scroll:hover .scroll-arrow svg {
+  transform: translateY(4px);
+}
+
+.scroll-text {
+  font-family: var(--font-accent);
+  font-size: 0.7rem;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+}
+
+.scroll-line {
+  width: 1px;
+  height: 40px;
+  background: var(--gold);
+  transition: all var(--transition-base);
+}
+
+.scroll-arrow {
+  width: 24px;
+  height: 24px;
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 0.8rem;
-  font-family: var(--font-accent);
-  font-size: 0.75rem;
-  letter-spacing: 0.3em;
-  text-transform: uppercase;
-  color: var(--gold);
-  opacity: 0;
-  animation: fadeInUp 1s var(--ease-out-expo) 1.2s forwards;
 }
 
-.hero-cta-line .scroll-arrow {
-  width: 20px;
-  height: 20px;
-  border-right: 1.5px solid var(--gold);
-  border-bottom: 1.5px solid var(--gold);
-  transform: rotate(45deg);
-  animation: bounceDown 2s ease-in-out infinite;
+.scroll-arrow svg {
+  width: 18px;
+  height: 18px;
+  animation: arrowBounce 2s ease-in-out infinite;
+  transition: transform 0.3s ease;
+}
+
+@keyframes arrowBounce {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(6px); }
 }
 
 @keyframes bounceDown {
@@ -520,6 +611,21 @@ a:hover {
   text-transform: uppercase;
   color: var(--mist);
   white-space: nowrap;
+}
+
+/* Innovation Card Highlight */
+.innovation-card-highlight {
+  border-color: rgba(201, 168, 76, 0.35) !important;
+  background: rgba(201, 168, 76, 0.08) !important;
+}
+
+.innovation-icon-highlight {
+  border-color: var(--gold) !important;
+  background: rgba(201, 168, 76, 0.15) !important;
+}
+
+.innovation-label-highlight {
+  color: var(--gold-light) !important;
 }
 
 /* ============================================
@@ -818,11 +924,65 @@ a:hover {
   line-height: 1.6;
 }
 
-.timeline-item.highlight .timeline-dot {
-  width: 22px;
-  height: 22px;
-  background: var(--dark-red);
-  box-shadow: 0 0 0 4px rgba(107, 28, 35, 0.15);
+/* Timeline Period Dividers */
+.timeline-period {
+  position: relative;
+  text-align: center;
+  margin: 3rem 0 2rem;
+  padding: 1rem 0;
+}
+
+.timeline-period::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(to right, transparent, var(--gold), transparent);
+}
+
+.period-label {
+  position: relative;
+  display: inline-block;
+  font-family: var(--font-accent);
+  font-size: 0.7rem;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--gold);
+  background: var(--warm-white);
+  padding: 0.5rem 1.5rem;
+  border: 1px solid var(--gold);
+  border-radius: 2rem;
+}
+
+/* Timeline Special Dots */
+.timeline-dot-birth {
+  background: var(--sea-blue) !important;
+  box-shadow: 0 0 0 4px rgba(27, 73, 101, 0.2) !important;
+}
+
+.timeline-dot-death {
+  background: var(--charcoal) !important;
+  box-shadow: 0 0 0 4px rgba(45, 52, 54, 0.2) !important;
+}
+
+.timeline-dot-major {
+  width: 20px !important;
+  height: 20px !important;
+  background: var(--dark-red) !important;
+  box-shadow: 0 0 0 4px rgba(107, 28, 35, 0.15) !important;
+}
+
+.timeline-item-highlight .timeline-content {
+  background: rgba(201, 168, 76, 0.05);
+  padding: 1rem;
+  border-radius: 8px;
+  border-left: 3px solid var(--gold);
+}
+
+.timeline-item-highlight .timeline-year {
+  color: var(--dark-red);
 }
 
 /* ============================================
@@ -924,6 +1084,46 @@ a:hover {
   text-align: center;
 }
 
+/* Footer Portrait */
+.footer-portrait {
+  margin-bottom: 1.5rem;
+}
+
+.footer-portrait-frame {
+  width: 80px;
+  height: 80px;
+  margin: 0 auto;
+  border-radius: 50%;
+  padding: 3px;
+  background: linear-gradient(135deg, var(--gold), rgba(201, 168, 76, 0.5));
+  opacity: 0.9;
+}
+
+.footer-portrait-frame img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 50%;
+  border: 2px solid #070e17;
+  filter: sepia(30%) contrast(0.9);
+}
+
+.footer-name {
+  font-family: var(--font-display);
+  font-size: 1.3rem;
+  color: var(--gold);
+  margin-bottom: 0.25rem;
+}
+
+.footer-dates {
+  font-family: var(--font-accent);
+  font-size: 0.75rem;
+  letter-spacing: 0.2em;
+  color: var(--mist);
+  opacity: 0.7;
+  margin-bottom: 1.5rem;
+}
+
 .footer-logo {
   font-family: var(--font-display);
   font-size: 1.2rem;
@@ -1010,6 +1210,30 @@ a:hover {
     left: 20px;
   }
 
+  .timeline-period {
+    margin: 2rem 0 1.5rem;
+  }
+
+  .period-label {
+    font-size: 0.6rem;
+    padding: 0.4rem 1rem;
+  }
+
+  .timeline-item-highlight .timeline-content {
+    border-left: none;
+    border-top: 3px solid var(--gold);
+  }
+
+  /* Hero mobile */
+  .hero-scroll {
+    bottom: 2rem;
+  }
+
+  .portrait-frame {
+    width: 110px;
+    height: 110px;
+  }
+
   .hero-ship {
     width: 180px;
     bottom: 50px;
@@ -1031,7 +1255,29 @@ a:hover {
   }
 
   .hero-title {
-    font-size: 2rem;
+    font-size: 1.8rem;
+  }
+
+  .portrait-frame {
+    width: 100px;
+    height: 100px;
+  }
+
+  .hero-scroll {
+    bottom: 1.5rem;
+  }
+
+  .scroll-text {
+    font-size: 0.6rem;
+  }
+
+  .scroll-line {
+    height: 30px;
+  }
+
+  .footer-portrait-frame {
+    width: 60px;
+    height: 60px;
   }
 
   .stats-grid {

@@ -7,7 +7,7 @@
 
   <!-- SEO -->
   <title>Hüseyin Haki Efendi — Şirket-i Hayriye'nin Vizyoner Müdürü</title>
-  <meta name="description" content="Giritli Hüseyin Haki Efendi: Osmanlı denizcilik tarihinin vizyoner yöneticisi, dünyanın ilk arabalı vapuru Suhulet'in mucidi, Şirket-i Hayriye'nin altın çağının mimarı (1866-1894).">
+  <meta name="description" content="Giritli Hüseyin Haki Efendi (1825-1895): Osmanlı denizcilik tarihinin vizyoner yöneticisi, dünyanın ilk arabalı vapuru Suhulet'in mucidi, Şirket-i Hayriye'nin altın çağının mimarı.">
   <meta name="keywords" content="Hüseyin Haki Efendi, Şirket-i Hayriye, Suhulet, arabalı vapur, Osmanlı denizcilik, İstanbul Boğazı, Osmanlı tarihi">
   <meta name="author" content="huseyinhakiefendi.com">
   <link rel="canonical" href="https://huseyinhakiefendi.com/">
@@ -19,7 +19,7 @@
   <meta property="og:url" content="https://huseyinhakiefendi.com/">
   <meta property="og:site_name" content="Hüseyin Haki Efendi">
   <meta property="og:locale" content="tr_TR">
-  <!-- <meta property="og:image" content="https://huseyinhakiefendi.com/assets/images/og-image.jpg"> -->
+  <meta property="og:image" content="https://huseyinhakiefendi.com/assets/images/huseyin-haki-efendi.jpg">
 
   <!-- Twitter Card -->
   <meta name="twitter:card" content="summary_large_image">
@@ -31,6 +31,9 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Inter:wght@400;500;600&family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Source+Serif+4:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
 
+  <!-- AOS Animation Library -->
+  <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+
   <!-- Styles -->
   <link rel="stylesheet" href="css/style.css">
 
@@ -41,15 +44,21 @@
     "@type": "Person",
     "name": "Hüseyin Haki Efendi",
     "alternateName": "Giritli Hüseyin Haki Efendi",
+    "birthDate": "1825",
     "birthPlace": {
       "@type": "Place",
-      "name": "Girit"
+      "name": "Kandiye, Girit"
     },
     "deathDate": "1895-01-07",
+    "deathPlace": {
+      "@type": "Place",
+      "name": "İstanbul"
+    },
     "jobTitle": "Şirket-i Hayriye Genel Müdürü",
     "description": "Osmanlı denizcilik tarihinin vizyoner yöneticisi, dünyanın ilk arabalı vapuru Suhulet'in mucidi.",
+    "image": "https://huseyinhakiefendi.com/assets/images/huseyin-haki-efendi.jpg",
     "sameAs": [],
-    "knowsAbout": ["Deniz ulaşımı", "Osmanlı denizciliği", "Vapur işletmeciliği"]
+    "knowsAbout": ["Deniz ulaşımı", "Osmanlı denizciliği", "Vapur işletmeciliği", "İnovasyon"]
   }
   </script>
 </head>
@@ -62,28 +71,23 @@
     <!-- Animated wave lines -->
     <div class="hero-waves">
       <svg class="wave-1" viewBox="0 0 1440 120" preserveAspectRatio="none">
-        <path d="M0,60 C360,120 720,0 1080,60 C1260,90 1350,30 1440,60 L1440,120 L0,120 Z" fill="rgba(201,168,76,0.3)"/>
+        <path d="M0,60 C360,120 720,0 1080,60 C1260,90 1350,30 1440,60 L1440,120 L0,120 Z" fill="rgba(201,168,76,0.25)"/>
       </svg>
       <svg class="wave-2" viewBox="0 0 1440 120" preserveAspectRatio="none">
-        <path d="M0,80 C240,20 480,100 720,60 C960,20 1200,100 1440,80 L1440,120 L0,120 Z" fill="rgba(201,168,76,0.3)"/>
+        <path d="M0,80 C240,20 480,100 720,60 C960,20 1200,100 1440,80 L1440,120 L0,120 Z" fill="rgba(201,168,76,0.2)"/>
       </svg>
       <svg class="wave-3" viewBox="0 0 1440 120" preserveAspectRatio="none">
-        <path d="M0,40 C300,100 600,20 900,80 C1100,120 1300,40 1440,60 L1440,120 L0,120 Z" fill="rgba(201,168,76,0.3)"/>
+        <path d="M0,40 C300,100 600,20 900,80 C1100,120 1300,40 1440,60 L1440,120 L0,120 Z" fill="rgba(201,168,76,0.15)"/>
       </svg>
     </div>
 
     <!-- Ship silhouette -->
     <div class="hero-ship">
       <svg viewBox="0 0 400 200" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <!-- Simplified paddle steamer silhouette -->
         <g fill="currentColor" opacity="0.8" style="color: var(--gold)">
-          <!-- Hull -->
           <path d="M50,140 L70,170 L330,170 L350,140 L310,140 L300,155 L100,155 L90,140 Z"/>
-          <!-- Deck -->
           <rect x="80" y="120" width="240" height="22" rx="2"/>
-          <!-- Cabin -->
           <rect x="110" y="90" width="180" height="32" rx="3"/>
-          <!-- Windows -->
           <rect x="125" y="97" width="12" height="10" rx="1" fill="#0d1b2a"/>
           <rect x="145" y="97" width="12" height="10" rx="1" fill="#0d1b2a"/>
           <rect x="165" y="97" width="12" height="10" rx="1" fill="#0d1b2a"/>
@@ -92,44 +96,57 @@
           <rect x="225" y="97" width="12" height="10" rx="1" fill="#0d1b2a"/>
           <rect x="245" y="97" width="12" height="10" rx="1" fill="#0d1b2a"/>
           <rect x="265" y="97" width="12" height="10" rx="1" fill="#0d1b2a"/>
-          <!-- Funnel -->
           <rect x="185" y="50" width="30" height="42" rx="2"/>
-          <!-- Smoke -->
           <ellipse cx="200" cy="40" rx="18" ry="8" opacity="0.4"/>
           <ellipse cx="210" cy="28" rx="12" ry="6" opacity="0.25"/>
-          <!-- Paddle wheel (side) -->
           <circle cx="200" cy="145" r="20" stroke="currentColor" stroke-width="2" fill="none" opacity="0.5"/>
-          <!-- Flag pole -->
           <line x1="120" y1="90" x2="120" y2="60" stroke="currentColor" stroke-width="1.5"/>
-          <!-- Flag -->
           <path d="M120,60 L145,68 L120,76 Z" fill="#6b1c23" opacity="0.8"/>
         </g>
       </svg>
     </div>
 
     <div class="hero-content">
+      <!-- Portrait -->
+      <div class="hero-portrait" data-aos="zoom-in" data-aos-duration="1200" data-aos-delay="200">
+        <div class="portrait-frame">
+          <img src="assets/images/huseyin-haki-efendi.jpg" alt="Hüseyin Haki Efendi Portresi">
+        </div>
+        <div class="portrait-glow"></div>
+      </div>
+
       <!-- Top ornament -->
-      <div class="hero-ornament-top">
+      <div class="hero-ornament-top" data-aos="fade-down" data-aos-duration="800" data-aos-delay="600">
         <span class="line"></span>
         <span class="diamond"></span>
         <span class="line"></span>
       </div>
 
-      <p class="hero-year">Şirket-i Hayriye &bull; 1866 &ndash; 1894</p>
+      <p class="hero-dates" data-aos="fade-up" data-aos-duration="800" data-aos-delay="700">1825 &ndash; 1895</p>
 
-      <h1 class="hero-title">
+      <h1 class="hero-title" data-aos="fade-up" data-aos-duration="1000" data-aos-delay="800">
         <span class="first-name">Giritli</span>
         Hüseyin Haki Efendi
       </h1>
 
-      <p class="hero-subtitle">
-        Osmanlı Denizcilik Tarihinin Vizyoner Müdürü
+      <p class="hero-subtitle" data-aos="fade-up" data-aos-duration="800" data-aos-delay="1000">
+        Şirket-i Hayriye Müdürü &bull; 1866 &ndash; 1894
       </p>
 
-      <div class="hero-cta-line">
-        <span>Hikayesini Keşfet</span>
-        <span class="scroll-arrow"></span>
-      </div>
+      <p class="hero-tagline" data-aos="fade-up" data-aos-duration="800" data-aos-delay="1100">
+        Dünyanın İlk Arabalı Vapurunun Mucidi
+      </p>
+
+      <!-- Scroll indicator -->
+      <a href="#tanitim" class="hero-scroll" data-aos="fade-up" data-aos-duration="800" data-aos-delay="1400">
+        <span class="scroll-text">Hikayesini Keşfet</span>
+        <span class="scroll-line"></span>
+        <span class="scroll-arrow">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M12 5v14M5 12l7 7 7-7"/>
+          </svg>
+        </span>
+      </a>
     </div>
   </section>
 
@@ -139,44 +156,46 @@
   <section class="intro section-padding" id="tanitim">
     <div class="container">
       <div class="intro-content">
-        <p class="intro-eyebrow reveal">Bir Vizyonerin Portresi</p>
+        <p class="intro-eyebrow" data-aos="fade-up">Bir Vizyonerin Portresi</p>
 
-        <h2 class="intro-heading reveal reveal-delay-1">
+        <h2 class="intro-heading" data-aos="fade-up" data-aos-delay="100">
           İflasın Eşiğindeki Şirketi<br>Altın Çağına Taşıyan Adam
         </h2>
 
-        <p class="intro-text reveal reveal-delay-2">
-          1866 yılında Şirket-i Hayriye'nin başına geçtiğinde, Osmanlı'nın ilk anonim şirketi
-          batmak üzereydi. Filoyu 16 vapurdan 46 vapura çıkardı. Muhasebe sistemini
-          modernleştirdi. Yolcu haklarını güvence altına aldı. Ve dünya denizcilik tarihine
-          adını altın harflerle yazdıracak bir gemiyi tasarladı: <strong>Suhulet</strong> &mdash;
-          dünyanın ilk arabalı vapuru.
+        <p class="intro-text" data-aos="fade-up" data-aos-delay="200">
+          1825'te Girit'in Kandiye şehrinde doğdu. Dokuz yaşında babasını kaybetti ve
+          amcası tarafından Mısır Valisi Kavalalı Mehmed Ali Paşa'ya gönderildi.
+          1866 yılında Yusuf Kamil Paşa'nın tavsiyesiyle Şirket-i Hayriye'nin başına geçtiğinde,
+          Osmanlı'nın ilk anonim şirketi batmak üzereydi. Filoyu <strong>16 vapurdan 46 vapura</strong> çıkardı.
+          Muhasebe sistemini modernleştirdi. Yolcu haklarını güvence altına aldı.
+          Ve dünya denizcilik tarihine adını altın harflerle yazdıracak bir gemiyi tasarladı:
+          <strong>Suhulet</strong> &mdash; dünyanın ilk arabalı vapuru.
         </p>
 
-        <div class="intro-quote reveal reveal-delay-3">
+        <div class="intro-quote" data-aos="fade-up" data-aos-delay="300">
           16 vapurdan 46&rsquo;ya. İflasın eşiğinden altın çağa.
         </div>
 
         <!-- Ottoman divider -->
-        <div class="ottoman-divider reveal">
+        <div class="ottoman-divider" data-aos="fade-up" data-aos-delay="400">
           <span class="ornament">&#10041;</span>
         </div>
 
         <!-- Stats -->
         <div class="stats-grid">
-          <div class="stat-item reveal reveal-delay-1">
+          <div class="stat-item" data-aos="fade-up" data-aos-delay="100">
             <div class="stat-number" data-count="28" data-suffix=" Yıl">0</div>
             <div class="stat-label">Müdürlük</div>
           </div>
-          <div class="stat-item reveal reveal-delay-2">
+          <div class="stat-item" data-aos="fade-up" data-aos-delay="200">
             <div class="stat-number" data-count="30" data-prefix="+" data-suffix="">0</div>
             <div class="stat-label">Yeni Vapur</div>
           </div>
-          <div class="stat-item reveal reveal-delay-3">
+          <div class="stat-item" data-aos="fade-up" data-aos-delay="300">
             <div class="stat-number" data-count="5">0</div>
             <div class="stat-label">Devrimci Yenilik</div>
           </div>
-          <div class="stat-item reveal reveal-delay-4">
+          <div class="stat-item" data-aos="fade-up" data-aos-delay="400">
             <div class="stat-number" data-count="1">0</div>
             <div class="stat-label">Dünya İlki</div>
           </div>
@@ -191,22 +210,22 @@
   <section class="innovations section-padding" id="yenilikler">
     <div class="container">
       <div class="text-center">
-        <p class="section-eyebrow reveal">19. Yüzyılda Devrim</p>
-        <h2 class="section-heading text-cream reveal reveal-delay-1">
+        <p class="section-eyebrow" data-aos="fade-up">19. Yüzyılda Devrim</p>
+        <h2 class="section-heading text-cream" data-aos="fade-up" data-aos-delay="100">
           Zamanının 100 Yıl Ötesinde
         </h2>
-        <p class="section-subheading reveal reveal-delay-2">
-          Bu yenilikler 1860&ndash;1890 yıllarında hayata geçirildi &mdash; bugünün iş dünyasının
+        <p class="section-subheading" data-aos="fade-up" data-aos-delay="200">
+          Bu yenilikler 1866&ndash;1894 yıllarında hayata geçirildi &mdash; bugünün iş dünyasının
           temel taşları, onun vizyonunun ürünüdür.
         </p>
       </div>
 
       <div class="innovation-cards">
         <!-- Card 1: Double-Entry Bookkeeping -->
-        <div class="innovation-card reveal">
+        <div class="innovation-card" data-aos="fade-up" data-aos-delay="100">
           <div class="innovation-icon-old">&#9997;</div>
           <div class="innovation-info">
-            <div class="ottoman-label">Çift Defter Tutma Sistemi</div>
+            <div class="ottoman-label">Çift Taraflı Kayıt Sistemi</div>
             <h3>Kurumsal Denetim &amp; Şeffaflık</h3>
             <p>Muhasebede suistimali önlemek için çift yanlı kayıt sistemini zorunlu kıldı. Osmanlı'da bu sistemi uygulayan ilk kurumlardan biri oldu.</p>
           </div>
@@ -217,7 +236,7 @@
         </div>
 
         <!-- Card 2: Complaint Book -->
-        <div class="innovation-card reveal reveal-delay-1">
+        <div class="innovation-card" data-aos="fade-up" data-aos-delay="200">
           <div class="innovation-icon-old">&#128214;</div>
           <div class="innovation-info">
             <div class="ottoman-label">Yolcu Şikâyet Defteri</div>
@@ -231,7 +250,7 @@
         </div>
 
         <!-- Card 3: Timetable & Clocks -->
-        <div class="innovation-card reveal reveal-delay-2">
+        <div class="innovation-card" data-aos="fade-up" data-aos-delay="300">
           <div class="innovation-icon-old">&#9200;</div>
           <div class="innovation-info">
             <div class="ottoman-label">İskele Saatleri &amp; Kalkış Çizelgesi</div>
@@ -245,7 +264,7 @@
         </div>
 
         <!-- Card 4: Life Rings -->
-        <div class="innovation-card reveal reveal-delay-3">
+        <div class="innovation-card" data-aos="fade-up" data-aos-delay="400">
           <div class="innovation-icon-old">&#9900;</div>
           <div class="innovation-info">
             <div class="ottoman-label">Zorunlu Cankurtaran Simidi</div>
@@ -259,10 +278,10 @@
         </div>
 
         <!-- Card 5: Suhulet -->
-        <div class="innovation-card reveal reveal-delay-4" style="border-color: rgba(201,168,76,0.35); background: rgba(201,168,76,0.08);">
-          <div class="innovation-icon-old" style="border-color: var(--gold); background: rgba(201,168,76,0.15);">&#9875;</div>
+        <div class="innovation-card innovation-card-highlight" data-aos="fade-up" data-aos-delay="500">
+          <div class="innovation-icon-old innovation-icon-highlight">&#9875;</div>
           <div class="innovation-info">
-            <div class="ottoman-label" style="color: var(--gold-light);">Suhulet &mdash; Dünyanın İlk Arabalı Vapuru</div>
+            <div class="ottoman-label innovation-label-highlight">Suhulet &mdash; Dünyanın İlk Arabalı Vapuru</div>
             <h3>AR-GE &amp; Radikal İnovasyon</h3>
             <p>Hiç kimsenin yapmadığı bir gemiyi hayal etti, prototipi çizdi ve 1872'de hizmete soktu. 86 yıl boyunca Boğaz'da hizmet verdi.</p>
           </div>
@@ -281,27 +300,27 @@
   <section class="suhulet section-padding" id="suhulet">
     <div class="container">
       <div class="text-center">
-        <div class="suhulet-badge reveal">
+        <div class="suhulet-badge" data-aos="fade-up">
           <span>&#9733;</span>
           <span>Dünya Denizcilik Tarihinde Bir İlk</span>
         </div>
 
-        <h2 class="suhulet-heading reveal reveal-delay-1">
+        <h2 class="suhulet-heading" data-aos="fade-up" data-aos-delay="100">
           Suhulet: Dünyanın İlk Arabalı Vapuru
         </h2>
 
-        <p class="suhulet-text reveal reveal-delay-2" style="margin-left: auto; margin-right: auto;">
+        <p class="suhulet-text" data-aos="fade-up" data-aos-delay="200">
           İstanbul'un iki yakası arasında hem yolcu hem araba taşıyacak bir gemiye ihtiyaç
           olduğunu fark eden Hüseyin Haki Efendi, dünyada eşi benzeri olmayan bir vapur tasarladı.
           İngiliz tersaneciler bile böyle bir gemi daha önce yapmamıştı. Prototipi
-          Hasköy Tersanesi Sermimarı Mehmet Usta ile birlikte 3 ayda çizdi; 1871'de
-          İngiltere'de inşa edilen gemi, 1872 başında İstanbul'da hizmete girdi.
-          Adını şair Namık Kemal verdi: <em>"Suhulet"</em> &mdash; kolaylık.
+          Hasköy Tersanesi Sermimarı Mehmet Usta ve Müfettiş İskender Efendi ile birlikte çizdi.
+          İngiltere'nin Maudslay, Sons &amp; Field tersanesinde inşa edilen gemi,
+          1872 başında İstanbul'da hizmete girdi. Adını şair Namık Kemal verdi: <em>"Suhulet"</em> &mdash; kolaylık.
         </p>
       </div>
 
       <!-- Ship Visual -->
-      <div class="suhulet-visual reveal">
+      <div class="suhulet-visual" data-aos="zoom-in" data-aos-delay="300">
         <div class="suhulet-image-frame">
           <div class="frame-corner top-left"></div>
           <div class="frame-corner top-right"></div>
@@ -314,36 +333,7 @@
             onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"
           >
           <div class="suhulet-placeholder">
-            <svg viewBox="0 0 400 200" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <g fill="currentColor" opacity="0.6">
-                <!-- Hull -->
-                <path d="M40,150 L60,180 L340,180 L360,150 L320,150 L310,165 L90,165 L80,150 Z"/>
-                <!-- Deck -->
-                <rect x="70" y="125" width="260" height="28" rx="3"/>
-                <!-- Cabin -->
-                <rect x="100" y="85" width="200" height="42" rx="4"/>
-                <!-- Windows -->
-                <rect x="118" y="95" width="14" height="12" rx="2" fill="#0d1b2a"/>
-                <rect x="142" y="95" width="14" height="12" rx="2" fill="#0d1b2a"/>
-                <rect x="166" y="95" width="14" height="12" rx="2" fill="#0d1b2a"/>
-                <rect x="190" y="95" width="14" height="12" rx="2" fill="#0d1b2a"/>
-                <rect x="214" y="95" width="14" height="12" rx="2" fill="#0d1b2a"/>
-                <rect x="238" y="95" width="14" height="12" rx="2" fill="#0d1b2a"/>
-                <rect x="262" y="95" width="14" height="12" rx="2" fill="#0d1b2a"/>
-                <!-- Funnel -->
-                <rect x="180" y="40" width="40" height="48" rx="3"/>
-                <!-- Smoke -->
-                <ellipse cx="200" cy="28" rx="22" ry="10" opacity="0.3"/>
-                <ellipse cx="212" cy="14" rx="14" ry="7" opacity="0.2"/>
-                <!-- Paddle wheels -->
-                <circle cx="120" cy="152" r="18" stroke="currentColor" stroke-width="2" fill="none" opacity="0.4"/>
-                <circle cx="280" cy="152" r="18" stroke="currentColor" stroke-width="2" fill="none" opacity="0.4"/>
-                <!-- Flag -->
-                <line x1="310" y1="85" x2="310" y2="50" stroke="currentColor" stroke-width="2"/>
-                <path d="M310,50 L340,60 L310,70 Z" fill="#6b1c23"/>
-              </g>
-            </svg>
-            <span class="placeholder-text">Görsel: assets/images/suhulet.jpg</span>
+            <span class="placeholder-text">Görsel yüklenemedi</span>
           </div>
         </div>
         <p class="caption">S U H U L E T &nbsp;&bull;&nbsp; 1 8 7 2 &nbsp;&bull;&nbsp; K O L A Y L I K</p>
@@ -351,32 +341,32 @@
 
       <!-- Specs Grid -->
       <div class="specs-grid">
-        <div class="spec-item reveal">
-          <div class="spec-value" data-count="157">0</div>
-          <div class="spec-unit">Ton</div>
-          <div class="spec-label">Tonaj</div>
+        <div class="spec-item" data-aos="fade-up" data-aos-delay="100">
+          <div class="spec-value">555</div>
+          <div class="spec-unit">Gros Ton</div>
+          <div class="spec-label">Brüt Tonaj</div>
         </div>
-        <div class="spec-item reveal reveal-delay-1">
+        <div class="spec-item" data-aos="fade-up" data-aos-delay="150">
           <div class="spec-value">45.7</div>
           <div class="spec-unit">Metre</div>
           <div class="spec-label">Uzunluk</div>
         </div>
-        <div class="spec-item reveal reveal-delay-2">
+        <div class="spec-item" data-aos="fade-up" data-aos-delay="200">
           <div class="spec-value" data-count="450">0</div>
           <div class="spec-unit">Beygir</div>
           <div class="spec-label">Motor Gücü</div>
         </div>
-        <div class="spec-item reveal reveal-delay-3">
+        <div class="spec-item" data-aos="fade-up" data-aos-delay="250">
           <div class="spec-value" data-count="86">0</div>
           <div class="spec-unit">Yıl</div>
           <div class="spec-label">Hizmet Süresi</div>
         </div>
-        <div class="spec-item reveal reveal-delay-4">
+        <div class="spec-item" data-aos="fade-up" data-aos-delay="300">
           <div class="spec-value">7</div>
-          <div class="spec-unit">Mil/Saat</div>
+          <div class="spec-unit">Knot</div>
           <div class="spec-label">Azami Hız</div>
         </div>
-        <div class="spec-item reveal reveal-delay-5">
+        <div class="spec-item" data-aos="fade-up" data-aos-delay="350">
           <div class="spec-value">8.5</div>
           <div class="spec-unit">Metre</div>
           <div class="spec-label">Genişlik</div>
@@ -385,10 +375,10 @@
 
       <!-- Extra note -->
       <div class="text-center" style="margin-top: 3rem;">
-        <div class="ottoman-divider reveal">
+        <div class="ottoman-divider" data-aos="fade-up">
           <span class="ornament">&#10041;</span>
         </div>
-        <p class="reveal" style="font-style: italic; color: var(--sepia); max-width: 600px; margin: 1rem auto 0;">
+        <p data-aos="fade-up" data-aos-delay="100" style="font-style: italic; color: var(--sepia); max-width: 600px; margin: 1rem auto 0;">
           Suhulet, Çanakkale Savaşı'nda topçu bataryaları taşıyarak vatan hizmeti gördü
           ve &ldquo;Gazi&rdquo; unvanı aldı. 1958 yılına kadar tam 86 yıl boyunca
           Boğaz'da yolcu ve araba taşımaya devam etti.
@@ -403,93 +393,154 @@
   <section class="timeline-section section-padding" id="zaman-cizelgesi">
     <div class="container">
       <div class="text-center">
-        <p class="section-eyebrow text-gold reveal">Kronoloji</p>
-        <h2 class="section-heading text-navy reveal reveal-delay-1">
+        <p class="section-eyebrow text-gold" data-aos="fade-up">Kronoloji</p>
+        <h2 class="section-heading text-navy" data-aos="fade-up" data-aos-delay="100">
           Bir Ömrün İzleri
         </h2>
       </div>
 
-      <div class="timeline" style="margin-top: 3rem;">
-        <!-- 1866 -->
-        <div class="timeline-item reveal">
+      <div class="timeline">
+        <!-- Period: Erken Yıllar -->
+        <div class="timeline-period" data-aos="fade-right">
+          <span class="period-label">Erken Yıllar</span>
+        </div>
+
+        <!-- 1825 -->
+        <div class="timeline-item" data-aos="fade-up">
+          <div class="timeline-dot timeline-dot-birth"></div>
+          <div class="timeline-content">
+            <div class="timeline-year">1825</div>
+            <div class="timeline-title">Dünyaya Geldi</div>
+            <div class="timeline-desc">
+              Girit'in Kandiye (bugünkü Heraklion) şehrinde doğdu.
+              Babası Câmiikebir mütevellîsi Mehmed Efendi'ydi.
+            </div>
+          </div>
+        </div>
+
+        <!-- 1834 -->
+        <div class="timeline-item" data-aos="fade-up">
           <div class="timeline-dot"></div>
           <div class="timeline-content">
-            <div class="timeline-year">1866</div>
-            <div class="timeline-title">Şirket-i Hayriye Müdürü Oldu</div>
+            <div class="timeline-year">~1834</div>
+            <div class="timeline-title">Babasını Kaybetti</div>
             <div class="timeline-desc">
-              Yusuf Kamil Paşa'nın tavsiyesiyle, iflasın eşiğindeki
-              şirketin başına getirildi.
+              Dokuz yaşında babasını kaybetti. Amcası tarafından
+              Mısır Valisi Kavalalı Mehmed Ali Paşa'ya gönderildi.
+            </div>
+          </div>
+        </div>
+
+        <!-- Period: Şirket-i Hayriye -->
+        <div class="timeline-period" data-aos="fade-right">
+          <span class="period-label">Şirket-i Hayriye Dönemi</span>
+        </div>
+
+        <!-- 1866 -->
+        <div class="timeline-item timeline-item-highlight" data-aos="fade-up">
+          <div class="timeline-dot timeline-dot-major"></div>
+          <div class="timeline-content">
+            <div class="timeline-year">1866</div>
+            <div class="timeline-title">Müdürlük Görevi Başladı</div>
+            <div class="timeline-desc">
+              Ağustos ayında Yusuf Kamil Paşa'nın tavsiyesiyle,
+              iflasın eşiğindeki Şirket-i Hayriye'nin başına getirildi.
+              41 yaşındaydı.
             </div>
           </div>
         </div>
 
         <!-- 1871 -->
-        <div class="timeline-item reveal">
+        <div class="timeline-item" data-aos="fade-up">
           <div class="timeline-dot"></div>
           <div class="timeline-content">
             <div class="timeline-year">1871</div>
             <div class="timeline-title">Suhulet'in Prototipini Çizdi</div>
             <div class="timeline-desc">
-              Hasköy Tersanesi Sermimarı Mehmet Usta ile birlikte,
-              dünyanın ilk arabalı vapurunun tasarımını 3 ayda tamamladı.
+              Hasköy Tersanesi Sermimarı Mehmet Usta ve Müfettiş İskender Efendi
+              ile birlikte dünyanın ilk arabalı vapurunun tasarımını tamamladı.
             </div>
           </div>
         </div>
 
         <!-- 1872 -->
-        <div class="timeline-item highlight reveal">
-          <div class="timeline-dot"></div>
+        <div class="timeline-item timeline-item-highlight" data-aos="fade-up">
+          <div class="timeline-dot timeline-dot-major"></div>
           <div class="timeline-content">
             <div class="timeline-year">1872</div>
             <div class="timeline-title">Suhulet Hizmete Girdi</div>
             <div class="timeline-desc">
-              İngiltere'de inşa edilen dünyanın ilk arabalı vapuru,
-              Üsküdar&ndash;Kabataş hattında sefere başladı.
+              İngiltere'de Maudslay, Sons &amp; Field tersanesinde inşa edilen
+              dünyanın ilk arabalı vapuru, Üsküdar&ndash;Kabataş hattında sefere başladı.
+              26 numaralı baca ile kayıtlara geçti.
             </div>
           </div>
         </div>
 
         <!-- 1875 -->
-        <div class="timeline-item reveal">
+        <div class="timeline-item" data-aos="fade-up">
           <div class="timeline-dot"></div>
           <div class="timeline-content">
-            <div class="timeline-year">1875</div>
+            <div class="timeline-year">~1875</div>
             <div class="timeline-title">Görevden Alındı &amp; Geri Çağrıldı</div>
             <div class="timeline-desc">
-              Kısa süreliğine görevden alındı ancak işler kötüleşince
+              Kısa süreliğine görevden alındı ancak şirketin işleri kötüleşince
               yeniden çağrıldı &mdash; vazgeçilmez olduğunu kanıtladı.
             </div>
           </div>
         </div>
 
         <!-- ~1890 -->
-        <div class="timeline-item reveal">
+        <div class="timeline-item" data-aos="fade-up">
           <div class="timeline-dot"></div>
           <div class="timeline-content">
             <div class="timeline-year">~1890</div>
             <div class="timeline-title">Filo 46 Vapura Ulaştı</div>
             <div class="timeline-desc">
-              Göreve geldiğinde 16 olan vapur sayısı,
-              onun yönetiminde 46'ya çıktı. Şirketin en parlak dönemi.
+              Göreve geldiğinde 16 olan vapur sayısı, onun yönetiminde 46'ya çıktı.
+              Şirket-i Hayriye'nin en parlak dönemi.
+            </div>
+          </div>
+        </div>
+
+        <!-- Period: Son Yıllar -->
+        <div class="timeline-period" data-aos="fade-right">
+          <span class="period-label">Son Yıllar &amp; Miras</span>
+        </div>
+
+        <!-- 1894 -->
+        <div class="timeline-item" data-aos="fade-up">
+          <div class="timeline-dot"></div>
+          <div class="timeline-content">
+            <div class="timeline-year">1894</div>
+            <div class="timeline-title">Hastalık Nedeniyle Ayrıldı</div>
+            <div class="timeline-desc">
+              28 yıllık müdürlük görevinin ardından sağlık sorunları
+              nedeniyle görevinden ayrıldı.
             </div>
           </div>
         </div>
 
         <!-- 1895 -->
-        <div class="timeline-item reveal">
-          <div class="timeline-dot"></div>
+        <div class="timeline-item" data-aos="fade-up">
+          <div class="timeline-dot timeline-dot-death"></div>
           <div class="timeline-content">
             <div class="timeline-year">1895</div>
             <div class="timeline-title">7 Ocak &mdash; Vefat</div>
             <div class="timeline-desc">
-              Üsküdar, Fenâî Dergâhı Mezarlığı'nda toprağa verildi.
-              Ardında modernleşen bir şirket ve ölümsüz bir miras bıraktı.
+              70 yaşında hayata veda etti. Üsküdar, Fenâî Dergâhı Mezarlığı'nda
+              toprağa verildi. Ardında modernleşen bir şirket ve ölümsüz bir miras bıraktı.
             </div>
           </div>
         </div>
 
+        <!-- Period: Sonrası -->
+        <div class="timeline-period" data-aos="fade-right">
+          <span class="period-label">Yaşayan Miras</span>
+        </div>
+
         <!-- 1911 -->
-        <div class="timeline-item reveal">
+        <div class="timeline-item" data-aos="fade-up">
           <div class="timeline-dot"></div>
           <div class="timeline-content">
             <div class="timeline-year">1911</div>
@@ -501,8 +552,21 @@
           </div>
         </div>
 
+        <!-- 1958 -->
+        <div class="timeline-item" data-aos="fade-up">
+          <div class="timeline-dot"></div>
+          <div class="timeline-content">
+            <div class="timeline-year">1958</div>
+            <div class="timeline-title">Suhulet Emekli Oldu</div>
+            <div class="timeline-desc">
+              86 yıllık hizmetten sonra &ldquo;Gazi Suhulet&rdquo;
+              görevinden ayrıldı. 1961'de sökümü gerçekleştirildi.
+            </div>
+          </div>
+        </div>
+
         <!-- 1963 -->
-        <div class="timeline-item reveal">
+        <div class="timeline-item" data-aos="fade-up">
           <div class="timeline-dot"></div>
           <div class="timeline-content">
             <div class="timeline-year">1963</div>
@@ -510,6 +574,7 @@
             <div class="timeline-desc">
               Şehir Hatları İşletmesi, Haliç Tersanesi'nde inşa edilen
               bir araba vapuruna &ldquo;Hüseyin Haki&rdquo; adını verdi.
+              1980'lere kadar hizmet verdi.
             </div>
           </div>
         </div>
@@ -522,13 +587,13 @@
        ========================================== -->
   <section class="legacy section-padding" id="miras">
     <div class="container">
-      <p class="section-eyebrow reveal">Miras</p>
+      <p class="section-eyebrow" data-aos="fade-up">Miras</p>
 
-      <h2 class="legacy-heading reveal reveal-delay-1">
+      <h2 class="legacy-heading" data-aos="fade-up" data-aos-delay="100">
         Adı Sularda Yaşıyor
       </h2>
 
-      <p class="legacy-text reveal reveal-delay-2">
+      <p class="legacy-text" data-aos="fade-up" data-aos-delay="200">
         Hüseyin Haki Efendi'nin vizyonu, sadece bir şirketi değil,
         İstanbul'un tüm ulaşım tarihini şekillendirdi. Boğaziçi'nin
         iki yakasını birbirine bağlayan modern deniz ulaşımının temelleri,
@@ -536,7 +601,7 @@
       </p>
 
       <div class="legacy-ships">
-        <div class="legacy-ship-card reveal">
+        <div class="legacy-ship-card" data-aos="fade-up" data-aos-delay="100">
           <div class="ship-year">1911</div>
           <h3>Vapur No. 69 &ldquo;Hüseyin Haki&rdquo;</h3>
           <p>
@@ -545,7 +610,7 @@
           </p>
         </div>
 
-        <div class="legacy-ship-card reveal reveal-delay-1">
+        <div class="legacy-ship-card" data-aos="fade-up" data-aos-delay="200">
           <div class="ship-year">1963</div>
           <h3>Araba Vapuru &ldquo;Hüseyin Haki&rdquo;</h3>
           <p>
@@ -554,7 +619,7 @@
           </p>
         </div>
 
-        <div class="legacy-ship-card reveal reveal-delay-2">
+        <div class="legacy-ship-card" data-aos="fade-up" data-aos-delay="300">
           <div class="ship-year">Bugün</div>
           <h3>Yaşayan Miras</h3>
           <p>
@@ -565,11 +630,11 @@
       </div>
 
       <!-- Ottoman divider -->
-      <div class="ottoman-divider reveal" style="margin-top: 3rem;">
+      <div class="ottoman-divider" data-aos="fade-up" style="margin-top: 3rem;">
         <span class="ornament" style="color: var(--gold);">&#10041;</span>
       </div>
 
-      <p class="legacy-closing reveal">
+      <p class="legacy-closing" data-aos="fade-up" data-aos-delay="100">
         &ldquo;Bir vizyoner asla ölmez &mdash; sadece başka sulara yelken açar.&rdquo;
       </p>
     </div>
@@ -580,8 +645,18 @@
        ========================================== -->
   <footer class="site-footer">
     <div class="container">
-      <div class="footer-logo">
+      <!-- Footer Portrait -->
+      <div class="footer-portrait">
+        <div class="footer-portrait-frame">
+          <img src="assets/images/huseyin-haki-efendi.jpg" alt="Hüseyin Haki Efendi">
+        </div>
+      </div>
+
+      <div class="footer-name">
         Hüseyin Haki Efendi
+      </div>
+      <div class="footer-dates">
+        1825 &ndash; 1895
       </div>
 
       <nav class="footer-links">
@@ -595,13 +670,22 @@
       <div class="footer-divider"></div>
 
       <p class="footer-credits">
-        huseyinhakiefendi.com &bull; Şirket-i Hayriye Mirası &bull; 1866&ndash;1894
+        huseyinhakiefendi.com &bull; Şirket-i Hayriye Mirası
       </p>
     </div>
   </footer>
 
   <!-- Scripts -->
+  <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
   <script src="js/main.js"></script>
+  <script>
+    AOS.init({
+      duration: 800,
+      easing: 'ease-out-cubic',
+      once: true,
+      offset: 50
+    });
+  </script>
 
 </body>
 </html>
