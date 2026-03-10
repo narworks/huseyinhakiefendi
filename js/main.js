@@ -180,40 +180,68 @@
     });
   }
 
-  // --- Scrollytelling & Timeline Slider ---
+  // --- Scrollytelling Carousel & Timeline Slider ---
   function initScrollytelling() {
-    const storyYears = document.querySelectorAll('.story-year');
+    const storyYears = Array.from(document.querySelectorAll('.story-year'));
     const sliderMarkers = document.querySelectorAll('.slider-marker');
     const sliderShip = document.getElementById('sliderShip');
 
-    // Scroll-based animation for story cards
-    if (storyYears.length > 0) {
-      const observer = new IntersectionObserver(
-        (entries) => {
-          entries.forEach((entry) => {
-            if (entry.isIntersecting) {
-              entry.target.classList.add('visible');
+    if (storyYears.length === 0) return;
 
-              // Update timeline slider when a story card becomes visible
-              const year = entry.target.getAttribute('data-year');
-              if (year && sliderMarkers.length > 0) {
-                sliderMarkers.forEach(m => m.classList.remove('active'));
-                const activeMarker = document.querySelector(`.slider-marker[data-year="${year}"]`);
-                if (activeMarker) {
-                  activeMarker.classList.add('active');
-                  updateSliderShip(parseInt(year, 10));
-                }
-              }
-            }
-          });
-        },
-        {
-          threshold: 0.4,
-          rootMargin: '-10% 0px -10% 0px'
+    // Year order for carousel navigation
+    const yearOrder = ['1854', '1866', '1872', '1880', '1890', '1894'];
+    let currentIndex = 2; // Start at 1872 (Suhulet)
+
+    // Update carousel card positions
+    function updateCarousel(activeIndex) {
+      storyYears.forEach((card, i) => {
+        card.classList.remove('active', 'prev', 'next', 'visible');
+
+        if (i === activeIndex) {
+          card.classList.add('active');
+          // Animate stats for active card
+          animateCardStats(card);
+        } else if (i === activeIndex - 1) {
+          card.classList.add('prev');
+        } else if (i === activeIndex + 1) {
+          card.classList.add('next');
         }
-      );
+      });
 
-      storyYears.forEach((el) => observer.observe(el));
+      currentIndex = activeIndex;
+
+      // Update timeline marker
+      const year = yearOrder[activeIndex];
+      sliderMarkers.forEach(m => m.classList.remove('active'));
+      const activeMarker = document.querySelector(`.slider-marker[data-year="${year}"]`);
+      if (activeMarker) {
+        activeMarker.classList.add('active');
+        updateSliderShip(parseInt(year, 10));
+      }
+    }
+
+    // Animate stats for a specific card
+    function animateCardStats(card) {
+      const stats = card.querySelectorAll('.stat-number-scroll');
+      stats.forEach(stat => {
+        if (stat.classList.contains('counted')) return;
+        stat.classList.add('counted');
+
+        const target = parseInt(stat.getAttribute('data-count'), 10);
+        if (isNaN(target)) return;
+
+        const duration = 1200;
+        const start = performance.now();
+
+        function update(now) {
+          const elapsed = now - start;
+          const progress = Math.min(elapsed / duration, 1);
+          const eased = 1 - Math.pow(1 - progress, 3);
+          stat.textContent = Math.round(eased * target);
+          if (progress < 1) requestAnimationFrame(update);
+        }
+        requestAnimationFrame(update);
+      });
     }
 
     // Timeline slider ship position
@@ -231,72 +259,78 @@
       }
     }
 
-    // Timeline slider click handlers
-    if (sliderMarkers.length > 0) {
-      sliderMarkers.forEach(marker => {
-        marker.addEventListener('click', () => {
-          const year = marker.getAttribute('data-year');
-
-          // Update active state
-          sliderMarkers.forEach(m => m.classList.remove('active'));
-          marker.classList.add('active');
-
-          // Update ship position on timeline
-          updateSliderShip(parseInt(year, 10));
-
-          // Scroll to corresponding story card
-          const targetCard = document.querySelector(`.story-year[data-year="${year}"]`);
-          if (targetCard) {
-            targetCard.scrollIntoView({ behavior: 'smooth', block: 'center' });
-          }
-        });
+    // Timeline marker click handlers
+    sliderMarkers.forEach(marker => {
+      marker.addEventListener('click', () => {
+        const year = marker.getAttribute('data-year');
+        const newIndex = yearOrder.indexOf(year);
+        if (newIndex !== -1 && newIndex !== currentIndex) {
+          updateCarousel(newIndex);
+        }
       });
+    });
 
-      // Set initial ship position
-      setTimeout(() => updateSliderShip(1872), 100);
+    // Click on prev/next cards to navigate
+    storyYears.forEach((card, i) => {
+      card.addEventListener('click', () => {
+        if (card.classList.contains('prev') && currentIndex > 0) {
+          updateCarousel(currentIndex - 1);
+        } else if (card.classList.contains('next') && currentIndex < storyYears.length - 1) {
+          updateCarousel(currentIndex + 1);
+        }
+      });
+    });
 
-      // Update ship position on resize
-      window.addEventListener('resize', () => {
-        const activeMarker = document.querySelector('.slider-marker.active');
-        if (activeMarker) {
-          updateSliderShip(parseInt(activeMarker.getAttribute('data-year'), 10));
+    // Keyboard navigation
+    document.addEventListener('keydown', (e) => {
+      const container = document.querySelector('.scrollytelling-container');
+      if (!container) return;
+
+      const rect = container.getBoundingClientRect();
+      const inView = rect.top < window.innerHeight && rect.bottom > 0;
+
+      if (inView) {
+        if (e.key === 'ArrowLeft' && currentIndex > 0) {
+          updateCarousel(currentIndex - 1);
+        } else if (e.key === 'ArrowRight' && currentIndex < storyYears.length - 1) {
+          updateCarousel(currentIndex + 1);
+        }
+      }
+    });
+
+    // Navigation button click handlers
+    const prevBtn = document.querySelector('.carousel-prev');
+    const nextBtn = document.querySelector('.carousel-next');
+
+    if (prevBtn) {
+      prevBtn.addEventListener('click', () => {
+        if (currentIndex > 0) {
+          updateCarousel(currentIndex - 1);
         }
       });
     }
 
-    // Animate stat numbers when visible
-    const statNumbers = document.querySelectorAll('.stat-number-scroll');
-    if (statNumbers.length > 0) {
-      const numberObserver = new IntersectionObserver(
-        (entries) => {
-          entries.forEach((entry) => {
-            if (entry.isIntersecting && !entry.target.classList.contains('counted')) {
-              entry.target.classList.add('counted');
-              const target = parseInt(entry.target.getAttribute('data-count'), 10);
-              const duration = 1500;
-              const start = performance.now();
-
-              function updateNumber(now) {
-                const elapsed = now - start;
-                const progress = Math.min(elapsed / duration, 1);
-                const eased = 1 - Math.pow(1 - progress, 3);
-                const current = Math.round(eased * target);
-                entry.target.textContent = current;
-
-                if (progress < 1) {
-                  requestAnimationFrame(updateNumber);
-                }
-              }
-
-              requestAnimationFrame(updateNumber);
-            }
-          });
-        },
-        { threshold: 0.5 }
-      );
-
-      statNumbers.forEach((el) => numberObserver.observe(el));
+    if (nextBtn) {
+      nextBtn.addEventListener('click', () => {
+        if (currentIndex < storyYears.length - 1) {
+          updateCarousel(currentIndex + 1);
+        }
+      });
     }
+
+    // Initialize with 1872 (Suhulet) as default
+    setTimeout(() => {
+      updateCarousel(currentIndex);
+      updateSliderShip(1872);
+    }, 100);
+
+    // Update ship position on resize
+    window.addEventListener('resize', () => {
+      const activeMarker = document.querySelector('.slider-marker.active');
+      if (activeMarker) {
+        updateSliderShip(parseInt(activeMarker.getAttribute('data-year'), 10));
+      }
+    });
   }
 
   // --- Initialize ---

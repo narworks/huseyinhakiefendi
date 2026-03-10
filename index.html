@@ -157,8 +157,8 @@
           </g>
         </svg>
       </div>
-      <!-- Şirket - Yolcu Vapuru -->
-      <div class="hero-ferry ferry-right" data-ferry="sirket" data-speed="35" style="--delay: -28s;">
+      <!-- Tarabya - Yolcu Vapuru -->
+      <div class="hero-ferry ferry-right" data-ferry="tarabya" data-speed="35" style="--delay: -28s;">
         <svg viewBox="0 0 50 25" class="ferry-svg ferry-passenger">
           <g fill="currentColor" stroke="rgba(0,0,0,0.2)" stroke-width="0.5">
             <path d="M3,18 Q1,16 4,14 L8,14 L8,18 L44,18 L44,14 L47,14 Q50,16 48,18 L48,21 L3,21 Z"/>
@@ -172,8 +172,8 @@
       </div>
 
       <!-- Ferries moving right to left -->
-      <!-- İstanbul - Yolcu Vapuru -->
-      <div class="hero-ferry ferry-left" data-ferry="istanbul" data-speed="40" style="--delay: -5s;">
+      <!-- Göksu - Yolcu Vapuru -->
+      <div class="hero-ferry ferry-left" data-ferry="goksu" data-speed="40" style="--delay: -5s;">
         <svg viewBox="0 0 50 25" class="ferry-svg ferry-passenger">
           <g fill="currentColor" stroke="rgba(0,0,0,0.2)" stroke-width="0.5">
             <path d="M3,18 Q1,16 4,14 L8,14 L8,18 L44,18 L44,14 L47,14 Q50,16 48,18 L48,21 L3,21 Z"/>
@@ -400,21 +400,36 @@
       <!-- Scrollytelling: Yıllara Göre Filo Gelişimi -->
       <div class="scrollytelling-container" data-aos="fade-up" data-aos-delay="300">
 
+        <!-- Navigation Arrows -->
+        <button class="carousel-nav carousel-prev" aria-label="Önceki yıl">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polyline points="15 18 9 12 15 6"/>
+          </svg>
+        </button>
+        <button class="carousel-nav carousel-next" aria-label="Sonraki yıl">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polyline points="9 18 15 12 9 6"/>
+          </svg>
+        </button>
+
+        <!-- Vintage Map Background -->
+        <div class="carousel-map-bg"></div>
+
         <!-- 1854 - Kuruluş -->
         <div class="story-year" data-year="1854">
           <div class="year-badge-large">1854</div>
           <h3 class="year-title">Kuruluş</h3>
           <div class="year-stats">
             <div class="stat-item-scroll">
-              <span class="stat-number-scroll">6</span>
+              <span class="stat-number-scroll" data-count="6">6</span>
               <span class="stat-label-scroll">Vapur</span>
             </div>
             <div class="stat-item-scroll">
-              <span class="stat-number-scroll">12</span>
+              <span class="stat-number-scroll" data-count="12">12</span>
               <span class="stat-label-scroll">İskele</span>
             </div>
             <div class="stat-item-scroll">
-              <span class="stat-number-scroll">2</span>
+              <span class="stat-number-scroll" data-count="2">2</span>
               <span class="stat-label-scroll">Hat</span>
             </div>
           </div>
@@ -447,15 +462,15 @@
           <h3 class="year-title">Haki Efendi Göreve Başlıyor</h3>
           <div class="year-stats">
             <div class="stat-item-scroll">
-              <span class="stat-number-scroll">16</span>
+              <span class="stat-number-scroll" data-count="16">16</span>
               <span class="stat-label-scroll">Vapur</span>
             </div>
             <div class="stat-item-scroll">
-              <span class="stat-number-scroll">15</span>
+              <span class="stat-number-scroll" data-count="15">15</span>
               <span class="stat-label-scroll">İskele</span>
             </div>
             <div class="stat-item-scroll">
-              <span class="stat-number-scroll">3</span>
+              <span class="stat-number-scroll" data-count="3">3</span>
               <span class="stat-label-scroll">Hat</span>
             </div>
           </div>
@@ -493,15 +508,15 @@
           <h3 class="year-title">Suhulet Hizmete Girdi</h3>
           <div class="year-stats">
             <div class="stat-item-scroll">
-              <span class="stat-number-scroll">26</span>
+              <span class="stat-number-scroll" data-count="26">26</span>
               <span class="stat-label-scroll">Vapur</span>
             </div>
             <div class="stat-item-scroll">
-              <span class="stat-number-scroll">18</span>
+              <span class="stat-number-scroll" data-count="18">18</span>
               <span class="stat-label-scroll">İskele</span>
             </div>
             <div class="stat-item-scroll highlight">
-              <span class="stat-number-scroll">4</span>
+              <span class="stat-number-scroll" data-count="4">4</span>
               <span class="stat-label-scroll">Hat</span>
             </div>
           </div>
@@ -532,15 +547,15 @@
           <h3 class="year-title">Filo Genişliyor</h3>
           <div class="year-stats">
             <div class="stat-item-scroll">
-              <span class="stat-number-scroll">32</span>
+              <span class="stat-number-scroll" data-count="32">32</span>
               <span class="stat-label-scroll">Vapur</span>
             </div>
             <div class="stat-item-scroll">
-              <span class="stat-number-scroll">19</span>
+              <span class="stat-number-scroll" data-count="19">19</span>
               <span class="stat-label-scroll">İskele</span>
             </div>
             <div class="stat-item-scroll">
-              <span class="stat-number-scroll">4</span>
+              <span class="stat-number-scroll" data-count="4">4</span>
               <span class="stat-label-scroll">Hat</span>
             </div>
           </div>
@@ -556,15 +571,15 @@
           <h3 class="year-title">40 Vapurluk Filo</h3>
           <div class="year-stats">
             <div class="stat-item-scroll">
-              <span class="stat-number-scroll">40</span>
+              <span class="stat-number-scroll" data-count="40">40</span>
               <span class="stat-label-scroll">Vapur</span>
             </div>
             <div class="stat-item-scroll">
-              <span class="stat-number-scroll">20</span>
+              <span class="stat-number-scroll" data-count="20">20</span>
               <span class="stat-label-scroll">İskele</span>
             </div>
             <div class="stat-item-scroll">
-              <span class="stat-number-scroll">4</span>
+              <span class="stat-number-scroll" data-count="4">4</span>
               <span class="stat-label-scroll">Hat</span>
             </div>
           </div>
@@ -580,15 +595,15 @@
           <h3 class="year-title">Altın Çağ</h3>
           <div class="year-stats">
             <div class="stat-item-scroll">
-              <span class="stat-number-scroll">46</span>
+              <span class="stat-number-scroll" data-count="46">46</span>
               <span class="stat-label-scroll">Vapur</span>
             </div>
             <div class="stat-item-scroll">
-              <span class="stat-number-scroll">20</span>
+              <span class="stat-number-scroll" data-count="20">20</span>
               <span class="stat-label-scroll">İskele</span>
             </div>
             <div class="stat-item-scroll">
-              <span class="stat-number-scroll">4</span>
+              <span class="stat-number-scroll" data-count="4">4</span>
               <span class="stat-label-scroll">Hat</span>
             </div>
           </div>
