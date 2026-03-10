@@ -877,58 +877,83 @@ a:hover {
   margin: 0 auto 2.5rem;
 }
 
-/* Maritime Timeline Slider */
+/* Maritime Timeline Slider - Premium Design */
 .timeline-slider-container {
   position: relative;
   max-width: 900px;
   margin: 0 auto 2.5rem;
-  padding: 2rem 0;
+  padding: 2.5rem 1rem;
+  background: linear-gradient(180deg,
+    rgba(245, 239, 224, 0) 0%,
+    rgba(201, 168, 76, 0.08) 50%,
+    rgba(245, 239, 224, 0) 100%
+  );
+  border-radius: 16px;
 }
 
 .timeline-slider-track {
   display: flex;
   align-items: center;
   position: relative;
-  height: 80px;
+  height: 100px;
+  padding: 0 20px;
 }
 
+/* Main track line - elegant golden rope */
 .timeline-slider-track::before {
   content: '';
   position: absolute;
   top: 50%;
-  left: 24px;
-  right: 24px;
-  height: 6px;
+  left: 40px;
+  right: 40px;
+  height: 4px;
   background: linear-gradient(90deg,
-    rgba(112, 66, 20, 0.3),
-    rgba(201, 168, 76, 0.5),
-    rgba(112, 66, 20, 0.3)
+    var(--gold) 0%,
+    var(--gold-light) 50%,
+    var(--gold) 100%
   );
-  border-radius: 3px;
+  border-radius: 2px;
   transform: translateY(-50%);
-  /* Rope texture */
-  background-image:
-    repeating-linear-gradient(90deg,
-      transparent,
-      transparent 8px,
-      rgba(112, 66, 20, 0.15) 8px,
-      rgba(112, 66, 20, 0.15) 10px
-    ),
-    linear-gradient(90deg, rgba(112, 66, 20, 0.3), rgba(201, 168, 76, 0.5), rgba(112, 66, 20, 0.3));
+  box-shadow:
+    0 1px 3px rgba(0, 0, 0, 0.15),
+    inset 0 1px 0 rgba(255, 255, 255, 0.3);
+}
+
+/* Decorative knots on the rope */
+.timeline-slider-track::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 40px;
+  right: 40px;
+  height: 4px;
+  transform: translateY(-50%);
+  background-image: repeating-linear-gradient(90deg,
+    transparent 0px,
+    transparent 30px,
+    rgba(112, 66, 20, 0.2) 30px,
+    rgba(112, 66, 20, 0.2) 32px
+  );
 }
 
 .slider-rope-end {
-  width: 24px;
-  height: 24px;
-  color: var(--sepia);
+  width: 32px;
+  height: 32px;
+  color: var(--gold);
   flex-shrink: 0;
   z-index: 2;
+  background: var(--warm-white);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 3px solid var(--gold);
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.15);
 }
 
 .slider-rope-end svg {
-  width: 100%;
-  height: 100%;
-  filter: drop-shadow(0 2px 3px rgba(0, 0, 0, 0.2));
+  width: 60%;
+  height: 60%;
 }
 
 .slider-markers {
@@ -936,7 +961,7 @@ a:hover {
   justify-content: space-between;
   align-items: center;
   flex: 1;
-  padding: 0 1rem;
+  padding: 0 0.5rem;
   position: relative;
   z-index: 3;
 }
@@ -948,77 +973,145 @@ a:hover {
   background: none;
   border: none;
   cursor: pointer;
-  padding: 0.5rem;
-  transition: all 0.3s ease;
+  padding: 0.75rem 0.5rem;
+  transition: all 0.4s var(--ease-out-expo);
   position: relative;
 }
 
+/* Hover glow effect */
+.slider-marker::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 60px;
+  height: 60px;
+  background: radial-gradient(circle, rgba(201, 168, 76, 0.2) 0%, transparent 70%);
+  border-radius: 50%;
+  transform: translate(-50%, -50%) scale(0);
+  transition: transform 0.4s var(--ease-out-expo);
+  z-index: -1;
+}
+
+.slider-marker:hover::before {
+  transform: translate(-50%, -50%) scale(1);
+}
+
 .marker-dot {
-  width: 20px;
-  height: 20px;
+  width: 22px;
+  height: 22px;
   background: var(--warm-white);
   border: 3px solid var(--gold);
   border-radius: 50%;
-  transition: all 0.3s ease;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+  transition: all 0.4s var(--ease-out-expo);
+  box-shadow:
+    0 3px 8px rgba(0, 0, 0, 0.15),
+    inset 0 2px 4px rgba(255, 255, 255, 0.5);
+  position: relative;
+}
+
+/* Inner dot indicator */
+.marker-dot::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 6px;
+  height: 6px;
+  background: var(--gold);
+  border-radius: 50%;
+  transform: translate(-50%, -50%) scale(0);
+  transition: transform 0.3s var(--ease-out-expo);
 }
 
 .slider-marker:hover .marker-dot {
   background: var(--gold-light);
-  transform: scale(1.2);
-  box-shadow: 0 4px 12px rgba(201, 168, 76, 0.4);
+  transform: scale(1.15);
+  box-shadow:
+    0 4px 12px rgba(201, 168, 76, 0.4),
+    inset 0 2px 4px rgba(255, 255, 255, 0.5);
+}
+
+.slider-marker:hover .marker-dot::after {
+  transform: translate(-50%, -50%) scale(1);
+  background: var(--warm-white);
 }
 
 .slider-marker.active .marker-dot {
   background: var(--dark-red);
   border-color: var(--dark-red);
-  transform: scale(1.3);
-  box-shadow: 0 4px 15px rgba(107, 28, 35, 0.4);
+  transform: scale(1.25);
+  box-shadow:
+    0 4px 16px rgba(107, 28, 35, 0.5),
+    0 0 0 4px rgba(107, 28, 35, 0.15);
+}
+
+.slider-marker.active .marker-dot::after {
+  transform: translate(-50%, -50%) scale(1);
+  background: var(--warm-white);
 }
 
 .marker-year {
   font-family: var(--font-accent);
-  font-size: 0.9rem;
+  font-size: 1rem;
   font-weight: 700;
   color: var(--navy);
-  margin-top: 0.5rem;
+  margin-top: 0.75rem;
   transition: all 0.3s ease;
+  text-shadow: 0 1px 2px rgba(255, 255, 255, 0.8);
 }
 
-.slider-marker:hover .marker-year,
+.slider-marker:hover .marker-year {
+  color: var(--gold);
+  transform: translateY(-2px);
+}
+
 .slider-marker.active .marker-year {
   color: var(--dark-red);
+  transform: translateY(-2px);
 }
 
 .marker-label {
   font-family: var(--font-sans);
-  font-size: 0.65rem;
+  font-size: 0.7rem;
   color: var(--charcoal);
   text-transform: uppercase;
-  letter-spacing: 0.05em;
-  opacity: 0.7;
+  letter-spacing: 0.08em;
+  opacity: 0.6;
   transition: all 0.3s ease;
   white-space: nowrap;
+  margin-top: 0.25rem;
 }
 
-.slider-marker:hover .marker-label,
-.slider-marker.active .marker-label {
+.slider-marker:hover .marker-label {
   opacity: 1;
   color: var(--sepia);
 }
 
-/* Ship indicator */
+.slider-marker.active .marker-label {
+  opacity: 1;
+  color: var(--dark-red);
+  font-weight: 600;
+}
+
+/* Animated ship indicator */
 .slider-ship {
   position: absolute;
-  width: 40px;
-  height: 20px;
-  color: var(--gold);
-  bottom: calc(50% + 20px);
+  width: 50px;
+  height: 25px;
+  color: var(--dark-red);
+  bottom: calc(50% + 30px);
   left: calc(16.66% * 2 + 24px);
   transform: translateX(-50%);
-  transition: left 0.5s var(--ease-out-expo);
-  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.2));
+  transition: left 0.6s var(--ease-out-expo);
+  filter: drop-shadow(0 3px 6px rgba(107, 28, 35, 0.3));
   pointer-events: none;
+  animation: shipFloat 3s ease-in-out infinite;
+}
+
+@keyframes shipFloat {
+  0%, 100% { transform: translateX(-50%) translateY(0); }
+  50% { transform: translateX(-50%) translateY(-4px); }
 }
 
 .slider-ship svg {
@@ -1038,34 +1131,54 @@ a:hover {
 /* Responsive slider */
 @media (max-width: 768px) {
   .timeline-slider-container {
-    padding: 1.5rem 0;
+    padding: 2rem 0.5rem;
     overflow-x: auto;
     margin: 0 -1rem 2rem;
-    padding-left: 1rem;
-    padding-right: 1rem;
+    border-radius: 0;
   }
 
   .timeline-slider-track {
-    min-width: 600px;
+    min-width: 650px;
+    height: 90px;
+  }
+
+  .slider-rope-end {
+    width: 28px;
+    height: 28px;
+  }
+
+  .marker-dot {
+    width: 18px;
+    height: 18px;
   }
 
   .marker-year {
-    font-size: 0.8rem;
+    font-size: 0.85rem;
   }
 
   .marker-label {
-    font-size: 0.55rem;
+    font-size: 0.6rem;
   }
 
   .slider-ship {
-    width: 32px;
-    height: 16px;
+    width: 40px;
+    height: 20px;
   }
 }
 
 @media (max-width: 480px) {
+  .timeline-slider-container {
+    padding: 1.5rem 0;
+  }
+
   .timeline-slider-track {
-    min-width: 500px;
+    min-width: 550px;
+    height: 80px;
+  }
+
+  .slider-rope-end {
+    width: 24px;
+    height: 24px;
   }
 
   .marker-dot {
@@ -1075,11 +1188,17 @@ a:hover {
   }
 
   .marker-year {
-    font-size: 0.7rem;
+    font-size: 0.75rem;
   }
 
   .marker-label {
     display: none;
+  }
+
+  .slider-ship {
+    width: 32px;
+    height: 16px;
+    bottom: calc(50% + 22px);
   }
 }
 
@@ -1114,9 +1233,9 @@ a:hover {
   z-index: 1000;
 }
 
-/* Leaflet tile layer - Stamen Watercolor vintage enhancement */
+/* Leaflet tile layer - OpenTopoMap vintage enhancement */
 .leaflet-tile-pane {
-  filter: sepia(20%) saturate(90%) brightness(1.05) contrast(1.02);
+  filter: sepia(25%) saturate(80%) brightness(1.08) contrast(0.95) hue-rotate(-5deg);
 }
 
 /* Custom pier markers */

@@ -198,10 +198,11 @@
       attributionControl: true
     });
 
-    // Add Stamen Watercolor tiles via Stadia Maps (vintage/antique aesthetic)
-    L.tileLayer('https://tiles.stadiamaps.com/tiles/stamen_watercolor/{z}/{x}/{y}.jpg', {
-      attribution: '&copy; <a href="https://stadiamaps.com/">Stadia Maps</a> &copy; <a href="https://stamen.com/">Stamen Design</a> &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
-      maxZoom: 16
+    // Add OpenTopoMap tiles (vintage/topographic aesthetic, free, no API key)
+    L.tileLayer('https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png', {
+      attribution: '&copy; <a href="https://opentopomap.org">OpenTopoMap</a> &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
+      maxZoom: 17,
+      subdomains: 'abc'
     }).addTo(map);
 
     // Store markers and routes for year filtering

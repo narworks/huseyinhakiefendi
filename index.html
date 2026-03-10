@@ -305,9 +305,13 @@
       <!-- Maritime Timeline Slider -->
       <div class="timeline-slider-container" data-aos="fade-up" data-aos-delay="250">
         <div class="timeline-slider-track">
-          <!-- Decorative rope ends -->
+          <!-- Decorative anchor start -->
           <div class="slider-rope-end left">
-            <svg viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="12" r="10"/></svg>
+            <svg viewBox="0 0 24 24" fill="currentColor">
+              <circle cx="12" cy="5" r="3"/>
+              <line x1="12" y1="8" x2="12" y2="20" stroke="currentColor" stroke-width="2.5"/>
+              <path d="M6 14h3c0 1.5 1.5 3 3 3s3-1.5 3-3h3" stroke="currentColor" stroke-width="2" fill="none"/>
+            </svg>
           </div>
 
           <!-- Year markers -->
@@ -344,19 +348,26 @@
             </button>
           </div>
 
-          <!-- Decorative rope ends -->
+          <!-- Decorative anchor end -->
           <div class="slider-rope-end right">
-            <svg viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="12" r="10"/></svg>
+            <svg viewBox="0 0 24 24" fill="currentColor">
+              <circle cx="12" cy="5" r="3"/>
+              <line x1="12" y1="8" x2="12" y2="20" stroke="currentColor" stroke-width="2.5"/>
+              <path d="M6 14h3c0 1.5 1.5 3 3 3s3-1.5 3-3h3" stroke="currentColor" stroke-width="2" fill="none"/>
+            </svg>
           </div>
         </div>
 
-        <!-- Ship indicator that moves along the track -->
+        <!-- Animated ship indicator that moves along the track -->
         <div class="slider-ship" id="sliderShip">
-          <svg viewBox="0 0 40 20" fill="currentColor">
-            <path d="M2,14 L5,18 L35,18 L38,14 L30,14 L28,16 L12,16 L10,14 Z"/>
-            <rect x="6" y="8" width="28" height="7" rx="1"/>
-            <rect x="16" y="3" width="8" height="6" rx="1"/>
-            <rect x="18" y="0" width="4" height="4"/>
+          <svg viewBox="0 0 50 25" fill="currentColor">
+            <!-- Arabalı vapur - Suhulet -->
+            <path d="M3,18 L7,23 L43,23 L47,18 L40,18 L38,21 L12,21 L10,18 Z"/>
+            <rect x="8" y="10" width="34" height="9" rx="1"/>
+            <rect x="18" y="4" width="14" height="7" rx="1"/>
+            <rect x="22" y="0" width="6" height="5"/>
+            <!-- Duman -->
+            <ellipse cx="25" cy="0" rx="3" ry="1.5" opacity="0.4"/>
           </svg>
         </div>
       </div>
