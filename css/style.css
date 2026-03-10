@@ -1108,7 +1108,7 @@ a:hover {
   font-weight: 600;
 }
 
-/* Ship indicator - positioned centered on circles */
+/* Ship indicator - positioned centered on marker dots */
 .slider-ship {
   position: absolute;
   width: 80px;
@@ -1126,6 +1126,7 @@ a:hover {
 .slider-ship svg {
   width: 100%;
   height: 100%;
+  transform: scaleX(-1); /* Flip horizontally - flag at back */
 }
 
 /* Hidden select for JS compatibility */
