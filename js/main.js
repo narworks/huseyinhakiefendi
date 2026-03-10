@@ -190,19 +190,18 @@
 
     // Initialize Leaflet map centered on Bosphorus
     const map = L.map('bosphorusMap', {
-      center: [41.085, 29.05],
+      center: [41.05, 29.02],
       zoom: 12,
       minZoom: 11,
-      maxZoom: 15,
+      maxZoom: 16,
       zoomControl: true,
       attributionControl: true
     });
 
-    // Add CartoDB Positron tiles (vintage-friendly, free, no API key)
-    L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
-      attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> &copy; <a href="https://carto.com/attributions">CARTO</a>',
-      subdomains: 'abcd',
-      maxZoom: 20
+    // Add Stamen Watercolor tiles via Stadia Maps (vintage/antique aesthetic)
+    L.tileLayer('https://tiles.stadiamaps.com/tiles/stamen_watercolor/{z}/{x}/{y}.jpg', {
+      attribution: '&copy; <a href="https://stadiamaps.com/">Stadia Maps</a> &copy; <a href="https://stamen.com/">Stamen Design</a> &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
+      maxZoom: 16
     }).addTo(map);
 
     // Store markers and routes for year filtering
@@ -351,55 +350,98 @@
       }
     };
 
-    // Ferry routes with real coordinates
+    // Ferry routes with curved coordinates following the Bosphorus
     const routeData = [
       {
         id: 'bebek-beykoz',
         name: 'Bebek-Beykoz Hattı',
         year: 1856,
-        coords: [[41.0775, 29.0437], [41.1315, 29.0945]],
+        // Curved route through the strait
+        coords: [
+          [41.0775, 29.0437], // Bebek
+          [41.0850, 29.0550], // Mid-strait curve
+          [41.0950, 29.0680], // Passing Anadolu Hisarı
+          [41.1100, 29.0800], // Approaching Beykoz
+          [41.1315, 29.0945]  // Beykoz
+        ],
         isSuhulet: false
       },
       {
         id: 'ortakoy-kandilli',
         name: 'Ortaköy-Kandilli Hattı',
         year: 1856,
-        coords: [[41.0475, 29.0270], [41.0695, 29.0575]],
+        coords: [
+          [41.0475, 29.0270], // Ortaköy
+          [41.0550, 29.0400], // Mid-strait
+          [41.0695, 29.0575]  // Kandilli
+        ],
         isSuhulet: false
       },
       {
         id: 'besiktas-uskudar',
         name: 'Beşiktaş-Üsküdar Hattı',
         year: 1854,
-        coords: [[41.0430, 29.0050], [41.0260, 29.0155]],
+        coords: [
+          [41.0430, 29.0050], // Beşiktaş
+          [41.0380, 29.0100], // Mid-strait
+          [41.0260, 29.0155]  // Üsküdar
+        ],
         isSuhulet: false
+      },
+      {
+        id: 'kabatas-uskudar-suhulet',
+        name: 'Kabataş-Üsküdar Hattı (Suhulet)',
+        year: 1872,
+        coords: [
+          [41.0335, 29.0245], // Kabataş
+          [41.0310, 29.0200], // Mid-strait curve
+          [41.0260, 29.0155]  // Üsküdar
+        ],
+        isSuhulet: true
       },
       {
         id: 'kabatas-uskudar',
         name: 'Kabataş-Üsküdar Hattı',
         year: 1854,
-        coords: [[41.0335, 29.0245], [41.0260, 29.0155]],
+        coords: [
+          [41.0335, 29.0245], // Kabataş
+          [41.0310, 29.0200], // Mid-strait curve
+          [41.0260, 29.0155]  // Üsküdar
+        ],
         isSuhulet: false
       },
       {
         id: 'eminonu-haydarpasa',
-        name: 'Eminönü-Haydarpaşa Hattı (Suhulet)',
+        name: 'Eminönü-Haydarpaşa Hattı',
         year: 1872,
-        coords: [[41.0175, 28.9715], [40.9985, 29.0170]],
-        isSuhulet: true
+        coords: [
+          [41.0175, 28.9715], // Eminönü
+          [41.0120, 28.9850], // Curve around Sarayburnu
+          [41.0050, 28.9980], // Mid-strait
+          [40.9985, 29.0170]  // Haydarpaşa
+        ],
+        isSuhulet: false
       },
       {
         id: 'sirkeci-kadikoy',
         name: 'Sirkeci-Kadıköy Hattı',
         year: 1858,
-        coords: [[41.0130, 28.9785], [40.9915, 29.0235]],
+        coords: [
+          [41.0130, 28.9785], // Sirkeci
+          [41.0050, 28.9950], // Mid-strait
+          [40.9915, 29.0235]  // Kadıköy
+        ],
         isSuhulet: false
       },
       {
         id: 'karakoy-uskudar',
         name: 'Karaköy-Üsküdar Hattı',
         year: 1860,
-        coords: [[41.0215, 28.9750], [41.0260, 29.0155]],
+        coords: [
+          [41.0215, 28.9750], // Karaköy
+          [41.0230, 28.9950], // Mid-strait
+          [41.0260, 29.0155]  // Üsküdar
+        ],
         isSuhulet: false
       }
     ];
@@ -428,13 +470,13 @@
       });
 
       marker.on('click', () => {
-        L.popup()
+        L.popup({ className: 'pier-popup' })
           .setLatLng([pier.lat, pier.lng])
           .setContent(`
-            <div style="text-align:center;">
-              <strong style="color:var(--gold);font-size:1rem;">${pier.title}</strong>
-              <p style="margin:8px 0;color:var(--cream);font-size:0.85rem;">${pier.desc}</p>
-              <span style="color:var(--gold-light);font-size:0.75rem;">Kuruluş: ${pier.year}</span>
+            <div class="pier-popup-content">
+              <h4>${pier.title}</h4>
+              <p>${pier.desc}</p>
+              <span class="pier-year">Kuruluş: ${pier.year}</span>
             </div>
           `)
           .openOn(map);
@@ -443,22 +485,99 @@
       pierMarkers[id] = { marker, year: pier.year, major: pier.major };
     });
 
-    // Add route lines to map
+    // Store animated ship markers
+    const shipMarkers = {};
+
+    // Add route lines to map with animated ships
     routeData.forEach(route => {
       const polyline = L.polyline(route.coords, {
         color: route.isSuhulet ? '#6b1c23' : '#c9a84c',
-        weight: route.isSuhulet ? 4 : 3,
-        dashArray: '8, 5',
-        opacity: 0.8
+        weight: route.isSuhulet ? 2.5 : 1.5,
+        dashArray: '6, 4',
+        opacity: 0.7
       }).addTo(map);
 
       polyline.bindTooltip(route.name, {
-        className: 'pier-tooltip',
+        className: 'route-tooltip',
         sticky: true
       });
 
       routeLines[route.id] = { polyline, year: route.year, isSuhulet: route.isSuhulet };
+
+      // Create animated ship marker for each route
+      const shipIcon = L.divIcon({
+        className: route.isSuhulet ? 'animated-ship suhulet-ship' : 'animated-ship',
+        html: route.isSuhulet
+          ? '<svg viewBox="0 0 40 20"><path d="M2,14 L5,18 L35,18 L38,14 L30,14 L28,16 L12,16 L10,14 Z" fill="currentColor"/><rect x="6" y="8" width="28" height="7" rx="1" fill="currentColor"/><rect x="16" y="3" width="8" height="6" rx="1" fill="currentColor"/><rect x="18" y="0" width="4" height="4" fill="currentColor"/></svg>'
+          : '<svg viewBox="0 0 35 18"><path d="M2,12 Q0,10 3,9 L6,9 L6,12 L30,12 L30,9 L33,9 Q36,10 34,12 L34,15 L2,15 Z" fill="currentColor"/><ellipse cx="6" cy="11" rx="3" ry="3" fill="currentColor"/><ellipse cx="30" cy="11" rx="3" ry="3" fill="currentColor"/><rect x="9" y="6" width="18" height="4" rx="1" fill="currentColor"/><rect x="13" y="2" width="10" height="5" rx="1" fill="currentColor"/><rect x="16" y="0" width="4" height="3" fill="currentColor"/></svg>',
+        iconSize: route.isSuhulet ? [28, 14] : [24, 12],
+        iconAnchor: route.isSuhulet ? [14, 7] : [12, 6]
+      });
+
+      // Animate ship along route
+      const shipMarker = L.marker(route.coords[0], { icon: shipIcon }).addTo(map);
+      shipMarkers[route.id] = { marker: shipMarker, coords: route.coords, year: route.year, isSuhulet: route.isSuhulet };
     });
+
+    // Ship animation function
+    function animateShips() {
+      Object.entries(shipMarkers).forEach(([id, data]) => {
+        if (data.marker.options.opacity === 0) return; // Skip hidden ships
+
+        const coords = data.coords;
+        const totalPoints = coords.length;
+        const duration = data.isSuhulet ? 8000 : 6000; // Slower for Suhulet
+
+        let startTime = null;
+        let forward = true;
+
+        function moveShip(timestamp) {
+          if (!startTime) startTime = timestamp;
+          const elapsed = timestamp - startTime;
+          const progress = (elapsed % (duration * 2)) / duration;
+
+          // Ping-pong animation
+          let t;
+          if (progress <= 1) {
+            t = progress;
+            forward = true;
+          } else {
+            t = 2 - progress;
+            forward = false;
+          }
+
+          // Calculate position along polyline
+          const segmentLength = 1 / (totalPoints - 1);
+          const segmentIndex = Math.min(Math.floor(t / segmentLength), totalPoints - 2);
+          const segmentProgress = (t - segmentIndex * segmentLength) / segmentLength;
+
+          const startCoord = coords[segmentIndex];
+          const endCoord = coords[segmentIndex + 1];
+
+          const lat = startCoord[0] + (endCoord[0] - startCoord[0]) * segmentProgress;
+          const lng = startCoord[1] + (endCoord[1] - startCoord[1]) * segmentProgress;
+
+          data.marker.setLatLng([lat, lng]);
+
+          // Rotate ship based on direction
+          const angle = Math.atan2(endCoord[1] - startCoord[1], endCoord[0] - startCoord[0]) * 180 / Math.PI;
+          const iconElement = data.marker.getElement();
+          if (iconElement) {
+            iconElement.style.transform += ` rotate(${forward ? angle : angle + 180}deg)`;
+          }
+
+          requestAnimationFrame(moveShip);
+        }
+
+        // Stagger start times
+        setTimeout(() => {
+          requestAnimationFrame(moveShip);
+        }, Math.random() * 3000);
+      });
+    }
+
+    // Start ship animations
+    animateShips();
 
     // Fleet data by year
     const fleetByYear = {
@@ -495,8 +614,14 @@
       Object.entries(routeLines).forEach(([id, data]) => {
         const isVisible = data.year <= selectedYear;
         data.polyline.setStyle({
-          opacity: isVisible ? 0.8 : 0.15
+          opacity: isVisible ? 0.7 : 0.1
         });
+      });
+
+      // Update ship markers visibility
+      Object.entries(shipMarkers).forEach(([id, data]) => {
+        const isVisible = data.year <= selectedYear;
+        data.marker.setOpacity(isVisible ? 1 : 0);
       });
 
       // Update fleet stats
