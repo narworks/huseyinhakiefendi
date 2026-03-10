@@ -302,22 +302,51 @@
 
       <!-- Ship Visual -->
       <div class="suhulet-visual reveal">
-        <div class="ship-ascii">
-                          |
-                         _|_
-                        /   \
-                       |  ~  |
-                  _____|_____|_____
-             ____/                 \____
-        ____/    []  []  []  []  []     \____
-   ____/   _________________________________  \____
-  |  _____| SUHULET  ·  1872  ·  KOLAYLIK  |_____ |
-  |_/     \_________________________________/     \|
-   \_______________________________________________/
-    \_____/ \_____/ \_____/ \_____/ \_____/ \_____/
-   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+        <div class="suhulet-image-frame">
+          <div class="frame-corner top-left"></div>
+          <div class="frame-corner top-right"></div>
+          <div class="frame-corner bottom-left"></div>
+          <div class="frame-corner bottom-right"></div>
+          <img
+            src="assets/images/suhulet.jpg"
+            alt="Suhulet - Dünyanın ilk arabalı vapuru, 1872"
+            class="suhulet-image"
+            onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"
+          >
+          <div class="suhulet-placeholder">
+            <svg viewBox="0 0 400 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <g fill="currentColor" opacity="0.6">
+                <!-- Hull -->
+                <path d="M40,150 L60,180 L340,180 L360,150 L320,150 L310,165 L90,165 L80,150 Z"/>
+                <!-- Deck -->
+                <rect x="70" y="125" width="260" height="28" rx="3"/>
+                <!-- Cabin -->
+                <rect x="100" y="85" width="200" height="42" rx="4"/>
+                <!-- Windows -->
+                <rect x="118" y="95" width="14" height="12" rx="2" fill="#0d1b2a"/>
+                <rect x="142" y="95" width="14" height="12" rx="2" fill="#0d1b2a"/>
+                <rect x="166" y="95" width="14" height="12" rx="2" fill="#0d1b2a"/>
+                <rect x="190" y="95" width="14" height="12" rx="2" fill="#0d1b2a"/>
+                <rect x="214" y="95" width="14" height="12" rx="2" fill="#0d1b2a"/>
+                <rect x="238" y="95" width="14" height="12" rx="2" fill="#0d1b2a"/>
+                <rect x="262" y="95" width="14" height="12" rx="2" fill="#0d1b2a"/>
+                <!-- Funnel -->
+                <rect x="180" y="40" width="40" height="48" rx="3"/>
+                <!-- Smoke -->
+                <ellipse cx="200" cy="28" rx="22" ry="10" opacity="0.3"/>
+                <ellipse cx="212" cy="14" rx="14" ry="7" opacity="0.2"/>
+                <!-- Paddle wheels -->
+                <circle cx="120" cy="152" r="18" stroke="currentColor" stroke-width="2" fill="none" opacity="0.4"/>
+                <circle cx="280" cy="152" r="18" stroke="currentColor" stroke-width="2" fill="none" opacity="0.4"/>
+                <!-- Flag -->
+                <line x1="310" y1="85" x2="310" y2="50" stroke="currentColor" stroke-width="2"/>
+                <path d="M310,50 L340,60 L310,70 Z" fill="#6b1c23"/>
+              </g>
+            </svg>
+            <span class="placeholder-text">Görsel: assets/images/suhulet.jpg</span>
+          </div>
         </div>
-        <p class="caption">S U H U L E T &nbsp;&bull;&nbsp; 1 8 7 2</p>
+        <p class="caption">S U H U L E T &nbsp;&bull;&nbsp; 1 8 7 2 &nbsp;&bull;&nbsp; K O L A Y L I K</p>
       </div>
 
       <!-- Specs Grid -->
