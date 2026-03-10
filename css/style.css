@@ -1333,8 +1333,17 @@ a:hover {
 }
 
 .year-badge-large.suhulet-badge {
-  background: var(--dark-red);
-  color: var(--cream);
+  background: linear-gradient(135deg, #8b2030 0%, var(--dark-red) 50%, #5a1520 100%);
+  color: #fff;
+  font-size: 1.75rem;
+  padding: 0.6rem 1.75rem;
+  border: 2px solid rgba(255, 255, 255, 0.25);
+  box-shadow:
+    0 6px 20px rgba(107, 28, 35, 0.5),
+    0 0 30px rgba(139, 32, 48, 0.3),
+    inset 0 1px 0 rgba(255, 255, 255, 0.15);
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+  letter-spacing: 0.05em;
 }
 
 /* Yıl başlığı */
