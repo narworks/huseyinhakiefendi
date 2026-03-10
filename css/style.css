@@ -705,6 +705,368 @@ a:hover {
 }
 
 /* ============================================
+   SECTION 2.5: INTERACTIVE BOSPHORUS MAP
+   ============================================ */
+.bosphorus-routes {
+  background: var(--cream);
+  position: relative;
+}
+
+.routes-subtitle {
+  font-size: 1.05rem;
+  color: var(--text-body);
+  max-width: 600px;
+  margin: 0 auto 2.5rem;
+}
+
+/* Interactive Map Container */
+.interactive-map-container {
+  position: relative;
+  max-width: 900px;
+  margin: 0 auto 3rem;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow:
+    0 4px 20px rgba(0, 0, 0, 0.08),
+    inset 0 0 0 1px rgba(201, 168, 76, 0.3);
+}
+
+.interactive-map {
+  display: block;
+  width: 100%;
+  height: auto;
+  background: var(--warm-white);
+}
+
+/* Map Labels */
+.map-region-label {
+  font-family: var(--font-accent);
+  font-size: 11px;
+  fill: rgba(112, 66, 20, 0.5);
+  letter-spacing: 0.2em;
+}
+
+.map-water-label {
+  font-family: var(--font-accent);
+  font-size: 16px;
+  fill: rgba(27, 73, 101, 0.25);
+  letter-spacing: 0.6em;
+  text-anchor: middle;
+}
+
+/* Ferry Route Lines */
+.ferry-route-line {
+  fill: none;
+  stroke: rgba(201, 168, 76, 0.4);
+  stroke-width: 2;
+  stroke-dasharray: 8, 4;
+  transition: all 0.3s ease;
+}
+
+.ferry-route-line:hover,
+.ferry-route-line.active {
+  stroke: var(--gold);
+  stroke-width: 3;
+}
+
+.route-suhulet {
+  stroke: rgba(107, 28, 35, 0.5);
+  stroke-width: 3;
+}
+
+.route-suhulet:hover,
+.route-suhulet.active {
+  stroke: var(--dark-red);
+}
+
+/* Piers */
+.pier {
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.pier-bg {
+  fill: rgba(201, 168, 76, 0.2);
+  transition: all 0.3s ease;
+}
+
+.pier-inner {
+  fill: var(--gold);
+  stroke: var(--warm-white);
+  stroke-width: 2;
+  transition: all 0.3s ease;
+}
+
+.pier-label {
+  font-family: var(--font-sans);
+  font-size: 10px;
+  fill: var(--navy);
+  text-anchor: middle;
+  font-weight: 500;
+  pointer-events: none;
+}
+
+.pier:hover .pier-bg,
+.pier:focus .pier-bg {
+  fill: rgba(201, 168, 76, 0.4);
+  r: 16;
+}
+
+.pier:hover .pier-inner,
+.pier:focus .pier-inner {
+  fill: var(--gold-light);
+  filter: url(#glow);
+}
+
+.pier.active .pier-bg {
+  fill: rgba(201, 168, 76, 0.5);
+}
+
+.pier.active .pier-inner {
+  fill: var(--dark-red);
+}
+
+/* Ships on Map */
+.map-ship {
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.map-ship:hover,
+.map-ship:focus {
+  filter: url(#glow);
+}
+
+.map-ship:hover .ship-icon,
+.map-ship:focus .ship-icon {
+  transform: scale(1.15);
+}
+
+.ship-icon {
+  transition: transform 0.3s ease;
+}
+
+.ship-name {
+  font-family: var(--font-accent);
+  font-size: 9px;
+  fill: var(--dark-red);
+  text-anchor: middle;
+  letter-spacing: 0.1em;
+}
+
+.ship-hitbox {
+  cursor: pointer;
+}
+
+.ship-suhulet .ship-icon path,
+.ship-suhulet .ship-icon rect {
+  fill: rgba(107, 28, 35, 0.7);
+}
+
+.ship-suhulet:hover .ship-icon path,
+.ship-suhulet:hover .ship-icon rect,
+.ship-suhulet:focus .ship-icon path,
+.ship-suhulet:focus .ship-icon rect {
+  fill: var(--dark-red);
+}
+
+/* Compass */
+.compass-label {
+  font-family: var(--font-accent);
+  font-size: 10px;
+  fill: var(--navy);
+  text-anchor: middle;
+  font-weight: 600;
+}
+
+/* Legend */
+.legend-title {
+  font-family: var(--font-sans);
+  font-size: 8px;
+  fill: var(--charcoal);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.legend-text {
+  font-family: var(--font-sans);
+  font-size: 9px;
+  fill: var(--text-body);
+}
+
+/* Info Panel */
+.map-info-panel {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) scale(0.9);
+  background: var(--warm-white);
+  border: 2px solid var(--gold);
+  border-radius: 12px;
+  padding: 1.5rem;
+  max-width: 320px;
+  width: 90%;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.3s var(--ease-out-expo);
+  z-index: 10;
+}
+
+.map-info-panel.visible {
+  opacity: 1;
+  visibility: visible;
+  transform: translate(-50%, -50%) scale(1);
+}
+
+.info-close {
+  position: absolute;
+  top: 0.5rem;
+  right: 0.75rem;
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  color: var(--charcoal);
+  cursor: pointer;
+  transition: color 0.2s ease;
+  line-height: 1;
+}
+
+.info-close:hover {
+  color: var(--dark-red);
+}
+
+.info-title {
+  font-family: var(--font-display);
+  font-size: 1.3rem;
+  color: var(--navy);
+  margin-bottom: 0.5rem;
+}
+
+.info-desc {
+  font-size: 0.95rem;
+  color: var(--text-body);
+  line-height: 1.6;
+  margin-bottom: 1rem;
+}
+
+.info-stats {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.info-stat {
+  background: rgba(201, 168, 76, 0.1);
+  padding: 0.5rem 0.75rem;
+  border-radius: 6px;
+  text-align: center;
+}
+
+.info-stat-value {
+  font-family: var(--font-accent);
+  font-size: 1.1rem;
+  color: var(--gold);
+  font-weight: 700;
+}
+
+.info-stat-label {
+  font-family: var(--font-sans);
+  font-size: 0.65rem;
+  color: var(--charcoal);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+/* Route Cards */
+.route-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1.5rem;
+}
+
+.route-card {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  background: var(--warm-white);
+  border: 1px solid rgba(201, 168, 76, 0.25);
+  border-radius: 12px;
+  padding: 1.25rem;
+  transition: all var(--transition-base);
+  cursor: pointer;
+}
+
+.route-card:hover {
+  border-color: var(--gold);
+  transform: translateY(-3px);
+  box-shadow: 0 8px 24px rgba(201, 168, 76, 0.15);
+}
+
+.route-icon {
+  width: 50px;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+  background: rgba(201, 168, 76, 0.1);
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.route-info h4 {
+  font-family: var(--font-display);
+  font-size: 1.1rem;
+  color: var(--navy);
+  margin-bottom: 0.25rem;
+}
+
+.route-info p {
+  font-size: 0.85rem;
+  color: var(--text-body);
+  line-height: 1.5;
+}
+
+.route-year {
+  font-family: var(--font-accent);
+  font-size: 0.9rem;
+  color: var(--gold);
+  font-weight: 700;
+  margin-left: auto;
+  flex-shrink: 0;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .interactive-map-container {
+    margin: 0 -1rem 2rem;
+    border-radius: 0;
+  }
+
+  .map-region-label {
+    font-size: 9px;
+  }
+
+  .map-water-label {
+    font-size: 12px;
+  }
+
+  .pier-label {
+    font-size: 8px;
+  }
+
+  .map-info-panel {
+    max-width: 280px;
+    padding: 1rem;
+  }
+
+  .route-cards {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ============================================
    SECTION 3: INNOVATIONS
    ============================================ */
 .innovations {
