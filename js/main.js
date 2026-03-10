@@ -244,7 +244,7 @@
       });
     }
 
-    // Timeline slider ship position
+    // Timeline slider ship position - centered on marker circles
     function updateSliderShip(year) {
       if (!sliderShip) return;
 
@@ -252,10 +252,12 @@
       if (activeMarker) {
         const track = document.querySelector('.timeline-slider-track');
         const trackRect = track.getBoundingClientRect();
-        const markerRect = activeMarker.getBoundingClientRect();
-        const relativeLeft = markerRect.left - trackRect.left + markerRect.width / 2 + 30;
+        const markerDot = activeMarker.querySelector('.marker-dot');
+        const dotRect = markerDot.getBoundingClientRect();
+        // Center ship on the marker dot
+        const relativeLeft = dotRect.left - trackRect.left + dotRect.width / 2;
         sliderShip.style.left = `${relativeLeft}px`;
-        sliderShip.style.transform = 'translateX(-50%) translateY(-100%)';
+        sliderShip.style.transform = 'translateX(-50%) translateY(-50%)';
       }
     }
 
