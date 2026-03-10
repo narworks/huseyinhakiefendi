@@ -1415,7 +1415,51 @@ a:hover {
   height: 100%;
 }
 
-/* Suhulet vurgu kutusu */
+/* Genel açıklayıcı kutu (highlight-box) */
+.highlight-box {
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+  background: linear-gradient(135deg, rgba(201, 168, 76, 0.15) 0%, rgba(201, 168, 76, 0.05) 100%);
+  border: 1px solid rgba(201, 168, 76, 0.4);
+  border-radius: 8px;
+  padding: 1rem 1.25rem;
+  margin: 1.25rem 0;
+}
+
+.highlight-icon {
+  width: 36px;
+  height: 36px;
+  color: var(--gold);
+  flex-shrink: 0;
+  opacity: 0.85;
+}
+
+.highlight-icon svg {
+  width: 100%;
+  height: 100%;
+}
+
+.highlight-text {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.highlight-text strong {
+  font-family: var(--font-heading);
+  font-size: 0.95rem;
+  color: var(--gold);
+  letter-spacing: 0.02em;
+}
+
+.highlight-text span {
+  font-size: 0.8rem;
+  color: var(--cream);
+  opacity: 0.85;
+}
+
+/* Suhulet vurgu kutusu (özel kırmızı) */
 .suhulet-highlight-box {
   display: flex;
   align-items: center;
@@ -1561,9 +1605,14 @@ a:hover {
     display: none;
   }
 
-  .suhulet-highlight-box {
+  .suhulet-highlight-box,
+  .highlight-box {
     flex-direction: column;
     text-align: center;
+  }
+
+  .highlight-icon {
+    margin: 0 auto;
   }
 }
 
@@ -1603,55 +1652,150 @@ a:hover {
 /* Suhulet Story Section */
 .suhulet-story {
   display: flex;
-  align-items: flex-start;
-  gap: 1.5rem;
-  background: linear-gradient(135deg, rgba(107, 28, 35, 0.05) 0%, rgba(201, 168, 76, 0.05) 100%);
-  border: 1px solid rgba(107, 28, 35, 0.2);
-  border-left: 4px solid var(--dark-red);
-  border-radius: 0 12px 12px 0;
-  padding: 1.5rem 2rem;
-  margin: 2rem auto;
-  max-width: 800px;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  background: linear-gradient(180deg, rgba(107, 28, 35, 0.08) 0%, rgba(201, 168, 76, 0.05) 100%);
+  border: 1px solid rgba(107, 28, 35, 0.15);
+  border-radius: 16px;
+  padding: 2.5rem 2rem;
+  margin: 3rem auto;
+  max-width: 700px;
+  position: relative;
 }
 
-.story-icon {
-  font-size: 2rem;
-  color: var(--dark-red);
-  flex-shrink: 0;
-  opacity: 0.8;
+.suhulet-story::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 60px;
+  height: 3px;
+  background: linear-gradient(90deg, transparent, var(--dark-red), transparent);
+  border-radius: 2px;
+}
+
+.story-header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
 }
 
 .story-ship-icon {
-  width: 80px;
-  height: 50px;
+  width: 100px;
+  height: 60px;
+  color: var(--dark-red);
+  opacity: 0.85;
 }
 
 .story-ship-icon svg {
   width: 100%;
   height: 100%;
-  filter: drop-shadow(1px 2px 3px rgba(107, 28, 35, 0.3));
+  filter: drop-shadow(2px 3px 4px rgba(107, 28, 35, 0.25));
 }
 
-.story-content h3 {
+.story-title {
   font-family: var(--font-display);
-  font-size: 1.25rem;
+  font-size: 1.5rem;
   color: var(--dark-red);
-  margin-bottom: 0.5rem;
+  margin: 0;
+  letter-spacing: 0.03em;
 }
 
-.story-content p {
-  font-size: 0.95rem;
+.story-text {
+  font-family: var(--font-serif);
+  font-size: 1rem;
   color: var(--text-body);
-  line-height: 1.7;
+  line-height: 1.8;
+  margin: 0 0 1rem;
+  max-width: 600px;
 }
 
-.story-content strong {
+.story-text:last-of-type {
+  margin-bottom: 1.5rem;
+}
+
+.story-text strong {
   color: var(--navy);
+  font-weight: 600;
 }
 
-.story-content em {
-  color: var(--dark-red);
+.story-text em {
   font-style: italic;
+  color: var(--text-muted);
+}
+
+.story-quote {
+  display: flex;
+  justify-content: center;
+  padding: 1.25rem 2rem;
+  background: rgba(107, 28, 35, 0.06);
+  border-radius: 12px;
+  margin-top: 0.5rem;
+}
+
+.quote-name {
+  font-family: var(--font-display);
+  font-size: 2.25rem;
+  color: var(--dark-red);
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  position: relative;
+  cursor: pointer;
+  transition: color 0.2s ease;
+}
+
+.quote-name:hover {
+  color: var(--gold);
+}
+
+.quote-name::after {
+  content: attr(data-tooltip);
+  position: absolute;
+  bottom: 100%;
+  left: 50%;
+  transform: translateX(-50%) translateY(-8px);
+  background: var(--navy);
+  color: var(--cream);
+  font-family: var(--font-serif);
+  font-size: 0.85rem;
+  font-weight: 400;
+  font-style: italic;
+  letter-spacing: 0;
+  padding: 0.6rem 1rem;
+  border-radius: 8px;
+  white-space: nowrap;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.2s ease, visibility 0.2s ease, transform 0.2s ease;
+  pointer-events: none;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.quote-name::before {
+  content: '';
+  position: absolute;
+  bottom: 100%;
+  left: 50%;
+  transform: translateX(-50%) translateY(4px);
+  border: 6px solid transparent;
+  border-top-color: var(--navy);
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.2s ease, visibility 0.2s ease;
+}
+
+.quote-name:hover::after,
+.quote-name:hover::before {
+  opacity: 1;
+  visibility: visible;
+}
+
+.quote-name:hover::after {
+  transform: translateX(-50%) translateY(-12px);
 }
 
 /* Fleet Stats */
@@ -2564,13 +2708,21 @@ a:hover {
 
   /* Suhulet story tablet */
   .suhulet-story {
-    flex-direction: column;
-    text-align: center;
-    padding: 1.5rem;
+    padding: 2rem 1.5rem;
+    margin: 2rem auto;
   }
 
-  .story-icon {
-    margin: 0 auto;
+  .story-ship-icon {
+    width: 80px;
+    height: 50px;
+  }
+
+  .story-title {
+    font-size: 1.3rem;
+  }
+
+  .quote-name {
+    font-size: 1.75rem;
   }
 
   /* Fleet stats tablet */
@@ -2715,20 +2867,36 @@ a:hover {
 
   /* Suhulet story mobile */
   .suhulet-story {
-    padding: 1rem;
+    padding: 1.5rem 1rem;
     margin: 1.5rem auto;
+    border-radius: 12px;
   }
 
-  .story-icon {
-    font-size: 1.5rem;
+  .story-ship-icon {
+    width: 70px;
+    height: 45px;
   }
 
-  .story-content h3 {
-    font-size: 1.1rem;
+  .story-title {
+    font-size: 1.15rem;
   }
 
-  .story-content p {
-    font-size: 0.85rem;
+  .story-text {
+    font-size: 0.9rem;
+    line-height: 1.7;
+  }
+
+  .story-quote {
+    padding: 1rem 1.25rem;
+  }
+
+  .quote-name {
+    font-size: 1.75rem;
+  }
+
+  .quote-name::after {
+    font-size: 0.75rem;
+    padding: 0.5rem 0.75rem;
   }
 
   /* Fleet stats mobile */
