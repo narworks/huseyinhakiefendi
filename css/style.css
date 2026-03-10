@@ -1203,7 +1203,7 @@ a:hover {
 /* Her yıl için hikaye kartı - Carousel Stack */
 .story-year {
   background: linear-gradient(135deg, var(--navy) 0%, #1a3a5c 100%);
-  border: 2px solid var(--gold);
+  border: none;
   border-radius: 12px;
   padding: 2rem;
   position: absolute;
@@ -1215,7 +1215,7 @@ a:hover {
   transform: translateX(-50%) translateY(-50%) translateZ(-200px) scale(0.85);
   transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
   pointer-events: none;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
 }
 
 /* Aktif kart */
@@ -1298,8 +1298,7 @@ a:hover {
 /* Suhulet yılı özel vurgu */
 .story-year.story-year-highlight {
   background: linear-gradient(135deg, #2a1520 0%, #3d2030 100%);
-  border-color: var(--dark-red);
-  box-shadow: 0 8px 32px rgba(139, 32, 48, 0.3);
+  box-shadow: 0 20px 60px rgba(139, 32, 48, 0.4);
 }
 
 /* Yıl rozeti */

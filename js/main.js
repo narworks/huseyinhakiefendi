@@ -253,7 +253,7 @@
         const track = document.querySelector('.timeline-slider-track');
         const trackRect = track.getBoundingClientRect();
         const markerRect = activeMarker.getBoundingClientRect();
-        const relativeLeft = markerRect.left - trackRect.left + markerRect.width / 2;
+        const relativeLeft = markerRect.left - trackRect.left + markerRect.width / 2 + 30;
         sliderShip.style.left = `${relativeLeft}px`;
         sliderShip.style.transform = 'translateX(-50%) translateY(-100%)';
       }
