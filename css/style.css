@@ -1194,174 +1194,157 @@ a:hover {
   position: relative;
   max-width: 900px;
   margin: 0 auto 3rem;
-  border-radius: 4px;
+  border-radius: 8px;
   overflow: hidden;
-  /* Aged paper base color */
-  background:
-    /* Subtle noise texture using gradients */
-    repeating-conic-gradient(
-      from 0deg at 50% 50%,
-      rgba(139, 115, 85, 0.03) 0deg 90deg,
-      transparent 90deg 180deg
-    ),
-    /* Warm paper variations */
-    radial-gradient(ellipse at 20% 80%, rgba(180, 140, 80, 0.08) 0%, transparent 50%),
-    radial-gradient(ellipse at 80% 20%, rgba(160, 120, 70, 0.06) 0%, transparent 40%),
-    radial-gradient(ellipse at 50% 50%, rgba(200, 170, 120, 0.05) 0%, transparent 60%),
-    /* Base aged paper color */
-    linear-gradient(135deg, #ede4d0 0%, #e8ddc4 25%, #f0e6d2 50%, #e6d9c0 75%, #ece2ce 100%);
-  /* Realistic aged paper box shadow */
+  background: #f5efe0;
   box-shadow:
-    /* Main shadow */
     0 8px 32px rgba(80, 60, 30, 0.25),
     0 2px 8px rgba(80, 60, 30, 0.15),
-    /* Inner shadow for depth */
-    inset 0 0 60px rgba(120, 90, 50, 0.08),
-    /* Edge darkening */
-    inset 0 0 3px rgba(100, 70, 30, 0.2);
+    inset 0 0 0 4px #c9a84c;
 }
 
-/* Aged paper edge effect overlay */
-.vintage-map-container::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  z-index: 50;
-  /* Vignette effect - darker edges like aged paper */
-  background: radial-gradient(
-    ellipse at center,
-    transparent 50%,
-    rgba(80, 50, 20, 0.06) 70%,
-    rgba(60, 40, 15, 0.12) 85%,
-    rgba(40, 25, 10, 0.2) 100%
-  );
-}
-
-/* Paper texture grain overlay */
-.vintage-map-container::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  z-index: 51;
-  opacity: 0.4;
-  /* Fine grain texture */
-  background-image:
-    url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
-  mix-blend-mode: multiply;
-}
-
-/* Vintage SVG Bosphorus Map */
-.vintage-bosphorus-map {
+/* Leaflet Map Container */
+.leaflet-map-container {
   width: 100%;
-  height: auto;
-  min-height: 500px;
-  display: block;
-  /* Subtle sepia tint for historical feel */
-  filter: sepia(8%) saturate(90%) contrast(98%);
-  background: transparent;
+  height: 500px;
+  z-index: 1;
+}
+
+/* Apply sepia filter to map tiles for vintage feel */
+.leaflet-map-container .leaflet-tile-pane {
+  filter: sepia(15%) saturate(85%) contrast(95%);
+}
+
+/* Map Title Overlay */
+.map-title-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+  background: linear-gradient(180deg, rgba(13, 27, 42, 0.9) 0%, rgba(13, 27, 42, 0.7) 70%, transparent 100%);
+  padding: 1rem 1rem 2rem;
+  text-align: center;
+  pointer-events: none;
+}
+
+.map-title-overlay .map-title {
+  font-family: var(--font-accent);
+  font-size: 1.2rem;
+  color: var(--gold);
+  letter-spacing: 0.15em;
+  font-weight: 700;
+  margin-bottom: 0.25rem;
+}
+
+.map-title-overlay .map-subtitle {
+  font-family: var(--font-serif);
+  font-size: 0.85rem;
+  color: var(--cream);
+  font-style: italic;
+  letter-spacing: 0.1em;
 }
 
 /* Map year badge - top right, historical seal style */
 .vintage-map-container .map-year-badge {
   position: absolute;
-  top: 1.2rem;
-  right: 1.2rem;
+  top: 4.5rem;
+  right: 1rem;
   left: auto;
-  background: linear-gradient(135deg, #f5eee0 0%, #e8dcc8 100%);
-  color: #4a3525;
+  background: linear-gradient(135deg, var(--navy) 0%, #1a3a5c 100%);
+  color: var(--gold);
   font-family: var(--font-accent);
-  font-size: 1.4rem;
+  font-size: 1.2rem;
   font-weight: 700;
   padding: 0.5rem 1rem;
   border-radius: 50%;
-  width: 60px;
-  height: 60px;
+  width: 56px;
+  height: 56px;
   display: flex;
   align-items: center;
   justify-content: center;
-  border: 3px solid #6a5a48;
-  z-index: 100;
-  box-shadow:
-    0 3px 10px rgba(50, 30, 10, 0.3),
-    inset 0 1px 0 rgba(255, 255, 255, 0.4),
-    inset 0 -1px 3px rgba(100, 70, 30, 0.2);
+  border: 2px solid var(--gold);
+  z-index: 1001;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
 }
 
 .vintage-map-container .map-year-badge::before {
   content: '';
   position: absolute;
-  inset: 4px;
-  border: 1px solid #9a8a70;
+  inset: 3px;
+  border: 1px solid rgba(201, 168, 76, 0.4);
   border-radius: 50%;
 }
 
-/* SVG Pier markers - interactive historical style */
-.vintage-bosphorus-map .pier {
+/* Pier Label Icons - Custom Leaflet markers */
+.pier-label-icon {
+  background: none !important;
+  border: none !important;
+}
+
+.pier-label-icon .pier-name {
+  display: inline-block;
+  background: rgba(13, 27, 42, 0.92);
+  color: var(--cream);
+  font-family: var(--font-serif);
+  font-size: 11px;
+  font-weight: 500;
+  padding: 4px 10px;
+  border-radius: 4px;
+  border: 1px solid rgba(201, 168, 76, 0.5);
+  white-space: nowrap;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+  transition: all 0.2s ease;
   cursor: pointer;
-  transition: transform 0.3s ease, filter 0.3s ease;
 }
 
-.vintage-bosphorus-map .pier:hover {
-  transform: scale(1.2);
-  filter: drop-shadow(0 2px 4px rgba(80, 50, 20, 0.4));
+.pier-label-icon .pier-name:hover {
+  background: var(--navy);
+  border-color: var(--gold);
+  color: var(--gold);
+  transform: scale(1.05);
 }
 
-.vintage-bosphorus-map .pier:hover text {
-  fill: #6b2030;
-  font-weight: 700;
+.pier-label-icon.major .pier-name {
+  background: var(--navy);
+  color: var(--gold);
+  font-size: 12px;
+  font-weight: 600;
+  padding: 5px 12px;
+  border: 2px solid var(--gold);
 }
 
-.vintage-bosphorus-map .pier.hidden {
-  opacity: 0.2;
-  pointer-events: none;
-  filter: grayscale(50%);
+.pier-label-icon.major .pier-name:hover {
+  background: var(--gold);
+  color: var(--navy);
 }
 
-.vintage-bosphorus-map .pier.major {
-  filter: drop-shadow(0 1px 2px rgba(80, 50, 20, 0.3));
+/* Leaflet popup styles */
+.leaflet-popup-content-wrapper {
+  background: var(--navy) !important;
+  color: var(--cream) !important;
+  border-radius: 8px !important;
+  border: 2px solid var(--gold) !important;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4) !important;
 }
 
-/* Ferry routes - historical dotted lines */
-.vintage-bosphorus-map .ferry-route {
-  transition: opacity 0.4s ease, stroke-width 0.3s ease;
+.leaflet-popup-content {
+  margin: 0 !important;
 }
 
-.vintage-bosphorus-map .ferry-route.hidden {
-  opacity: 0.08;
+.leaflet-popup-tip {
+  background: var(--navy) !important;
+  border-color: var(--gold) !important;
 }
 
-.vintage-bosphorus-map .ferry-route:hover {
-  stroke-width: 3;
-  opacity: 1;
+.leaflet-popup-close-button {
+  color: var(--gold) !important;
+  font-size: 20px !important;
+  padding: 6px 8px !important;
 }
 
-/* Suhulet route - special historical styling */
-.vintage-bosphorus-map .suhulet-route {
-  stroke: #8b2030;
-}
-
-/* Suhulet label visibility */
-.vintage-bosphorus-map .suhulet-label {
-  transition: opacity 0.4s ease;
-}
-
-.vintage-bosphorus-map .suhulet-label.hidden {
-  opacity: 0;
-}
-
-/* Animated ships - period style */
-.vintage-bosphorus-map .route-ship {
-  transition: opacity 0.4s ease;
-}
-
-.vintage-bosphorus-map .route-ship.hidden {
-  opacity: 0;
-}
-
-.vintage-bosphorus-map .suhulet-ship {
-  fill: #8b2030;
+.leaflet-popup-close-button:hover {
+  color: var(--cream) !important;
 }
 
 /* Custom pier markers */
@@ -1416,28 +1399,31 @@ a:hover {
 .pier-popup-content {
   padding: 16px 20px;
   text-align: center;
+  min-width: 180px;
 }
 
 .pier-popup-content h4 {
   font-family: var(--font-display);
-  font-size: 1.1rem;
+  font-size: 1rem;
   color: var(--gold);
-  margin: 0 0 10px 0;
+  margin: 0 0 8px 0;
   letter-spacing: 0.05em;
+  padding-bottom: 8px;
+  border-bottom: 1px solid rgba(201, 168, 76, 0.3);
 }
 
 .pier-popup-content p {
   font-family: var(--font-body);
-  font-size: 0.9rem;
+  font-size: 0.85rem;
   color: var(--cream);
   line-height: 1.5;
-  margin: 0 0 12px 0;
+  margin: 0 0 10px 0;
 }
 
 .pier-popup-content .pier-year {
   display: inline-block;
   font-family: var(--font-accent);
-  font-size: 0.75rem;
+  font-size: 0.7rem;
   color: var(--gold-light);
   background: rgba(201, 168, 76, 0.15);
   padding: 4px 12px;
@@ -1462,16 +1448,21 @@ a:hover {
   border-top-color: var(--navy) !important;
 }
 
-/* Route tooltip */
+/* Route tooltip - Leaflet */
 .route-tooltip {
-  background: rgba(13, 27, 42, 0.95) !important;
-  border: 1px solid rgba(201, 168, 76, 0.5) !important;
+  background: var(--navy) !important;
+  border: 2px solid var(--gold) !important;
   border-radius: 6px !important;
   color: var(--cream) !important;
-  font-family: var(--font-sans) !important;
-  font-size: 0.8rem !important;
+  font-family: var(--font-serif) !important;
+  font-size: 0.85rem !important;
   padding: 8px 14px !important;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3) !important;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4) !important;
+  font-style: italic;
+}
+
+.route-tooltip::before {
+  border-top-color: var(--gold) !important;
 }
 
 /* Animated ship markers */
@@ -1520,24 +1511,22 @@ a:hover {
   position: absolute;
   bottom: 25px;
   left: 25px;
-  background: linear-gradient(135deg, #f5eee0 0%, #ebe3d2 100%);
-  border: 2px solid #6a5a48;
-  border-radius: 4px;
+  background: rgba(13, 27, 42, 0.95);
+  border: 2px solid var(--gold);
+  border-radius: 6px;
   padding: 14px 18px;
-  z-index: 100;
+  z-index: 1001;
   font-family: var(--font-serif);
   font-size: 0.8rem;
-  box-shadow:
-    0 3px 12px rgba(60, 40, 20, 0.2),
-    inset 0 1px 0 rgba(255, 255, 255, 0.3);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
 }
 
 .map-legend-overlay::before {
   content: '';
   position: absolute;
   inset: 3px;
-  border: 1px solid #9a8a70;
-  border-radius: 2px;
+  border: 1px solid rgba(201, 168, 76, 0.3);
+  border-radius: 4px;
   pointer-events: none;
 }
 
@@ -1545,10 +1534,10 @@ a:hover {
   font-family: var(--font-accent);
   font-size: 0.7rem;
   letter-spacing: 0.2em;
-  color: #4a3a28;
+  color: var(--gold);
   margin-bottom: 10px;
   text-transform: uppercase;
-  border-bottom: 1px solid #c0b090;
+  border-bottom: 1px solid rgba(201, 168, 76, 0.4);
   padding-bottom: 6px;
 }
 
@@ -1557,28 +1546,26 @@ a:hover {
   align-items: center;
   gap: 10px;
   margin-bottom: 6px;
-  color: #5a4a38;
+  color: var(--cream);
   font-size: 0.75rem;
 }
 
 .map-legend-overlay .legend-pier {
   width: 10px;
   height: 10px;
-  background: #b09060;
-  border: 2px solid #f0e6d5;
+  background: var(--gold);
+  border: 2px solid var(--navy);
   border-radius: 50%;
-  box-shadow:
-    0 0 0 1px #5a4535,
-    0 1px 2px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 0 0 1px var(--gold);
 }
 
 .map-legend-overlay .legend-route {
   width: 28px;
-  height: 2px;
+  height: 3px;
   background: repeating-linear-gradient(
     90deg,
-    #8a6a40,
-    #8a6a40 5px,
+    var(--navy),
+    var(--navy) 5px,
     transparent 5px,
     transparent 9px
   );
@@ -1586,13 +1573,13 @@ a:hover {
 
 .map-legend-overlay .legend-suhulet {
   width: 28px;
-  height: 3px;
+  height: 4px;
   background: repeating-linear-gradient(
     90deg,
     #8b2030,
-    #8b2030 4px,
-    transparent 4px,
-    transparent 7px
+    #8b2030 5px,
+    transparent 5px,
+    transparent 9px
   );
 }
 
@@ -1649,15 +1636,38 @@ a:hover {
     font-size: 0.65rem;
   }
 
-  .pier-marker {
-    width: 20px;
-    height: 20px;
+  .map-title-overlay {
+    padding: 0.75rem 0.75rem 1.5rem;
+  }
+
+  .map-title-overlay .map-title {
+    font-size: 1rem;
+  }
+
+  .map-title-overlay .map-subtitle {
+    font-size: 0.75rem;
+  }
+
+  .pier-label-icon .pier-name {
+    font-size: 9px;
+    padding: 3px 6px;
+  }
+
+  .pier-label-icon.major .pier-name {
+    font-size: 10px;
+    padding: 4px 8px;
   }
 }
 
 @media (max-width: 480px) {
-  .leaflet-map {
-    height: 380px;
+  .leaflet-map-container {
+    height: 400px;
+  }
+
+  .vintage-map-container .map-year-badge {
+    width: 48px;
+    height: 48px;
+    font-size: 1rem;
   }
 }
 

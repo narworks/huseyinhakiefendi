@@ -180,105 +180,188 @@
     });
   }
 
-  // --- Interactive Vintage SVG Bosphorus Map ---
+  // --- Interactive Leaflet Bosphorus Map ---
   function initInteractiveMap() {
-    const mapElement = document.getElementById('bosphorusMap');
-    if (!mapElement) return;
+    const mapContainer = document.getElementById('bosphorusMap');
+    if (!mapContainer || typeof L === 'undefined') return;
 
     const yearSelect = document.getElementById('yearSelect');
     const yearBadge = document.getElementById('mapYearBadge');
 
-    // Get all SVG elements
-    const piers = mapElement.querySelectorAll('.pier');
-    const routes = mapElement.querySelectorAll('.ferry-route');
-    const ships = mapElement.querySelectorAll('.route-ship');
+    // Bosphorus center coordinates
+    const bosphorusCenter = [41.085, 29.035];
+    const defaultZoom = 12;
 
-    // Pier descriptions (for tooltips/popups)
+    // Initialize map
+    const map = L.map('bosphorusMap', {
+      center: bosphorusCenter,
+      zoom: defaultZoom,
+      minZoom: 11,
+      maxZoom: 15,
+      zoomControl: false,
+      attributionControl: false
+    });
+
+    // Add zoom control to bottom right
+    L.control.zoom({ position: 'bottomright' }).addTo(map);
+
+    // Use CartoDB Positron for a clean, minimal look
+    L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
+      subdomains: 'abcd',
+      maxZoom: 19
+    }).addTo(map);
+
+    // Pier data with coordinates - European Side (west)
+    const piersEurope = [
+      { id: 'sariyer', name: 'Sarıyer', lat: 41.1672, lng: 29.0497, year: 1851, major: false },
+      { id: 'yenikoy', name: 'Yeniköy', lat: 41.1339, lng: 29.0583, year: 1851, major: false },
+      { id: 'emirgan', name: 'Emirgân', lat: 41.1075, lng: 29.0544, year: 1851, major: false },
+      { id: 'bebek', name: 'Bebek', lat: 41.0767, lng: 29.0433, year: 1851, major: false },
+      { id: 'arnavutkoy', name: 'Arnavutköy', lat: 41.0683, lng: 29.0344, year: 1851, major: false },
+      { id: 'ortakoy', name: 'Ortaköy', lat: 41.0472, lng: 29.0269, year: 1851, major: false },
+      { id: 'besiktas', name: 'Beşiktaş', lat: 41.0422, lng: 29.0064, year: 1851, major: true },
+      { id: 'kabatas', name: 'Kabataş', lat: 41.0333, lng: 29.0239, year: 1851, major: true },
+      { id: 'karakoy', name: 'Karaköy', lat: 41.0217, lng: 28.9753, year: 1851, major: false },
+      { id: 'eminonu', name: 'Eminönü', lat: 41.0175, lng: 28.9714, year: 1851, major: true }
+    ];
+
+    // Pier data - Asian Side (east)
+    const piersAsia = [
+      { id: 'beykoz', name: 'Beykoz', lat: 41.1317, lng: 29.0986, year: 1851, major: false },
+      { id: 'pasabahce', name: 'Paşabahçe', lat: 41.1083, lng: 29.0897, year: 1866, major: false },
+      { id: 'cubuklu', name: 'Çubuklu', lat: 41.0953, lng: 29.0711, year: 1851, major: false },
+      { id: 'kanlica', name: 'Kanlıca', lat: 41.0833, lng: 29.0583, year: 1851, major: false },
+      { id: 'anadoluhisari', name: 'A. Hisarı', lat: 41.0811, lng: 29.0650, year: 1851, major: false },
+      { id: 'kandilli', name: 'Kandilli', lat: 41.0697, lng: 29.0589, year: 1851, major: false },
+      { id: 'beylerbeyi', name: 'Beylerbeyi', lat: 41.0439, lng: 29.0378, year: 1851, major: false },
+      { id: 'uskudar', name: 'Üsküdar', lat: 41.0261, lng: 29.0158, year: 1851, major: true },
+      { id: 'haydarpasa', name: 'Haydarpaşa', lat: 40.9972, lng: 29.0186, year: 1872, major: true },
+      { id: 'kadikoy', name: 'Kadıköy', lat: 40.9911, lng: 29.0236, year: 1851, major: true }
+    ];
+
+    const allPiers = [...piersEurope, ...piersAsia];
+
+    // Pier descriptions
     const pierDescriptions = {
       sariyer: 'Boğaz\'ın kuzeyinde, yazlık konak bölgesi.',
       yenikoy: 'Varlıklı ailelerin tercih ettiği sakin semt.',
       emirgan: 'Cami önünde ahşap olarak yapılan tarihi iskele.',
-      bebek: 'Humayu-u Abad Camii yakınında, Boğaz\'ın en şık semti.',
+      bebek: 'Boğaz\'ın en şık semti.',
       arnavutkoy: 'Ahşap evleri ve balıkçı barınaklarıyla ünlü.',
-      ortakoy: 'Abdülmecit Camii yakınında, Boğaz\'ın en güzel manzarası.',
-      besiktas: 'İlk iskele (1851). Şirket-i Hayriye\'nin ana merkezi.',
+      ortakoy: 'Boğaz\'ın en güzel manzarası.',
+      besiktas: 'Şirket-i Hayriye\'nin ana merkezi.',
       kabatas: 'Dolmabahçe Sarayı yakınında stratejik iskele.',
       karakoy: 'Galata Köprüsü yanında, ticaret merkezi.',
-      eminonu: 'İstanbul\'un kalbi. Ticaretin ve ulaşımın merkezi.',
-      beykoz: '"Hünkar İskelesi" adıyla yapıldı (1851).',
+      eminonu: 'İstanbul\'un kalbi. Ticaretin merkezi.',
+      beykoz: '"Hünkar İskelesi" adıyla yapıldı.',
       pasabahce: 'Cam fabrikasıyla ünlü sanayi bölgesi.',
       cubuklu: 'Boğazın sembolü olarak nitelendirilen iskele.',
       kanlica: 'Ünlü yoğurt bölgesinde hizmet veren iskele.',
-      anadoluhisari: '"Hisarönü" adıyla inşa edildi. Boğaz\'ın en dar noktası.',
+      anadoluhisari: 'Boğaz\'ın en dar noktası.',
       kandilli: 'Rasathane ile ünlü sakin semt.',
       beylerbeyi: 'Beylerbeyi Sarayı\'nın hemen önünde.',
-      uskudar: 'Anadolu yakasının tarihi kapısı. En işlek iskelelerden biri.',
-      haydarpasa: 'Mimar Vedat Tek tasarımı. Suhulet için kritik.',
-      kadikoy: 'Fevaid-i Osmaniye tarafından kuruldu (1846).'
+      uskudar: 'Anadolu yakasının tarihi kapısı.',
+      haydarpasa: 'Suhulet için kritik iskele.',
+      kadikoy: 'Fevaid-i Osmaniye tarafından kuruldu.'
     };
 
-    // Create tooltip element - Historical parchment style
-    const tooltip = document.createElement('div');
-    tooltip.className = 'svg-map-tooltip';
-    tooltip.style.cssText = `
-      position: absolute;
-      background: linear-gradient(135deg, #f5eee0 0%, #e8dcc8 100%);
-      color: #4a3525;
-      padding: 12px 16px;
-      border-radius: 4px;
-      border: 2px solid #6a5a48;
-      font-family: 'Source Serif 4', serif;
-      font-size: 12px;
-      max-width: 240px;
-      pointer-events: none;
-      opacity: 0;
-      transition: opacity 0.3s ease;
-      z-index: 1000;
-      box-shadow: 0 4px 16px rgba(60, 40, 20, 0.35);
-      line-height: 1.5;
-    `;
-    document.querySelector('.vintage-map-container')?.appendChild(tooltip);
+    // Ferry routes data
+    const routesData = [
+      {
+        id: 'eminonu-kadikoy',
+        name: 'Eminönü - Kadıköy',
+        year: 1851,
+        coords: [[41.0175, 28.9714], [41.005, 29.000], [40.9911, 29.0236]],
+        color: '#0d1b2a',
+        isSuhulet: false
+      },
+      {
+        id: 'kabatas-uskudar',
+        name: 'Kabataş - Üsküdar',
+        year: 1851,
+        coords: [[41.0333, 29.0239], [41.030, 29.020], [41.0261, 29.0158]],
+        color: '#0d1b2a',
+        isSuhulet: false
+      },
+      {
+        id: 'besiktas-beylerbeyi',
+        name: 'Beşiktaş - Beylerbeyi',
+        year: 1851,
+        coords: [[41.0422, 29.0064], [41.043, 29.022], [41.0439, 29.0378]],
+        color: '#0d1b2a',
+        isSuhulet: false
+      },
+      {
+        id: 'suhulet',
+        name: 'Suhulet Hattı (Arabalı Vapur)',
+        year: 1872,
+        coords: [[41.0333, 29.0239], [41.028, 29.018], [41.0261, 29.0158]],
+        color: '#8b2030',
+        isSuhulet: true
+      }
+    ];
 
-    // Add pier interactivity
-    piers.forEach(pier => {
-      const pierId = pier.getAttribute('data-pier');
-      const pierYear = parseInt(pier.getAttribute('data-year'), 10);
-      const pierText = pier.querySelector('text');
-      const pierName = pierText?.textContent || pierId;
+    // Store references
+    const pierMarkers = [];
+    const routeLines = [];
 
-      pier.addEventListener('mouseenter', (e) => {
-        const desc = pierDescriptions[pierId] || '';
-        tooltip.innerHTML = `<strong style="color:#6b4030;font-size:13px;border-bottom:1px solid #c0b090;padding-bottom:4px;display:block;margin-bottom:6px;">${pierName} İskelesi</strong><span style="color:#5a4a38">${desc}</span><br><em style="font-size:10px;color:#7a6a58;margin-top:6px;display:block;">Kuruluş: ${pierYear}</em>`;
-        tooltip.style.opacity = '1';
+    // Create custom pier label icon
+    function createPierIcon(pier) {
+      const size = pier.major ? 'major' : 'normal';
+      return L.divIcon({
+        className: `pier-label-icon ${size}`,
+        html: `<span class="pier-name">${pier.name}</span>`,
+        iconSize: null,
+        iconAnchor: [0, 0]
+      });
+    }
+
+    // Add pier markers
+    allPiers.forEach(pier => {
+      const marker = L.marker([pier.lat, pier.lng], {
+        icon: createPierIcon(pier)
       });
 
-      pier.addEventListener('mousemove', (e) => {
-        const container = document.querySelector('.vintage-map-container');
-        const rect = container.getBoundingClientRect();
-        tooltip.style.left = (e.clientX - rect.left + 15) + 'px';
-        tooltip.style.top = (e.clientY - rect.top - 10) + 'px';
+      // Popup content
+      const popupContent = `
+        <div class="pier-popup-content">
+          <h4>${pier.name} İskelesi</h4>
+          <p>${pierDescriptions[pier.id] || ''}</p>
+          <span class="pier-year">Kuruluş: ${pier.year}</span>
+        </div>
+      `;
+
+      marker.bindPopup(popupContent, {
+        className: 'pier-popup',
+        maxWidth: 250
       });
 
-      pier.addEventListener('mouseleave', () => {
-        tooltip.style.opacity = '0';
-      });
+      marker.pierData = pier;
+      pierMarkers.push(marker);
     });
 
-    // Add route interactivity
-    routes.forEach(route => {
-      route.addEventListener('mouseenter', () => {
-        route.style.strokeWidth = '4';
-        route.style.opacity = '1';
+    // Add route polylines
+    routesData.forEach(route => {
+      const polyline = L.polyline(route.coords, {
+        color: route.color,
+        weight: route.isSuhulet ? 4 : 3,
+        opacity: route.isSuhulet ? 0.9 : 0.7,
+        dashArray: route.isSuhulet ? '10, 6' : '8, 5',
+        lineCap: 'round'
       });
-      route.addEventListener('mouseleave', () => {
-        route.style.strokeWidth = route.classList.contains('suhulet-route') ? '3' : '2';
-        if (!route.classList.contains('hidden')) {
-          route.style.opacity = route.classList.contains('suhulet-route') ? '0.9' : '0.8';
-        }
+
+      // Route tooltip
+      polyline.bindTooltip(route.name, {
+        permanent: false,
+        direction: 'center',
+        className: 'route-tooltip'
       });
+
+      polyline.routeData = route;
+      routeLines.push(polyline);
     });
 
-    // Fleet data by year (for timeline - 1851 is founding year)
+    // Fleet data by year
     const fleetByYear = {
       1854: { ships: 6, piers: 12, routes: 2 },
       1866: { ships: 16, piers: 15, routes: 3 },
@@ -288,12 +371,10 @@
       1894: { ships: 46, piers: 20, routes: 4 }
     };
 
-    // Map timeline years to founding reference year (1851)
-    // Timeline years map to visibility thresholds
     const yearMapping = {
-      1854: 1851,  // Show founding piers
-      1866: 1866,  // Show piers opened by 1866
-      1872: 1872,  // Show Haydarpaşa, Suhulet route
+      1854: 1851,
+      1866: 1866,
+      1872: 1872,
       1880: 1880,
       1890: 1890,
       1894: 1894
@@ -302,7 +383,7 @@
     // Update map based on selected year
     function updateMapByYear(year) {
       const selectedYear = parseInt(year, 10);
-      const pierVisibilityYear = yearMapping[selectedYear] || selectedYear;
+      const visibilityYear = yearMapping[selectedYear] || selectedYear;
 
       // Update year badge
       if (yearBadge) {
@@ -310,32 +391,31 @@
       }
 
       // Update pier visibility
-      piers.forEach(pier => {
-        const pierYear = parseInt(pier.getAttribute('data-year'), 10);
-        const isVisible = pierYear <= pierVisibilityYear;
-        pier.classList.toggle('hidden', !isVisible);
+      pierMarkers.forEach(marker => {
+        const pierYear = marker.pierData.year;
+        if (pierYear <= visibilityYear) {
+          if (!map.hasLayer(marker)) {
+            marker.addTo(map);
+          }
+        } else {
+          if (map.hasLayer(marker)) {
+            map.removeLayer(marker);
+          }
+        }
       });
 
       // Update route visibility
-      routes.forEach(route => {
-        const routeYear = parseInt(route.getAttribute('data-year'), 10);
-        const isVisible = routeYear <= pierVisibilityYear;
-        route.classList.toggle('hidden', !isVisible);
-      });
-
-      // Update ship visibility
-      ships.forEach(ship => {
-        const shipYear = parseInt(ship.getAttribute('data-year'), 10);
-        const isVisible = shipYear <= pierVisibilityYear;
-        ship.classList.toggle('hidden', !isVisible);
-      });
-
-      // Update route labels (like Suhulet label)
-      const routeLabels = mapElement.querySelectorAll('.suhulet-label');
-      routeLabels.forEach(label => {
-        const labelYear = parseInt(label.getAttribute('data-year'), 10);
-        const isVisible = labelYear <= pierVisibilityYear;
-        label.classList.toggle('hidden', !isVisible);
+      routeLines.forEach(line => {
+        const routeYear = line.routeData.year;
+        if (routeYear <= visibilityYear) {
+          if (!map.hasLayer(line)) {
+            line.addTo(map);
+          }
+        } else {
+          if (map.hasLayer(line)) {
+            map.removeLayer(line);
+          }
+        }
       });
 
       // Update fleet stats display
@@ -354,7 +434,6 @@
       yearSelect.addEventListener('change', (e) => {
         updateMapByYear(e.target.value);
       });
-      updateMapByYear(yearSelect.value);
     }
 
     // Initialize maritime slider markers
@@ -391,7 +470,7 @@
           // Update ship position on timeline
           updateSliderShip(parseInt(year, 10));
 
-          // Update SVG map
+          // Update Leaflet map
           updateMapByYear(year);
         });
       });
