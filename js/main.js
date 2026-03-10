@@ -304,22 +304,40 @@
     // Store references
     const pierMarkers = [];
     const routeLines = [];
+    const shipMarkers = [];
 
-    // Create custom pier label icon
-    function createPierIcon(pier) {
+    // Create custom pier label icon with active/inactive state
+    function createPierIcon(pier, isActive) {
       const size = pier.major ? 'major' : 'normal';
+      const activeClass = isActive ? 'active' : 'inactive';
       return L.divIcon({
-        className: `pier-label-icon ${size}`,
+        className: `pier-label-icon ${size} ${activeClass}`,
         html: `<span class="pier-name">${pier.name}</span>`,
         iconSize: null,
         iconAnchor: [0, 0]
       });
     }
 
-    // Add pier markers
+    // Create ship icon for animated markers
+    function createShipIcon(isSuhulet) {
+      const shipClass = isSuhulet ? 'ship-marker suhulet' : 'ship-marker';
+      return L.divIcon({
+        className: shipClass,
+        html: `<svg viewBox="0 0 40 20" fill="currentColor">
+          <path d="M2,14 L5,18 L35,18 L38,14 L32,14 L30,16 L10,16 L8,14 Z"/>
+          <rect x="6" y="8" width="28" height="7" rx="1"/>
+          <rect x="14" y="3" width="12" height="6" rx="1"/>
+          <rect x="18" y="0" width="4" height="4"/>
+        </svg>`,
+        iconSize: [40, 20],
+        iconAnchor: [20, 10]
+      });
+    }
+
+    // Add pier markers - all piers added to map, styled based on active state
     allPiers.forEach(pier => {
       const marker = L.marker([pier.lat, pier.lng], {
-        icon: createPierIcon(pier)
+        icon: createPierIcon(pier, true)
       });
 
       // Popup content
@@ -337,6 +355,7 @@
       });
 
       marker.pierData = pier;
+      marker.addTo(map);
       pierMarkers.push(marker);
     });
 
@@ -359,7 +378,52 @@
 
       polyline.routeData = route;
       routeLines.push(polyline);
+
+      // Add animated ship marker for this route
+      const shipMarker = L.marker(route.coords[0], {
+        icon: createShipIcon(route.isSuhulet)
+      });
+      shipMarker.routeData = route;
+      shipMarkers.push(shipMarker);
     });
+
+    // Animate ships along routes
+    function animateShips() {
+      shipMarkers.forEach((ship, index) => {
+        if (!map.hasLayer(ship)) return;
+
+        const route = ship.routeData;
+        const coords = route.coords;
+        const duration = route.isSuhulet ? 8000 : 6000;
+        const startTime = Date.now() + (index * 2000); // Stagger start times
+
+        function moveShip() {
+          if (!map.hasLayer(ship)) return;
+
+          const elapsed = (Date.now() - startTime) % (duration * 2);
+          const progress = elapsed < duration
+            ? elapsed / duration
+            : 2 - (elapsed / duration);
+
+          // Interpolate position along route
+          const totalPoints = coords.length - 1;
+          const segmentProgress = progress * totalPoints;
+          const segmentIndex = Math.min(Math.floor(segmentProgress), totalPoints - 1);
+          const segmentFraction = segmentProgress - segmentIndex;
+
+          const startCoord = coords[segmentIndex];
+          const endCoord = coords[Math.min(segmentIndex + 1, coords.length - 1)];
+
+          const lat = startCoord[0] + (endCoord[0] - startCoord[0]) * segmentFraction;
+          const lng = startCoord[1] + (endCoord[1] - startCoord[1]) * segmentFraction;
+
+          ship.setLatLng([lat, lng]);
+          requestAnimationFrame(moveShip);
+        }
+
+        moveShip();
+      });
+    }
 
     // Fleet data by year
     const fleetByYear = {
@@ -390,33 +454,46 @@
         yearBadge.textContent = selectedYear;
       }
 
-      // Update pier visibility
+      // Update pier styling based on active state (all remain visible)
       pierMarkers.forEach(marker => {
         const pierYear = marker.pierData.year;
-        if (pierYear <= visibilityYear) {
-          if (!map.hasLayer(marker)) {
-            marker.addTo(map);
-          }
-        } else {
-          if (map.hasLayer(marker)) {
-            map.removeLayer(marker);
-          }
-        }
+        const isActive = pierYear <= visibilityYear;
+        marker.setIcon(createPierIcon(marker.pierData, isActive));
       });
 
-      // Update route visibility
-      routeLines.forEach(line => {
+      // Update route visibility and styling
+      routeLines.forEach((line, index) => {
         const routeYear = line.routeData.year;
-        if (routeYear <= visibilityYear) {
+        const isActive = routeYear <= visibilityYear;
+
+        if (isActive) {
           if (!map.hasLayer(line)) {
             line.addTo(map);
           }
+          line.setStyle({ opacity: line.routeData.isSuhulet ? 0.9 : 0.7 });
         } else {
           if (map.hasLayer(line)) {
             map.removeLayer(line);
           }
         }
+
+        // Update ship marker visibility
+        const ship = shipMarkers[index];
+        if (ship) {
+          if (isActive) {
+            if (!map.hasLayer(ship)) {
+              ship.addTo(map);
+            }
+          } else {
+            if (map.hasLayer(ship)) {
+              map.removeLayer(ship);
+            }
+          }
+        }
       });
+
+      // Start ship animations
+      animateShips();
 
       // Update fleet stats display
       const stats = fleetByYear[selectedYear] || fleetByYear[1872];
@@ -445,11 +522,12 @@
         if (sliderShip) {
           const activeMarker = document.querySelector(`.slider-marker[data-year="${year}"]`);
           if (activeMarker) {
-            const container = document.querySelector('.slider-markers');
-            const containerRect = container.getBoundingClientRect();
+            const track = document.querySelector('.timeline-slider-track');
+            const trackRect = track.getBoundingClientRect();
             const markerRect = activeMarker.getBoundingClientRect();
-            const relativeLeft = markerRect.left - containerRect.left + markerRect.width / 2;
+            const relativeLeft = markerRect.left - trackRect.left + markerRect.width / 2;
             sliderShip.style.left = `${relativeLeft}px`;
+            sliderShip.style.transform = 'translateX(-50%) translateY(-50%)';
           }
         }
       }
@@ -475,8 +553,16 @@
         });
       });
 
-      // Set initial ship position
-      updateSliderShip(1872);
+      // Set initial ship position with delay for layout stability
+      setTimeout(() => updateSliderShip(1872), 100);
+
+      // Update ship position on resize
+      window.addEventListener('resize', () => {
+        const activeMarker = document.querySelector('.slider-marker.active');
+        if (activeMarker) {
+          updateSliderShip(parseInt(activeMarker.getAttribute('data-year'), 10));
+        }
+      });
     }
 
     // Initialize map with default year
