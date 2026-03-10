@@ -550,12 +550,12 @@ a:hover {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 0.5rem;
+  gap: 0.75rem;
   color: var(--gold);
   text-decoration: none;
   transition: all var(--transition-base);
   position: absolute;
-  bottom: 2.5rem;
+  bottom: 110px;
   left: 50%;
   transform: translateX(-50%);
   z-index: 10;
@@ -574,8 +574,8 @@ a:hover {
 }
 
 .scroll-icon {
-  width: 36px;
-  height: 36px;
+  width: 52px;
+  height: 52px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -584,17 +584,17 @@ a:hover {
 }
 
 .scroll-icon svg {
-  width: 28px;
-  height: 28px;
+  width: 40px;
+  height: 40px;
   transition: filter 0.3s ease;
 }
 
 .scroll-text {
   font-family: var(--font-accent);
-  font-size: 0.65rem;
+  font-size: 0.75rem;
   letter-spacing: 0.2em;
   text-transform: uppercase;
-  opacity: 0.8;
+  opacity: 0.85;
 }
 
 @keyframes anchorFloat {
@@ -2669,9 +2669,19 @@ a:hover {
     border-top: 3px solid var(--gold);
   }
 
-  /* Hero mobile */
+  /* Hero tablet */
   .hero-scroll {
-    bottom: 1.5rem;
+    bottom: 90px;
+  }
+
+  .scroll-icon {
+    width: 44px;
+    height: 44px;
+  }
+
+  .scroll-icon svg {
+    width: 34px;
+    height: 34px;
   }
 
   .portrait-frame {
@@ -2785,21 +2795,21 @@ a:hover {
   }
 
   .hero-scroll {
-    bottom: 1rem;
+    bottom: 70px;
   }
 
   .scroll-icon {
-    width: 30px;
-    height: 30px;
+    width: 38px;
+    height: 38px;
   }
 
   .scroll-icon svg {
-    width: 22px;
-    height: 22px;
+    width: 28px;
+    height: 28px;
   }
 
   .scroll-text {
-    font-size: 0.55rem;
+    font-size: 0.65rem;
   }
 
   /* Map mobile adjustments */
