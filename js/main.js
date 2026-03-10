@@ -130,25 +130,16 @@
     const tooltip = document.getElementById('ferryTooltip');
     const ferries = ferriesContainer.querySelectorAll('.hero-ferry');
 
-    // Ferry names data
+    // Ferry names data - Gerçek Şirket-i Hayriye vapur isimleri
     const ferryNames = {
-      suhulet: 'Suhulet (1872)',
-      tarabya: 'Tarabya (1854)',
-      goksu: 'Göksu (1854)',
-      besiktas: 'Beşiktaş (1854)',
-      bebek: 'Bebek (1860)',
-      kandilli: 'Kandilli (1854)',
-      beykoz: 'Beykoz (1854)',
-      istinye: 'İstinye (1858)',
-      rumeli: 'Rumeli (1854)',
-      tophane: 'Tophane (1854)',
-      anadolu: 'Anadolu (1866)',
-      neveser: 'Neveser (1890)',
-      rehber: 'Rehber (1890)',
-      metanet: 'Metanet (1892)',
-      resanet: 'Resanet (1892)',
-      ikdam: 'İkdam (1894)',
-      intizam: 'İntizam (1894)'
+      suhulet: 'Suhulet (1872) — Arabalı Vapur',
+      sahilbent: 'Sahilbent (1854)',
+      nusret: 'Nusret (1856)',
+      sirket: 'Şirket (1854)',
+      istanbul: 'İstanbul (1858)',
+      neveser: 'Neveser (1866)',
+      rehber: 'Rehber (1868)',
+      selamet: 'Selamet (1870)'
     };
 
     let activeTooltip = null;
@@ -204,8 +195,36 @@
     const yearSelect = document.getElementById('yearSelect');
     const yearBadge = document.getElementById('mapYearBadge');
 
-    // Data for piers with opening years
+    // Data for piers with opening years - Genişletilmiş iskele bilgileri
     const pierData = {
+      // Avrupa Yakası
+      bebek: {
+        title: 'Bebek İskelesi',
+        desc: 'Boğaz\'ın en şık semtlerinden birinde yer alan iskele. Yalıları ve mesireleriyle tanınır.',
+        year: 1856,
+        stats: [
+          { value: '1856', label: 'Kuruluş' },
+          { value: '6+', label: 'Günlük Sefer' }
+        ]
+      },
+      arnavutkoy: {
+        title: 'Arnavutköy İskelesi',
+        desc: 'Ahşap evleri ve balıkçı barınaklarıyla ünlü tarihi semt.',
+        year: 1860,
+        stats: [
+          { value: '1860', label: 'Kuruluş' },
+          { value: '5+', label: 'Günlük Sefer' }
+        ]
+      },
+      ortakoy: {
+        title: 'Ortaköy İskelesi',
+        desc: 'Boğaz\'ın en güzel manzaralı iskelelerinden biri. Camii ve çarşısıyla ünlü.',
+        year: 1856,
+        stats: [
+          { value: '1856', label: 'Kuruluş' },
+          { value: '8+', label: 'Günlük Sefer' }
+        ]
+      },
       besiktas: {
         title: 'Beşiktaş İskelesi',
         desc: 'Boğaz\'ın en işlek iskelelerinden biri. Şirket-i Hayriye döneminde ana hatların başlangıç noktası.',
@@ -215,15 +234,6 @@
           { value: '12+', label: 'Günlük Sefer' }
         ]
       },
-      ortakoy: {
-        title: 'Ortaköy İskelesi',
-        desc: 'Boğaz\'ın en güzel manzaralı iskelelerinden biri. Camii ve köprüsüyle ünlü.',
-        year: 1856,
-        stats: [
-          { value: '1856', label: 'Kuruluş' },
-          { value: '8+', label: 'Günlük Sefer' }
-        ]
-      },
       kabatas: {
         title: 'Kabataş İskelesi',
         desc: 'Dolmabahçe Sarayı yakınında konumlanan stratejik iskele. Saray görevlilerinin ve halkın buluşma noktası.',
@@ -231,6 +241,15 @@
         stats: [
           { value: '1854', label: 'Kuruluş' },
           { value: '10+', label: 'Günlük Sefer' }
+        ]
+      },
+      karakoy: {
+        title: 'Karaköy İskelesi',
+        desc: 'Galata Köprüsü\'nün yanında, ticaret merkezi. Levanten tüccarların uğrak noktası.',
+        year: 1854,
+        stats: [
+          { value: '1854', label: 'Kuruluş' },
+          { value: '15+', label: 'Günlük Sefer' }
         ]
       },
       eminonu: {
@@ -248,34 +267,71 @@
         year: 1854,
         stats: [
           { value: '1854', label: 'Kuruluş' },
-          { value: '15+', label: 'Günlük Sefer' }
+          { value: '14+', label: 'Günlük Sefer' }
         ]
       },
+      // Anadolu Yakası
       beykoz: {
         title: 'Beykoz İskelesi',
-        desc: 'Boğaz\'ın kuzeydoğusunda, deri ve cam sanayisinin merkezi.',
+        desc: 'Boğaz\'ın kuzeydoğusunda, deri ve cam sanayisinin merkezi. Osmanlı\'nın ilk modern fabrikalarına ev sahipliği yaptı.',
         year: 1854,
         stats: [
           { value: '1854', label: 'Kuruluş' },
           { value: '6+', label: 'Günlük Sefer' }
         ]
       },
+      pasabahce: {
+        title: 'Paşabahçe İskelesi',
+        desc: 'Cam fabrikasıyla ünlü sanayi bölgesi. İşçi taşımacılığı için önemli.',
+        year: 1866,
+        stats: [
+          { value: '1866', label: 'Kuruluş' },
+          { value: '4+', label: 'Günlük Sefer' }
+        ]
+      },
+      anadoluhisari: {
+        title: 'Anadolu Hisarı İskelesi',
+        desc: 'Tarihi kale ve Göksu Deresi\'nin mansabında. Boğaz\'ın en dar noktasına yakın.',
+        year: 1858,
+        stats: [
+          { value: '1858', label: 'Kuruluş' },
+          { value: '5+', label: 'Günlük Sefer' }
+        ]
+      },
       kandilli: {
         title: 'Kandilli İskelesi',
-        desc: 'Rasathane ile ünlü sakin bir semt. Boğaz\'ın en dar noktasında konumlu.',
+        desc: 'Rasathane ile ünlü sakin bir semt. Boğaz\'ın tam da en dar noktasında konumlu.',
         year: 1854,
         stats: [
           { value: '1854', label: 'Kuruluş' },
           { value: '8+', label: 'Günlük Sefer' }
         ]
       },
+      beylerbeyi: {
+        title: 'Beylerbeyi İskelesi',
+        desc: 'Beylerbeyi Sarayı\'nın hemen önünde. Padişah ve saray erkânının kullandığı iskele.',
+        year: 1860,
+        stats: [
+          { value: '1860', label: 'Kuruluş' },
+          { value: '6+', label: 'Günlük Sefer' }
+        ]
+      },
       uskudar: {
         title: 'Üsküdar İskelesi',
-        desc: 'Anadolu yakasının tarihi kapısı. Suhulet hattının varış noktası. Haki Efendi döneminde modernize edildi.',
+        desc: 'Anadolu yakasının tarihi kapısı. Şirket-i Hayriye\'nin en işlek iskelelerinden biri.',
         year: 1854,
         stats: [
           { value: '1854', label: 'Kuruluş' },
           { value: '18+', label: 'Günlük Sefer' }
+        ]
+      },
+      salacak: {
+        title: 'Salacak İskelesi',
+        desc: 'Kız Kulesi\'nin karşısında, küçük ama manzaralı iskele.',
+        year: 1866,
+        stats: [
+          { value: '1866', label: 'Kuruluş' },
+          { value: '4+', label: 'Günlük Sefer' }
         ]
       },
       haydarpasa: {
@@ -377,13 +433,60 @@
       if (routesStat) routesStat.textContent = stats.routes;
     }
 
-    // Initialize timeline selector
+    // Initialize timeline selector (hidden select for compatibility)
     if (yearSelect) {
       yearSelect.addEventListener('change', (e) => {
         updateMapByYear(e.target.value);
       });
       // Set initial state
       updateMapByYear(yearSelect.value);
+    }
+
+    // Initialize maritime slider markers
+    const sliderMarkers = document.querySelectorAll('.slider-marker');
+    const sliderShip = document.getElementById('sliderShip');
+
+    if (sliderMarkers.length > 0) {
+      // Year positions for ship indicator (percentage based)
+      const yearPositions = {
+        1854: 8.33,
+        1866: 25,
+        1872: 41.66,
+        1880: 58.33,
+        1890: 75,
+        1894: 91.66
+      };
+
+      function updateSliderShip(year) {
+        if (sliderShip) {
+          const position = yearPositions[year] || 41.66;
+          sliderShip.style.left = `calc(${position}% + 12px)`;
+        }
+      }
+
+      sliderMarkers.forEach(marker => {
+        marker.addEventListener('click', () => {
+          const year = marker.getAttribute('data-year');
+
+          // Update active state
+          sliderMarkers.forEach(m => m.classList.remove('active'));
+          marker.classList.add('active');
+
+          // Update hidden select
+          if (yearSelect) {
+            yearSelect.value = year;
+          }
+
+          // Update ship position
+          updateSliderShip(parseInt(year, 10));
+
+          // Update map
+          updateMapByYear(year);
+        });
+      });
+
+      // Set initial ship position
+      updateSliderShip(1872);
     }
 
     // Show info panel
@@ -468,6 +571,139 @@
         hideInfo();
       }
     });
+
+    // Create animated ships on routes
+    function createAnimatedShips(selectedYear) {
+      const shipsGroup = document.getElementById('shipsGroup');
+      if (!shipsGroup) return;
+
+      // Clear existing ships
+      shipsGroup.innerHTML = '';
+
+      // Route definitions with ship configurations
+      const routeShips = [
+        {
+          route: 'bebek-beykoz',
+          path: 'M172,145 Q400,115 650,90',
+          year: 1856,
+          ships: [
+            { direction: 'forward', delay: 0, duration: 15 },
+            { direction: 'reverse', delay: 7, duration: 14 }
+          ]
+        },
+        {
+          route: 'ortakoy-kandilli',
+          path: 'M185,220 Q400,200 635,230',
+          year: 1856,
+          ships: [
+            { direction: 'forward', delay: 2, duration: 12 },
+            { direction: 'reverse', delay: 8, duration: 13 }
+          ]
+        },
+        {
+          route: 'besiktas-uskudar',
+          path: 'M188,275 Q400,285 640,350',
+          year: 1854,
+          ships: [
+            { direction: 'forward', delay: 0, duration: 11 },
+            { direction: 'reverse', delay: 5, duration: 12 }
+          ]
+        },
+        {
+          route: 'kabatas-uskudar',
+          path: 'M192,340 Q400,330 640,350',
+          year: 1854,
+          ships: [
+            { direction: 'forward', delay: 3, duration: 10 },
+            { direction: 'reverse', delay: 8, duration: 11 }
+          ]
+        },
+        {
+          route: 'eminonu-haydarpasa',
+          path: 'M195,450 Q420,430 655,450',
+          year: 1872,
+          isSuhulet: true,
+          ships: [
+            { direction: 'forward', delay: 0, duration: 14 },
+            { direction: 'reverse', delay: 7, duration: 14 }
+          ]
+        },
+        {
+          route: 'sirkeci-kadikoy',
+          path: 'M198,500 Q420,495 648,510',
+          year: 1858,
+          ships: [
+            { direction: 'forward', delay: 4, duration: 12 },
+            { direction: 'reverse', delay: 10, duration: 11 }
+          ]
+        },
+        {
+          route: 'karakoy-uskudar',
+          path: 'M190,400 Q400,380 640,350',
+          year: 1860,
+          ships: [
+            { direction: 'forward', delay: 1, duration: 13 }
+          ]
+        }
+      ];
+
+      routeShips.forEach(route => {
+        // Only show ships for routes that exist in selected year
+        if (route.year > selectedYear) return;
+
+        route.ships.forEach((shipConfig, index) => {
+          const shipGroup = document.createElementNS('http://www.w3.org/2000/svg', 'g');
+          shipGroup.classList.add('route-ship-group');
+          shipGroup.setAttribute('data-direction', shipConfig.direction);
+          shipGroup.style.setProperty('--ship-duration', `${shipConfig.duration}s`);
+          shipGroup.style.animationDelay = `${shipConfig.delay}s`;
+          shipGroup.style.offsetPath = `path("${route.path}")`;
+
+          // Create ship SVG based on type
+          const shipSvg = document.createElementNS('http://www.w3.org/2000/svg', 'g');
+          shipSvg.classList.add('route-ship');
+
+          if (route.isSuhulet) {
+            // Arabalı vapur (Suhulet) ikonu
+            shipSvg.classList.add('ship-suhulet');
+            shipSvg.innerHTML = `
+              <path d="M-12,4 L-10,7 L10,7 L12,4 L8,4 L7,6 L-7,6 L-8,4 Z"/>
+              <rect x="-9" y="0" width="18" height="5" rx="0.5"/>
+              <rect x="-3" y="-3" width="6" height="4" rx="0.5"/>
+              <rect x="-1" y="-6" width="2" height="4"/>
+            `;
+          } else {
+            // Yolcu vapuru (çarklı) ikonu
+            shipSvg.innerHTML = `
+              <path d="M-10,4 Q-12,2 -9,1 L-6,1 L-6,4 L6,4 L6,1 L9,1 Q12,2 10,4 L10,6 L-10,6 Z"/>
+              <ellipse cx="-6" cy="2.5" rx="2" ry="2"/>
+              <ellipse cx="6" cy="2.5" rx="2" ry="2"/>
+              <rect x="-4" y="-1" width="8" height="3" rx="0.5"/>
+              <rect x="-2" y="-4" width="4" height="4" rx="0.5"/>
+              <rect x="-0.5" y="-6" width="1" height="3"/>
+            `;
+          }
+
+          // Flip ship for reverse direction
+          if (shipConfig.direction === 'reverse') {
+            shipSvg.setAttribute('transform', 'scale(-1, 1)');
+          }
+
+          shipGroup.appendChild(shipSvg);
+          shipsGroup.appendChild(shipGroup);
+        });
+      });
+    }
+
+    // Initialize ships
+    createAnimatedShips(parseInt(yearSelect?.value || 1872, 10));
+
+    // Update ships when year changes
+    const originalUpdateMapByYear = updateMapByYear;
+    updateMapByYear = function(year) {
+      originalUpdateMapByYear(year);
+      createAnimatedShips(parseInt(year, 10));
+    };
 
     // Route card interaction
     document.querySelectorAll('.route-card').forEach(card => {

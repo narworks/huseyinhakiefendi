@@ -645,7 +645,14 @@ a:hover {
 
 .hero-ferry:hover {
   opacity: 1;
+}
+
+.hero-ferry.ferry-right:hover {
   transform: scale(1.1);
+}
+
+.hero-ferry.ferry-left:hover {
+  transform: scaleX(-1) scale(1.1);
 }
 
 .hero-ferry.active {
@@ -870,61 +877,210 @@ a:hover {
   margin: 0 auto 2.5rem;
 }
 
-/* Timeline Selector */
-.timeline-selector {
+/* Maritime Timeline Slider */
+.timeline-slider-container {
+  position: relative;
+  max-width: 900px;
+  margin: 0 auto 2.5rem;
+  padding: 2rem 0;
+}
+
+.timeline-slider-track {
   display: flex;
   align-items: center;
-  justify-content: center;
-  gap: 1rem;
-  margin-bottom: 2rem;
-  flex-wrap: wrap;
+  position: relative;
+  height: 80px;
 }
 
-.timeline-label {
-  font-family: var(--font-accent);
-  font-size: 0.8rem;
-  letter-spacing: 0.15em;
-  text-transform: uppercase;
-  color: var(--navy);
+.timeline-slider-track::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 24px;
+  right: 24px;
+  height: 6px;
+  background: linear-gradient(90deg,
+    rgba(112, 66, 20, 0.3),
+    rgba(201, 168, 76, 0.5),
+    rgba(112, 66, 20, 0.3)
+  );
+  border-radius: 3px;
+  transform: translateY(-50%);
+  /* Rope texture */
+  background-image:
+    repeating-linear-gradient(90deg,
+      transparent,
+      transparent 8px,
+      rgba(112, 66, 20, 0.15) 8px,
+      rgba(112, 66, 20, 0.15) 10px
+    ),
+    linear-gradient(90deg, rgba(112, 66, 20, 0.3), rgba(201, 168, 76, 0.5), rgba(112, 66, 20, 0.3));
 }
 
-.timeline-dropdown {
+.slider-rope-end {
+  width: 24px;
+  height: 24px;
+  color: var(--sepia);
+  flex-shrink: 0;
+  z-index: 2;
+}
+
+.slider-rope-end svg {
+  width: 100%;
+  height: 100%;
+  filter: drop-shadow(0 2px 3px rgba(0, 0, 0, 0.2));
+}
+
+.slider-markers {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex: 1;
+  padding: 0 1rem;
+  position: relative;
+  z-index: 3;
+}
+
+.slider-marker {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0.5rem;
+  transition: all 0.3s ease;
   position: relative;
 }
 
-.year-select {
-  appearance: none;
+.marker-dot {
+  width: 20px;
+  height: 20px;
   background: var(--warm-white);
-  border: 2px solid var(--gold);
-  border-radius: 8px;
-  padding: 0.75rem 2.5rem 0.75rem 1.25rem;
-  font-family: var(--font-sans);
-  font-size: 0.95rem;
-  color: var(--navy);
-  cursor: pointer;
+  border: 3px solid var(--gold);
+  border-radius: 50%;
   transition: all 0.3s ease;
-  min-width: 280px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
 }
 
-.year-select:hover {
-  border-color: var(--gold-light);
-  box-shadow: 0 4px 12px rgba(201, 168, 76, 0.2);
+.slider-marker:hover .marker-dot {
+  background: var(--gold-light);
+  transform: scale(1.2);
+  box-shadow: 0 4px 12px rgba(201, 168, 76, 0.4);
 }
 
-.year-select:focus {
-  outline: none;
-  border-color: var(--gold-light);
-  box-shadow: 0 0 0 3px rgba(201, 168, 76, 0.2);
+.slider-marker.active .marker-dot {
+  background: var(--dark-red);
+  border-color: var(--dark-red);
+  transform: scale(1.3);
+  box-shadow: 0 4px 15px rgba(107, 28, 35, 0.4);
 }
 
-.dropdown-arrow {
+.marker-year {
+  font-family: var(--font-accent);
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: var(--navy);
+  margin-top: 0.5rem;
+  transition: all 0.3s ease;
+}
+
+.slider-marker:hover .marker-year,
+.slider-marker.active .marker-year {
+  color: var(--dark-red);
+}
+
+.marker-label {
+  font-family: var(--font-sans);
+  font-size: 0.65rem;
+  color: var(--charcoal);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  opacity: 0.7;
+  transition: all 0.3s ease;
+  white-space: nowrap;
+}
+
+.slider-marker:hover .marker-label,
+.slider-marker.active .marker-label {
+  opacity: 1;
+  color: var(--sepia);
+}
+
+/* Ship indicator */
+.slider-ship {
   position: absolute;
-  right: 1rem;
-  top: 50%;
-  transform: translateY(-50%);
+  width: 40px;
+  height: 20px;
   color: var(--gold);
-  font-size: 0.7rem;
+  bottom: calc(50% + 20px);
+  left: calc(16.66% * 2 + 24px);
+  transform: translateX(-50%);
+  transition: left 0.5s var(--ease-out-expo);
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.2));
   pointer-events: none;
+}
+
+.slider-ship svg {
+  width: 100%;
+  height: 100%;
+}
+
+/* Hidden select for JS compatibility */
+.year-select-hidden {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+  width: 0;
+  height: 0;
+}
+
+/* Responsive slider */
+@media (max-width: 768px) {
+  .timeline-slider-container {
+    padding: 1.5rem 0;
+    overflow-x: auto;
+    margin: 0 -1rem 2rem;
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+
+  .timeline-slider-track {
+    min-width: 600px;
+  }
+
+  .marker-year {
+    font-size: 0.8rem;
+  }
+
+  .marker-label {
+    font-size: 0.55rem;
+  }
+
+  .slider-ship {
+    width: 32px;
+    height: 16px;
+  }
+}
+
+@media (max-width: 480px) {
+  .timeline-slider-track {
+    min-width: 500px;
+  }
+
+  .marker-dot {
+    width: 16px;
+    height: 16px;
+    border-width: 2px;
+  }
+
+  .marker-year {
+    font-size: 0.7rem;
+  }
+
+  .marker-label {
+    display: none;
+  }
 }
 
 /* Interactive Map Container */
@@ -1330,6 +1486,112 @@ a:hover {
 
 .ferry-route-line.hidden {
   opacity: 0.1;
+}
+
+/* Animated Ships on Routes */
+.route-ship {
+  fill: var(--gold);
+  filter: drop-shadow(1px 1px 2px rgba(0,0,0,0.3));
+  cursor: pointer;
+  transition: fill 0.3s ease;
+}
+
+.route-ship:hover {
+  fill: var(--gold-light);
+}
+
+.route-ship.ship-suhulet {
+  fill: var(--dark-red);
+}
+
+.route-ship.ship-suhulet:hover {
+  fill: #8b2430;
+}
+
+/* Ship animation along path */
+.route-ship-group {
+  offset-rotate: auto;
+}
+
+.route-ship-group[data-direction="forward"] {
+  animation: shipMoveForward var(--ship-duration, 12s) linear infinite;
+}
+
+.route-ship-group[data-direction="reverse"] {
+  animation: shipMoveReverse var(--ship-duration, 12s) linear infinite;
+}
+
+@keyframes shipMoveForward {
+  0% {
+    offset-distance: 0%;
+    opacity: 0;
+  }
+  5% {
+    opacity: 1;
+  }
+  95% {
+    opacity: 1;
+  }
+  100% {
+    offset-distance: 100%;
+    opacity: 0;
+  }
+}
+
+@keyframes shipMoveReverse {
+  0% {
+    offset-distance: 100%;
+    opacity: 0;
+  }
+  5% {
+    opacity: 1;
+  }
+  95% {
+    opacity: 1;
+  }
+  100% {
+    offset-distance: 0%;
+    opacity: 0;
+  }
+}
+
+/* Fallback for browsers without offset-path */
+@supports not (offset-path: path("M0,0")) {
+  .route-ship-group[data-direction="forward"] {
+    animation: shipMoveFallback var(--ship-duration, 12s) linear infinite;
+  }
+
+  .route-ship-group[data-direction="reverse"] {
+    animation: shipMoveFallbackReverse var(--ship-duration, 12s) linear infinite;
+  }
+
+  @keyframes shipMoveFallback {
+    0% { transform: translateX(0); opacity: 0; }
+    5% { opacity: 1; }
+    95% { opacity: 1; }
+    100% { transform: translateX(400px); opacity: 0; }
+  }
+
+  @keyframes shipMoveFallbackReverse {
+    0% { transform: translateX(400px); opacity: 0; }
+    5% { opacity: 1; }
+    95% { opacity: 1; }
+    100% { transform: translateX(0); opacity: 0; }
+  }
+}
+
+/* Ship wake effect */
+.ship-wake {
+  fill: none;
+  stroke: rgba(255, 255, 255, 0.3);
+  stroke-width: 2;
+  stroke-linecap: round;
+  opacity: 0.5;
+}
+
+/* Route ship hover info */
+.route-ship-group:hover .ship-wake {
+  stroke: rgba(255, 255, 255, 0.5);
 }
 
 /* Route Cards */
