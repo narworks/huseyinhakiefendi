@@ -157,141 +157,236 @@ a:hover {
   z-index: 1;
 }
 
-/* Bosphorus Scene */
-.hero-bosphorus {
+/* Bird's Eye View Old Paper Map */
+.hero-map {
   position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  height: 200px;
+  inset: 0;
   z-index: 1;
   overflow: hidden;
 }
 
-.bosphorus-water {
+.bosphorus-map {
   position: absolute;
   bottom: 0;
   left: 0;
-  right: 0;
-  height: 100px;
-  background: linear-gradient(to bottom,
-    transparent 0%,
-    rgba(27, 73, 101, 0.15) 30%,
-    rgba(27, 73, 101, 0.25) 100%
-  );
-}
-
-/* Shore silhouettes */
-.shore {
-  position: absolute;
-  bottom: 0;
-  width: 35%;
-  height: 200px;
-}
-
-.shore svg {
   width: 100%;
   height: 100%;
+  min-height: 400px;
+  opacity: 0.9;
 }
 
-.shore-europe {
-  left: 0;
-}
-
-.shore-asia {
-  right: 0;
-}
-
-.shore-label {
-  position: absolute;
-  bottom: 15px;
+/* Map Labels */
+.map-label {
   font-family: var(--font-accent);
-  font-size: 0.6rem;
-  letter-spacing: 0.2em;
-  text-transform: uppercase;
-  color: rgba(201, 168, 76, 0.4);
+  font-size: 8px;
+  fill: rgba(112, 66, 20, 0.5);
+  letter-spacing: 0.1em;
 }
 
-.shore-europe .shore-label {
-  left: 20px;
+.map-label-large {
+  font-size: 12px;
+  letter-spacing: 0.3em;
+  fill: rgba(112, 66, 20, 0.35);
 }
 
-.shore-asia .shore-label {
-  right: 20px;
+.map-label-water {
+  font-size: 10px;
+  letter-spacing: 0.5em;
+  fill: rgba(27, 73, 101, 0.4);
+  font-style: italic;
 }
 
-/* Ferry Routes */
-.ferry-routes {
+/* Ferry Routes (dashed lines) */
+.ferry-route {
+  fill: none;
+  stroke: rgba(201, 168, 76, 0.3);
+  stroke-width: 1;
+  stroke-dasharray: 4,3;
+  opacity: 0.6;
+}
+
+/* Animated Ships Container */
+.ship {
   position: absolute;
-  bottom: 50px;
-  left: 30%;
-  right: 30%;
-  height: 60px;
+  z-index: 3;
+  pointer-events: none;
 }
 
-.route {
-  position: absolute;
-  width: 100%;
-  height: 1px;
-  background: linear-gradient(to right,
-    transparent 0%,
-    rgba(201, 168, 76, 0.15) 20%,
-    rgba(201, 168, 76, 0.2) 50%,
-    rgba(201, 168, 76, 0.15) 80%,
-    transparent 100%
-  );
-}
-
-.route-1 { top: 20px; }
-.route-2 { top: 40px; }
-
-/* Animated Ferries */
-.ferry {
-  position: absolute;
-  bottom: 60px;
-  width: 50px;
-  height: 25px;
-  z-index: 2;
-}
-
-.ferry svg {
+.ship svg {
   width: 100%;
   height: 100%;
+  filter: drop-shadow(1px 1px 2px rgba(0,0,0,0.15));
 }
 
-.ferry-1 {
-  left: 25%;
-  animation: ferryToAsia 25s linear infinite;
+/* Paddle Steamer 1 - Europe to Asia */
+.ship-1 {
+  width: 45px;
+  height: 22px;
+  bottom: 52%;
+  left: 20%;
+  animation: shipToAsia1 28s linear infinite;
 }
 
-.ferry-2 {
+/* Paddle Steamer 2 - Asia to Europe */
+.ship-2 {
+  width: 40px;
+  height: 20px;
+  bottom: 48%;
   right: 25%;
   transform: scaleX(-1);
-  animation: ferryToEurope 30s linear infinite;
-  animation-delay: -10s;
+  animation: shipToEurope1 32s linear infinite;
+  animation-delay: -8s;
 }
 
-.ferry-3 {
-  left: 40%;
-  bottom: 45px;
-  width: 40px;
-  animation: ferryToAsia 35s linear infinite;
-  animation-delay: -15s;
+/* Car Ferry (Suhulet) - Main route */
+.ship-3 {
+  width: 55px;
+  height: 23px;
+  bottom: 50%;
+  left: 30%;
+  animation: shipSuhulet 35s linear infinite;
+  animation-delay: -5s;
 }
 
-@keyframes ferryToAsia {
+.ship-label {
+  position: absolute;
+  bottom: -14px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-family: var(--font-accent);
+  font-size: 7px;
+  letter-spacing: 0.15em;
+  color: rgba(201, 168, 76, 0.7);
+  white-space: nowrap;
+  text-shadow: 0 0 3px rgba(13, 27, 42, 0.8);
+}
+
+/* Small passenger ferry */
+.ship-4 {
+  width: 30px;
+  height: 15px;
+  bottom: 54%;
+  left: 45%;
+  animation: shipSmall 25s linear infinite;
+  animation-delay: -12s;
+}
+
+/* Paddle Steamer 3 - opposite direction */
+.ship-5 {
+  width: 42px;
+  height: 21px;
+  bottom: 46%;
+  right: 20%;
+  transform: scaleX(-1);
+  animation: shipToEurope2 30s linear infinite;
+  animation-delay: -18s;
+}
+
+/* Ship Animations */
+@keyframes shipToAsia1 {
   0% {
-    left: 20%;
+    left: 15%;
     opacity: 0;
+    transform: translateY(0);
   }
   5% {
-    opacity: 0.8;
+    opacity: 0.85;
+  }
+  25% {
+    transform: translateY(-3px);
   }
   50% {
-    opacity: 0.6;
+    opacity: 0.7;
+    transform: translateY(2px);
+  }
+  75% {
+    transform: translateY(-2px);
   }
   95% {
     opacity: 0.3;
+  }
+  100% {
+    left: 70%;
+    opacity: 0;
+    transform: translateY(0);
+  }
+}
+
+@keyframes shipToEurope1 {
+  0% {
+    right: 15%;
+    opacity: 0;
+    transform: scaleX(-1) translateY(0);
+  }
+  5% {
+    opacity: 0.75;
+  }
+  25% {
+    transform: scaleX(-1) translateY(-2px);
+  }
+  50% {
+    opacity: 0.6;
+    transform: scaleX(-1) translateY(3px);
+  }
+  75% {
+    transform: scaleX(-1) translateY(-1px);
+  }
+  95% {
+    opacity: 0.25;
+  }
+  100% {
+    right: 70%;
+    opacity: 0;
+    transform: scaleX(-1) translateY(0);
+  }
+}
+
+@keyframes shipSuhulet {
+  0% {
+    left: 25%;
+    opacity: 0;
+    transform: translateY(0);
+  }
+  5% {
+    opacity: 0.9;
+  }
+  20% {
+    transform: translateY(-2px);
+  }
+  40% {
+    opacity: 0.8;
+    transform: translateY(2px);
+  }
+  60% {
+    transform: translateY(-1px);
+  }
+  80% {
+    opacity: 0.6;
+    transform: translateY(1px);
+  }
+  95% {
+    opacity: 0.2;
+  }
+  100% {
+    left: 68%;
+    opacity: 0;
+    transform: translateY(0);
+  }
+}
+
+@keyframes shipSmall {
+  0% {
+    left: 40%;
+    opacity: 0;
+  }
+  8% {
+    opacity: 0.7;
+  }
+  50% {
+    opacity: 0.5;
+  }
+  92% {
+    opacity: 0.2;
   }
   100% {
     left: 75%;
@@ -299,23 +394,32 @@ a:hover {
   }
 }
 
-@keyframes ferryToEurope {
+@keyframes shipToEurope2 {
   0% {
-    right: 20%;
+    right: 18%;
     opacity: 0;
+    transform: scaleX(-1) translateY(0);
   }
-  5% {
+  6% {
     opacity: 0.7;
   }
-  50% {
-    opacity: 0.5;
+  30% {
+    transform: scaleX(-1) translateY(-3px);
   }
-  95% {
+  50% {
+    opacity: 0.55;
+    transform: scaleX(-1) translateY(2px);
+  }
+  70% {
+    transform: scaleX(-1) translateY(-1px);
+  }
+  94% {
     opacity: 0.2;
   }
   100% {
-    right: 75%;
+    right: 72%;
     opacity: 0;
+    transform: scaleX(-1) translateY(0);
   }
 }
 
@@ -1345,25 +1449,33 @@ a:hover {
     height: 110px;
   }
 
-  .hero-bosphorus {
-    height: 150px;
+  /* Map tablet adjustments */
+  .bosphorus-map {
+    min-height: 350px;
   }
 
-  .shore {
-    width: 30%;
-  }
-
-  .shore-label {
-    display: none;
-  }
-
-  .ferry {
+  .ship-1, .ship-2 {
     width: 35px;
-    bottom: 40px;
+    height: 18px;
   }
 
-  .ferry-3 {
+  .ship-3 {
+    width: 45px;
+    height: 19px;
+  }
+
+  .ship-4 {
+    width: 25px;
+    height: 12px;
+  }
+
+  .ship-5 {
     display: none;
+  }
+
+  .ship-label {
+    font-size: 6px;
+    bottom: -12px;
   }
 
   .specs-grid {
@@ -1408,21 +1520,41 @@ a:hover {
     font-size: 0.55rem;
   }
 
-  .hero-bosphorus {
-    height: 120px;
+  /* Map mobile adjustments */
+  .bosphorus-map {
+    min-height: 300px;
+    opacity: 0.75;
   }
 
-  .shore {
-    width: 25%;
+  .map-label {
+    font-size: 6px;
   }
 
-  .ferry {
-    width: 30px;
-    bottom: 30px;
+  .map-label-large {
+    font-size: 9px;
   }
 
-  .ferry-2 {
+  .map-label-water {
+    font-size: 7px;
+  }
+
+  .ship-1 {
+    width: 28px;
+    height: 14px;
+  }
+
+  .ship-2, .ship-4, .ship-5 {
     display: none;
+  }
+
+  .ship-3 {
+    width: 38px;
+    height: 16px;
+  }
+
+  .ship-label {
+    font-size: 5px;
+    bottom: -10px;
   }
 
   .footer-portrait-frame {
