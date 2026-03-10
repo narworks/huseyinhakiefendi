@@ -1189,17 +1189,67 @@ a:hover {
   }
 }
 
-/* Vintage Map Container */
+/* Vintage Map Container - Authentic Historical Appearance */
 .vintage-map-container {
   position: relative;
   max-width: 900px;
   margin: 0 auto 3rem;
-  border-radius: 12px;
+  border-radius: 4px;
   overflow: hidden;
+  /* Aged paper base color */
+  background:
+    /* Subtle noise texture using gradients */
+    repeating-conic-gradient(
+      from 0deg at 50% 50%,
+      rgba(139, 115, 85, 0.03) 0deg 90deg,
+      transparent 90deg 180deg
+    ),
+    /* Warm paper variations */
+    radial-gradient(ellipse at 20% 80%, rgba(180, 140, 80, 0.08) 0%, transparent 50%),
+    radial-gradient(ellipse at 80% 20%, rgba(160, 120, 70, 0.06) 0%, transparent 40%),
+    radial-gradient(ellipse at 50% 50%, rgba(200, 170, 120, 0.05) 0%, transparent 60%),
+    /* Base aged paper color */
+    linear-gradient(135deg, #ede4d0 0%, #e8ddc4 25%, #f0e6d2 50%, #e6d9c0 75%, #ece2ce 100%);
+  /* Realistic aged paper box shadow */
   box-shadow:
-    0 4px 20px rgba(0, 0, 0, 0.08),
-    inset 0 0 0 1px rgba(201, 168, 76, 0.3);
-  background: #f5efe0;
+    /* Main shadow */
+    0 8px 32px rgba(80, 60, 30, 0.25),
+    0 2px 8px rgba(80, 60, 30, 0.15),
+    /* Inner shadow for depth */
+    inset 0 0 60px rgba(120, 90, 50, 0.08),
+    /* Edge darkening */
+    inset 0 0 3px rgba(100, 70, 30, 0.2);
+}
+
+/* Aged paper edge effect overlay */
+.vintage-map-container::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 50;
+  /* Vignette effect - darker edges like aged paper */
+  background: radial-gradient(
+    ellipse at center,
+    transparent 50%,
+    rgba(80, 50, 20, 0.06) 70%,
+    rgba(60, 40, 15, 0.12) 85%,
+    rgba(40, 25, 10, 0.2) 100%
+  );
+}
+
+/* Paper texture grain overlay */
+.vintage-map-container::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 51;
+  opacity: 0.4;
+  /* Fine grain texture */
+  background-image:
+    url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+  mix-blend-mode: multiply;
 }
 
 /* Vintage SVG Bosphorus Map */
@@ -1208,67 +1258,100 @@ a:hover {
   height: auto;
   min-height: 500px;
   display: block;
-  background: #f5efe0;
+  /* Subtle sepia tint for historical feel */
+  filter: sepia(8%) saturate(90%) contrast(98%);
+  background: transparent;
 }
 
-/* Map year badge - top right */
+/* Map year badge - top right, historical seal style */
 .vintage-map-container .map-year-badge {
   position: absolute;
-  top: 1rem;
-  right: 1rem;
+  top: 1.2rem;
+  right: 1.2rem;
   left: auto;
-  background: var(--navy);
-  color: var(--gold);
+  background: linear-gradient(135deg, #f5eee0 0%, #e8dcc8 100%);
+  color: #4a3525;
   font-family: var(--font-accent);
-  font-size: 1.3rem;
+  font-size: 1.4rem;
   font-weight: 700;
-  padding: 0.6rem 1.2rem;
-  border-radius: 8px;
-  border: 2px solid var(--gold);
+  padding: 0.5rem 1rem;
+  border-radius: 50%;
+  width: 60px;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 3px solid #6a5a48;
   z-index: 100;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  box-shadow:
+    0 3px 10px rgba(50, 30, 10, 0.3),
+    inset 0 1px 0 rgba(255, 255, 255, 0.4),
+    inset 0 -1px 3px rgba(100, 70, 30, 0.2);
 }
 
-/* SVG Pier markers - interactive */
+.vintage-map-container .map-year-badge::before {
+  content: '';
+  position: absolute;
+  inset: 4px;
+  border: 1px solid #9a8a70;
+  border-radius: 50%;
+}
+
+/* SVG Pier markers - interactive historical style */
 .vintage-bosphorus-map .pier {
   cursor: pointer;
-  transition: transform 0.3s ease;
+  transition: transform 0.3s ease, filter 0.3s ease;
 }
 
 .vintage-bosphorus-map .pier:hover {
-  transform: scale(1.15);
+  transform: scale(1.2);
+  filter: drop-shadow(0 2px 4px rgba(80, 50, 20, 0.4));
 }
 
 .vintage-bosphorus-map .pier:hover text {
-  fill: var(--dark-red);
+  fill: #6b2030;
   font-weight: 700;
 }
 
 .vintage-bosphorus-map .pier.hidden {
-  opacity: 0.25;
+  opacity: 0.2;
   pointer-events: none;
+  filter: grayscale(50%);
 }
 
-/* Ferry routes */
+.vintage-bosphorus-map .pier.major {
+  filter: drop-shadow(0 1px 2px rgba(80, 50, 20, 0.3));
+}
+
+/* Ferry routes - historical dotted lines */
 .vintage-bosphorus-map .ferry-route {
   transition: opacity 0.4s ease, stroke-width 0.3s ease;
 }
 
 .vintage-bosphorus-map .ferry-route.hidden {
-  opacity: 0.1;
+  opacity: 0.08;
 }
 
 .vintage-bosphorus-map .ferry-route:hover {
-  stroke-width: 4;
+  stroke-width: 3;
   opacity: 1;
 }
 
-/* Suhulet route - special styling */
+/* Suhulet route - special historical styling */
 .vintage-bosphorus-map .suhulet-route {
-  stroke: var(--dark-red);
+  stroke: #8b2030;
 }
 
-/* Animated ships */
+/* Suhulet label visibility */
+.vintage-bosphorus-map .suhulet-label {
+  transition: opacity 0.4s ease;
+}
+
+.vintage-bosphorus-map .suhulet-label.hidden {
+  opacity: 0;
+}
+
+/* Animated ships - period style */
 .vintage-bosphorus-map .route-ship {
   transition: opacity 0.4s ease;
 }
@@ -1278,7 +1361,7 @@ a:hover {
 }
 
 .vintage-bosphorus-map .suhulet-ship {
-  fill: var(--dark-red);
+  fill: #8b2030;
 }
 
 /* Custom pier markers */
@@ -1432,67 +1515,84 @@ a:hover {
   opacity: 0.15;
 }
 
-/* Map legend overlay */
+/* Map legend overlay - Historical cartouche style */
 .map-legend-overlay {
   position: absolute;
-  bottom: 20px;
-  left: 20px;
-  background: rgba(245, 239, 224, 0.95);
-  border: 1px solid rgba(201, 168, 76, 0.3);
-  border-radius: 8px;
-  padding: 12px 16px;
-  z-index: 1000;
-  font-family: var(--font-sans);
-  font-size: 0.75rem;
+  bottom: 25px;
+  left: 25px;
+  background: linear-gradient(135deg, #f5eee0 0%, #ebe3d2 100%);
+  border: 2px solid #6a5a48;
+  border-radius: 4px;
+  padding: 14px 18px;
+  z-index: 100;
+  font-family: var(--font-serif);
+  font-size: 0.8rem;
+  box-shadow:
+    0 3px 12px rgba(60, 40, 20, 0.2),
+    inset 0 1px 0 rgba(255, 255, 255, 0.3);
+}
+
+.map-legend-overlay::before {
+  content: '';
+  position: absolute;
+  inset: 3px;
+  border: 1px solid #9a8a70;
+  border-radius: 2px;
+  pointer-events: none;
 }
 
 .map-legend-overlay .legend-title {
   font-family: var(--font-accent);
-  font-size: 0.65rem;
-  letter-spacing: 0.15em;
-  color: var(--charcoal);
-  margin-bottom: 8px;
+  font-size: 0.7rem;
+  letter-spacing: 0.2em;
+  color: #4a3a28;
+  margin-bottom: 10px;
   text-transform: uppercase;
+  border-bottom: 1px solid #c0b090;
+  padding-bottom: 6px;
 }
 
 .map-legend-overlay .legend-item {
   display: flex;
   align-items: center;
-  gap: 8px;
-  margin-bottom: 4px;
-  color: var(--text-body);
+  gap: 10px;
+  margin-bottom: 6px;
+  color: #5a4a38;
+  font-size: 0.75rem;
 }
 
 .map-legend-overlay .legend-pier {
-  width: 12px;
-  height: 12px;
-  background: var(--gold);
-  border: 2px solid var(--warm-white);
+  width: 10px;
+  height: 10px;
+  background: #b09060;
+  border: 2px solid #f0e6d5;
   border-radius: 50%;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+  box-shadow:
+    0 0 0 1px #5a4535,
+    0 1px 2px rgba(0, 0, 0, 0.2);
 }
 
 .map-legend-overlay .legend-route {
-  width: 24px;
-  height: 3px;
+  width: 28px;
+  height: 2px;
   background: repeating-linear-gradient(
     90deg,
-    var(--gold),
-    var(--gold) 5px,
+    #8a6a40,
+    #8a6a40 5px,
     transparent 5px,
-    transparent 8px
+    transparent 9px
   );
 }
 
 .map-legend-overlay .legend-suhulet {
-  width: 24px;
-  height: 4px;
+  width: 28px;
+  height: 3px;
   background: repeating-linear-gradient(
     90deg,
-    var(--dark-red),
-    var(--dark-red) 5px,
-    transparent 5px,
-    transparent 8px
+    #8b2030,
+    #8b2030 4px,
+    transparent 4px,
+    transparent 7px
   );
 }
 

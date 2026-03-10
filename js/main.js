@@ -217,24 +217,25 @@
       kadikoy: 'Fevaid-i Osmaniye tarafından kuruldu (1846).'
     };
 
-    // Create tooltip element
+    // Create tooltip element - Historical parchment style
     const tooltip = document.createElement('div');
     tooltip.className = 'svg-map-tooltip';
     tooltip.style.cssText = `
       position: absolute;
-      background: rgba(13, 27, 42, 0.95);
-      color: #f5efe0;
-      padding: 10px 14px;
-      border-radius: 8px;
-      border: 2px solid #c9a84c;
+      background: linear-gradient(135deg, #f5eee0 0%, #e8dcc8 100%);
+      color: #4a3525;
+      padding: 12px 16px;
+      border-radius: 4px;
+      border: 2px solid #6a5a48;
       font-family: 'Source Serif 4', serif;
-      font-size: 13px;
-      max-width: 220px;
+      font-size: 12px;
+      max-width: 240px;
       pointer-events: none;
       opacity: 0;
       transition: opacity 0.3s ease;
       z-index: 1000;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+      box-shadow: 0 4px 16px rgba(60, 40, 20, 0.35);
+      line-height: 1.5;
     `;
     document.querySelector('.vintage-map-container')?.appendChild(tooltip);
 
@@ -247,7 +248,7 @@
 
       pier.addEventListener('mouseenter', (e) => {
         const desc = pierDescriptions[pierId] || '';
-        tooltip.innerHTML = `<strong style="color:#c9a84c">${pierName} İskelesi</strong><br>${desc}<br><em style="font-size:11px;color:#c9a84c">Kuruluş: ${pierYear}</em>`;
+        tooltip.innerHTML = `<strong style="color:#6b4030;font-size:13px;border-bottom:1px solid #c0b090;padding-bottom:4px;display:block;margin-bottom:6px;">${pierName} İskelesi</strong><span style="color:#5a4a38">${desc}</span><br><em style="font-size:10px;color:#7a6a58;margin-top:6px;display:block;">Kuruluş: ${pierYear}</em>`;
         tooltip.style.opacity = '1';
       });
 
@@ -327,6 +328,14 @@
         const shipYear = parseInt(ship.getAttribute('data-year'), 10);
         const isVisible = shipYear <= pierVisibilityYear;
         ship.classList.toggle('hidden', !isVisible);
+      });
+
+      // Update route labels (like Suhulet label)
+      const routeLabels = mapElement.querySelectorAll('.suhulet-label');
+      routeLabels.forEach(label => {
+        const labelYear = parseInt(label.getAttribute('data-year'), 10);
+        const isVisible = labelYear <= pierVisibilityYear;
+        label.classList.toggle('hidden', !isVisible);
       });
 
       // Update fleet stats display
