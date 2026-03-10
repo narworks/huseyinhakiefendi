@@ -34,6 +34,9 @@
   <!-- AOS Animation Library -->
   <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
 
+  <!-- Leaflet.js for Real Map -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
+
   <!-- Styles -->
   <link rel="stylesheet" href="css/style.css">
 
@@ -368,276 +371,31 @@
         <option value="1894">1894</option>
       </select>
 
-      <!-- Interactive Map Container -->
+      <!-- Interactive Map Container - GERÇEK LEAFLET HARİTASI -->
       <div class="interactive-map-container" data-aos="fade-up" data-aos-delay="300">
-        <!-- Vintage Map Background (CSS styled) -->
-        <div class="vintage-map-bg"></div>
-
-        <!-- SVG Overlay for interactive elements - Gerçekçi Boğaziçi Haritası -->
-        <svg class="interactive-map" viewBox="0 0 800 600" preserveAspectRatio="xMidYMid meet">
-          <defs>
-            <filter id="glow" x="-50%" y="-50%" width="200%" height="200%">
-              <feGaussianBlur stdDeviation="3" result="blur"/>
-              <feMerge>
-                <feMergeNode in="blur"/>
-                <feMergeNode in="SourceGraphic"/>
-              </feMerge>
-            </filter>
-            <!-- Water gradient -->
-            <linearGradient id="waterGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-              <stop offset="0%" style="stop-color:rgba(27,73,101,0.15)"/>
-              <stop offset="50%" style="stop-color:rgba(42,125,165,0.1)"/>
-              <stop offset="100%" style="stop-color:rgba(27,73,101,0.15)"/>
-            </linearGradient>
-            <!-- Land pattern -->
-            <pattern id="landPattern" patternUnits="userSpaceOnUse" width="20" height="20">
-              <rect width="20" height="20" fill="rgba(201,168,76,0.08)"/>
-              <circle cx="10" cy="10" r="1" fill="rgba(112,66,20,0.1)"/>
-            </pattern>
-          </defs>
-
-          <!-- Water background -->
-          <rect x="0" y="0" width="800" height="600" fill="url(#waterGradient)"/>
-
-          <!-- EUROPEAN COAST (Rumeli Yakası) - Gerçekçi kıyı hattı -->
-          <path class="coast-line coast-europe" d="
-            M0,0
-            L140,0
-            Q160,30 155,60
-            Q145,100 165,130
-            C180,160 170,190 185,220
-            Q195,245 175,275
-            C165,300 190,330 180,360
-            Q170,395 195,430
-            C210,460 185,490 200,520
-            Q215,555 190,580
-            L180,600
-            L0,600
-            Z
-          " fill="url(#landPattern)" stroke="rgba(201,168,76,0.5)" stroke-width="2"/>
-
-          <!-- ASIAN COAST (Anadolu Yakası) - Gerçekçi kıyı hattı -->
-          <path class="coast-line coast-asia" d="
-            M800,0
-            L660,0
-            Q640,35 655,70
-            Q670,100 645,135
-            C630,165 655,195 635,230
-            Q620,265 645,300
-            C665,335 640,370 655,405
-            Q675,440 650,475
-            C635,505 660,540 645,570
-            Q630,590 650,600
-            L800,600
-            Z
-          " fill="url(#landPattern)" stroke="rgba(201,168,76,0.5)" stroke-width="2"/>
-
-          <!-- Karadeniz (Black Sea) indicator -->
-          <text x="400" y="25" class="map-water-label" style="font-size:10px;letter-spacing:0.4em;fill:rgba(27,73,101,0.3);">KARADENİZ</text>
-          <path d="M300,35 L500,35" stroke="rgba(27,73,101,0.15)" stroke-width="1" stroke-dasharray="3,3"/>
-
-          <!-- Marmara Denizi indicator -->
-          <text x="400" y="585" class="map-water-label" style="font-size:10px;letter-spacing:0.4em;fill:rgba(27,73,101,0.3);">MARMARA</text>
-          <path d="M300,570 L500,570" stroke="rgba(27,73,101,0.15)" stroke-width="1" stroke-dasharray="3,3"/>
-
-          <!-- Region Labels -->
-          <text x="85" y="300" class="map-region-label" transform="rotate(-90, 85, 300)">RUMELİ YAKASI</text>
-          <text x="715" y="300" class="map-region-label" transform="rotate(90, 715, 300)">ANADOLU YAKASI</text>
-
-          <!-- Water Label -->
-          <text x="400" y="310" class="map-water-label">BOĞAZİÇİ</text>
-
-          <!-- Boğaz'ın en dar noktası işareti -->
-          <line x1="180" y1="235" x2="640" y2="235" stroke="rgba(107,28,35,0.15)" stroke-width="1" stroke-dasharray="2,4"/>
-          <text x="400" y="248" style="font-family:var(--font-sans);font-size:7px;fill:rgba(107,28,35,0.4);text-anchor:middle;">En dar nokta ~700m</text>
-
-          <!-- FERRY PIERS - Coğrafi olarak doğru konumlar -->
-          <g class="piers-group" id="piersGroup">
-            <!-- === AVRUPA YAKASI (Kuzeyden Güneye) === -->
-
-            <!-- Bebek - Kuzey Boğaz -->
-            <g class="pier" data-pier="bebek" data-year="1856" tabindex="0">
-              <circle cx="172" cy="145" r="12" class="pier-bg"/>
-              <circle cx="172" cy="145" r="7" class="pier-inner"/>
-              <text x="158" y="135" class="pier-label">Bebek</text>
-            </g>
-
-            <!-- Arnavutköy -->
-            <g class="pier" data-pier="arnavutkoy" data-year="1860" tabindex="0">
-              <circle cx="180" cy="180" r="12" class="pier-bg"/>
-              <circle cx="180" cy="180" r="7" class="pier-inner"/>
-              <text x="155" y="195" class="pier-label">Arnavutköy</text>
-            </g>
-
-            <!-- Ortaköy -->
-            <g class="pier" data-pier="ortakoy" data-year="1856" tabindex="0">
-              <circle cx="185" cy="220" r="12" class="pier-bg"/>
-              <circle cx="185" cy="220" r="7" class="pier-inner"/>
-              <text x="155" y="235" class="pier-label">Ortaköy</text>
-            </g>
-
-            <!-- Beşiktaş - Önemli iskele -->
-            <g class="pier" data-pier="besiktas" data-year="1854" tabindex="0">
-              <circle cx="188" cy="275" r="14" class="pier-bg"/>
-              <circle cx="188" cy="275" r="9" class="pier-inner"/>
-              <text x="155" y="265" class="pier-label">Beşiktaş</text>
-            </g>
-
-            <!-- Kabataş -->
-            <g class="pier" data-pier="kabatas" data-year="1854" tabindex="0">
-              <circle cx="192" cy="340" r="14" class="pier-bg"/>
-              <circle cx="192" cy="340" r="9" class="pier-inner"/>
-              <text x="155" y="355" class="pier-label">Kabataş</text>
-            </g>
-
-            <!-- Karaköy (Galata) -->
-            <g class="pier" data-pier="karakoy" data-year="1854" tabindex="0">
-              <circle cx="190" cy="400" r="12" class="pier-bg"/>
-              <circle cx="190" cy="400" r="7" class="pier-inner"/>
-              <text x="155" y="415" class="pier-label">Karaköy</text>
-            </g>
-
-            <!-- Eminönü - Ana iskele -->
-            <g class="pier" data-pier="eminonu" data-year="1854" tabindex="0">
-              <circle cx="195" cy="450" r="16" class="pier-bg"/>
-              <circle cx="195" cy="450" r="10" class="pier-inner"/>
-              <text x="155" y="465" class="pier-label">Eminönü</text>
-            </g>
-
-            <!-- Sirkeci -->
-            <g class="pier" data-pier="sirkeci" data-year="1854" tabindex="0">
-              <circle cx="198" cy="500" r="12" class="pier-bg"/>
-              <circle cx="198" cy="500" r="7" class="pier-inner"/>
-              <text x="160" y="515" class="pier-label">Sirkeci</text>
-            </g>
-
-            <!-- === ANADOLU YAKASI (Kuzeyden Güneye) === -->
-
-            <!-- Beykoz - Kuzey -->
-            <g class="pier" data-pier="beykoz" data-year="1854" tabindex="0">
-              <circle cx="650" cy="90" r="12" class="pier-bg"/>
-              <circle cx="650" cy="90" r="7" class="pier-inner"/>
-              <text x="665" y="95" class="pier-label">Beykoz</text>
-            </g>
-
-            <!-- Paşabahçe -->
-            <g class="pier" data-pier="pasabahce" data-year="1866" tabindex="0">
-              <circle cx="655" cy="135" r="10" class="pier-bg"/>
-              <circle cx="655" cy="135" r="6" class="pier-inner"/>
-              <text x="670" y="140" class="pier-label">Paşabahçe</text>
-            </g>
-
-            <!-- Anadolu Hisarı -->
-            <g class="pier" data-pier="anadoluhisari" data-year="1858" tabindex="0">
-              <circle cx="642" cy="180" r="10" class="pier-bg"/>
-              <circle cx="642" cy="180" r="6" class="pier-inner"/>
-              <text x="655" y="185" class="pier-label">A.Hisarı</text>
-            </g>
-
-            <!-- Kandilli - En dar noktada -->
-            <g class="pier" data-pier="kandilli" data-year="1854" tabindex="0">
-              <circle cx="635" cy="230" r="12" class="pier-bg"/>
-              <circle cx="635" cy="230" r="7" class="pier-inner"/>
-              <text x="650" y="235" class="pier-label">Kandilli</text>
-            </g>
-
-            <!-- Beylerbeyi -->
-            <g class="pier" data-pier="beylerbeyi" data-year="1860" tabindex="0">
-              <circle cx="645" cy="285" r="10" class="pier-bg"/>
-              <circle cx="645" cy="285" r="6" class="pier-inner"/>
-              <text x="660" y="290" class="pier-label">Beylerbeyi</text>
-            </g>
-
-            <!-- Üsküdar - Önemli iskele -->
-            <g class="pier" data-pier="uskudar" data-year="1854" tabindex="0">
-              <circle cx="640" cy="350" r="16" class="pier-bg"/>
-              <circle cx="640" cy="350" r="10" class="pier-inner"/>
-              <text x="655" y="355" class="pier-label">Üsküdar</text>
-            </g>
-
-            <!-- Salacak -->
-            <g class="pier" data-pier="salacak" data-year="1866" tabindex="0">
-              <circle cx="650" cy="400" r="10" class="pier-bg"/>
-              <circle cx="650" cy="400" r="6" class="pier-inner"/>
-              <text x="665" y="405" class="pier-label">Salacak</text>
-            </g>
-
-            <!-- Haydarpaşa - Suhulet hattı -->
-            <g class="pier" data-pier="haydarpasa" data-year="1872" tabindex="0">
-              <circle cx="655" cy="450" r="14" class="pier-bg"/>
-              <circle cx="655" cy="450" r="9" class="pier-inner"/>
-              <text x="670" y="455" class="pier-label">Haydarpaşa</text>
-            </g>
-
-            <!-- Kadıköy -->
-            <g class="pier" data-pier="kadikoy" data-year="1858" tabindex="0">
-              <circle cx="648" cy="510" r="14" class="pier-bg"/>
-              <circle cx="648" cy="510" r="9" class="pier-inner"/>
-              <text x="665" y="515" class="pier-label">Kadıköy</text>
-            </g>
-          </g>
-
-          <!-- FERRY ROUTES -->
-          <g class="ferry-routes-group" id="routesGroup">
-            <!-- Boğaz Hattı (Kuzey) -->
-            <path class="ferry-route-line" d="M172,145 Q400,115 650,90" data-route="bebek-beykoz" data-year="1856"/>
-
-            <!-- Boğaz Hattı (Orta-Kuzey) -->
-            <path class="ferry-route-line" d="M185,220 Q400,200 635,230" data-route="ortakoy-kandilli" data-year="1856"/>
-
-            <!-- Beşiktaş-Üsküdar Hattı -->
-            <path class="ferry-route-line" d="M188,275 Q400,285 640,350" data-route="besiktas-uskudar" data-year="1854"/>
-
-            <!-- Kabataş-Üsküdar Hattı (Ana hat) -->
-            <path class="ferry-route-line" d="M192,340 Q400,330 640,350" data-route="kabatas-uskudar" data-year="1854"/>
-
-            <!-- SUHULET HATTI - Eminönü-Haydarpaşa (Arabalı Vapur) -->
-            <path class="ferry-route-line route-suhulet" d="M195,450 Q420,430 655,450" data-route="eminonu-haydarpasa" data-year="1872"/>
-
-            <!-- Sirkeci-Kadıköy Hattı -->
-            <path class="ferry-route-line" d="M198,500 Q420,495 648,510" data-route="sirkeci-kadikoy" data-year="1858"/>
-
-            <!-- Karaköy-Üsküdar -->
-            <path class="ferry-route-line" d="M190,400 Q400,380 640,350" data-route="karakoy-uskudar" data-year="1860"/>
-          </g>
-
-          <!-- ANIMATED SHIPS (will be added by JS) -->
-          <g class="ships-group" id="shipsGroup">
-          </g>
-
-          <!-- Compass -->
-          <g class="map-compass" transform="translate(750, 45)">
-            <circle cx="0" cy="0" r="25" fill="rgba(245,239,224,0.95)" stroke="rgba(201,168,76,0.6)" stroke-width="1.5"/>
-            <path d="M0,-18 L4,0 L0,6 L-4,0 Z" fill="rgba(107,28,35,0.85)"/>
-            <path d="M0,18 L4,0 L0,-6 L-4,0 Z" fill="rgba(201,168,76,0.7)"/>
-            <text x="0" y="-30" class="compass-label">K</text>
-          </g>
-
-          <!-- Legend -->
-          <g class="map-legend" transform="translate(25, 540)">
-            <rect x="0" y="0" width="130" height="55" rx="6" fill="rgba(245,239,224,0.95)" stroke="rgba(201,168,76,0.3)" stroke-width="1"/>
-            <text x="10" y="15" class="legend-title">LEJANT</text>
-            <circle cx="18" cy="28" r="5" fill="var(--gold)"/>
-            <text x="28" y="32" class="legend-text">İskele</text>
-            <line x1="10" y1="45" x2="40" y2="45" stroke="rgba(201,168,76,0.5)" stroke-width="2" stroke-dasharray="4,2"/>
-            <text x="48" y="48" class="legend-text">Hat</text>
-            <line x1="70" y1="28" x2="100" y2="28" stroke="rgba(107,28,35,0.6)" stroke-width="3" stroke-dasharray="4,2"/>
-            <text x="105" y="32" class="legend-text" style="font-size:7px;">Suhulet</text>
-          </g>
-        </svg>
-
-        <!-- Info Panel (appears on click) -->
-        <div class="map-info-panel" id="mapInfoPanel">
-          <button class="info-close" aria-label="Kapat">&times;</button>
-          <div class="info-content">
-            <h3 class="info-title"></h3>
-            <p class="info-desc"></p>
-            <div class="info-stats"></div>
-          </div>
-        </div>
+        <!-- Leaflet Map -->
+        <div id="bosphorusMap" class="leaflet-map"></div>
 
         <!-- Year indicator on map -->
         <div class="map-year-badge" id="mapYearBadge">1872</div>
+
+        <!-- Legend overlay -->
+        <div class="map-legend-overlay">
+          <div class="legend-title">LEJANT</div>
+          <div class="legend-item">
+            <span class="legend-pier"></span>
+            <span>İskele</span>
+          </div>
+          <div class="legend-item">
+            <span class="legend-route"></span>
+            <span>Hat</span>
+          </div>
+          <div class="legend-item">
+            <span class="legend-suhulet"></span>
+            <span>Suhulet</span>
+          </div>
+        </div>
+
       </div>
 
       <!-- Suhulet Story -->
@@ -1147,6 +905,7 @@
 
   <!-- Scripts -->
   <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
   <script src="js/main.js"></script>
   <script>
     AOS.init({
