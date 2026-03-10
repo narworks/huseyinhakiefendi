@@ -198,11 +198,11 @@
       attributionControl: true
     });
 
-    // Add OpenTopoMap tiles (vintage/topographic aesthetic, free, no API key)
-    L.tileLayer('https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png', {
-      attribution: '&copy; <a href="https://opentopomap.org">OpenTopoMap</a> &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
-      maxZoom: 17,
-      subdomains: 'abc'
+    // Add CartoDB Positron tiles (clean, minimal labels, free)
+    L.tileLayer('https://{s}.basemaps.cartocdn.com/light_nolabels/{z}/{x}/{y}{r}.png', {
+      attribution: '&copy; <a href="https://carto.com/">CARTO</a> &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
+      maxZoom: 19,
+      subdomains: 'abcd'
     }).addTo(map);
 
     // Store markers and routes for year filtering
@@ -351,86 +351,27 @@
       }
     };
 
-    // Ferry routes with curved coordinates following the Bosphorus
+    // Ferry routes - only main historical routes (water-based coordinates)
     const routeData = [
-      {
-        id: 'bebek-beykoz',
-        name: 'Bebek-Beykoz Hattı',
-        year: 1856,
-        // Curved route through the strait
-        coords: [
-          [41.0775, 29.0437], // Bebek
-          [41.0850, 29.0550], // Mid-strait curve
-          [41.0950, 29.0680], // Passing Anadolu Hisarı
-          [41.1100, 29.0800], // Approaching Beykoz
-          [41.1315, 29.0945]  // Beykoz
-        ],
-        isSuhulet: false
-      },
-      {
-        id: 'ortakoy-kandilli',
-        name: 'Ortaköy-Kandilli Hattı',
-        year: 1856,
-        coords: [
-          [41.0475, 29.0270], // Ortaköy
-          [41.0550, 29.0400], // Mid-strait
-          [41.0695, 29.0575]  // Kandilli
-        ],
-        isSuhulet: false
-      },
-      {
-        id: 'besiktas-uskudar',
-        name: 'Beşiktaş-Üsküdar Hattı',
-        year: 1854,
-        coords: [
-          [41.0430, 29.0050], // Beşiktaş
-          [41.0380, 29.0100], // Mid-strait
-          [41.0260, 29.0155]  // Üsküdar
-        ],
-        isSuhulet: false
-      },
       {
         id: 'kabatas-uskudar-suhulet',
         name: 'Kabataş-Üsküdar Hattı (Suhulet)',
         year: 1872,
         coords: [
-          [41.0335, 29.0245], // Kabataş
-          [41.0310, 29.0200], // Mid-strait curve
-          [41.0260, 29.0155]  // Üsküdar
+          [41.0320, 29.0230], // Kabataş (deniz üzeri)
+          [41.0295, 29.0195], // Boğaz ortası
+          [41.0270, 29.0165]  // Üsküdar (deniz üzeri)
         ],
         isSuhulet: true
       },
       {
-        id: 'kabatas-uskudar',
-        name: 'Kabataş-Üsküdar Hattı',
+        id: 'eminonu-kadikoy',
+        name: 'Eminönü-Kadıköy Hattı',
         year: 1854,
         coords: [
-          [41.0335, 29.0245], // Kabataş
-          [41.0310, 29.0200], // Mid-strait curve
-          [41.0260, 29.0155]  // Üsküdar
-        ],
-        isSuhulet: false
-      },
-      {
-        id: 'eminonu-haydarpasa',
-        name: 'Eminönü-Haydarpaşa Hattı',
-        year: 1872,
-        coords: [
-          [41.0175, 28.9715], // Eminönü
-          [41.0120, 28.9850], // Curve around Sarayburnu
-          [41.0050, 28.9980], // Mid-strait
-          [40.9985, 29.0170]  // Haydarpaşa
-        ],
-        isSuhulet: false
-      },
-      {
-        id: 'sirkeci-kadikoy',
-        name: 'Sirkeci-Kadıköy Hattı',
-        year: 1858,
-        coords: [
-          [41.0130, 28.9785], // Sirkeci
-          [41.0050, 28.9950], // Mid-strait
-          [40.9915, 29.0235]  // Kadıköy
+          [41.0165, 28.9740], // Eminönü (deniz üzeri)
+          [41.0080, 28.9900], // Boğaz ortası
+          [40.9950, 29.0180]  // Kadıköy (deniz üzeri)
         ],
         isSuhulet: false
       },
@@ -439,9 +380,20 @@
         name: 'Karaköy-Üsküdar Hattı',
         year: 1860,
         coords: [
-          [41.0215, 28.9750], // Karaköy
-          [41.0230, 28.9950], // Mid-strait
-          [41.0260, 29.0155]  // Üsküdar
+          [41.0200, 28.9780], // Karaköy (deniz üzeri)
+          [41.0220, 28.9950], // Boğaz ortası
+          [41.0265, 29.0140]  // Üsküdar (deniz üzeri)
+        ],
+        isSuhulet: false
+      },
+      {
+        id: 'besiktas-uskudar',
+        name: 'Beşiktaş-Üsküdar Hattı',
+        year: 1854,
+        coords: [
+          [41.0410, 29.0070], // Beşiktaş (deniz üzeri)
+          [41.0350, 29.0120], // Boğaz ortası
+          [41.0270, 29.0160]  // Üsküdar (deniz üzeri)
         ],
         isSuhulet: false
       }
@@ -493,9 +445,9 @@
     routeData.forEach(route => {
       const polyline = L.polyline(route.coords, {
         color: route.isSuhulet ? '#6b1c23' : '#c9a84c',
-        weight: route.isSuhulet ? 2.5 : 1.5,
-        dashArray: '6, 4',
-        opacity: 0.7
+        weight: route.isSuhulet ? 2 : 1.5,
+        dashArray: '5, 3',
+        opacity: 0.6
       }).addTo(map);
 
       polyline.bindTooltip(route.name, {
@@ -505,49 +457,57 @@
 
       routeLines[route.id] = { polyline, year: route.year, isSuhulet: route.isSuhulet };
 
-      // Create animated ship marker for each route
+      // Create ship marker for each route (no rotation)
       const shipIcon = L.divIcon({
         className: route.isSuhulet ? 'animated-ship suhulet-ship' : 'animated-ship',
         html: route.isSuhulet
-          ? '<svg viewBox="0 0 40 20"><path d="M2,14 L5,18 L35,18 L38,14 L30,14 L28,16 L12,16 L10,14 Z" fill="currentColor"/><rect x="6" y="8" width="28" height="7" rx="1" fill="currentColor"/><rect x="16" y="3" width="8" height="6" rx="1" fill="currentColor"/><rect x="18" y="0" width="4" height="4" fill="currentColor"/></svg>'
-          : '<svg viewBox="0 0 35 18"><path d="M2,12 Q0,10 3,9 L6,9 L6,12 L30,12 L30,9 L33,9 Q36,10 34,12 L34,15 L2,15 Z" fill="currentColor"/><ellipse cx="6" cy="11" rx="3" ry="3" fill="currentColor"/><ellipse cx="30" cy="11" rx="3" ry="3" fill="currentColor"/><rect x="9" y="6" width="18" height="4" rx="1" fill="currentColor"/><rect x="13" y="2" width="10" height="5" rx="1" fill="currentColor"/><rect x="16" y="0" width="4" height="3" fill="currentColor"/></svg>',
-        iconSize: route.isSuhulet ? [28, 14] : [24, 12],
-        iconAnchor: route.isSuhulet ? [14, 7] : [12, 6]
+          ? '<svg viewBox="0 0 24 12"><path d="M1,8 L3,11 L21,11 L23,8 L19,8 L18,10 L6,10 L5,8 Z" fill="currentColor"/><rect x="4" y="4" width="16" height="5" rx="1" fill="currentColor"/><rect x="9" y="1" width="6" height="4" rx="1" fill="currentColor"/><rect x="11" y="0" width="2" height="2" fill="currentColor"/></svg>'
+          : '<svg viewBox="0 0 20 10"><path d="M1,7 L2,9 L18,9 L19,7 L16,7 L15,8 L5,8 L4,7 Z" fill="currentColor"/><rect x="3" y="4" width="14" height="4" rx="1" fill="currentColor"/><rect x="7" y="1" width="6" height="4" rx="1" fill="currentColor"/><rect x="9" y="0" width="2" height="2" fill="currentColor"/></svg>',
+        iconSize: route.isSuhulet ? [24, 12] : [20, 10],
+        iconAnchor: route.isSuhulet ? [12, 6] : [10, 5]
       });
 
-      // Animate ship along route
+      // Create ship marker
       const shipMarker = L.marker(route.coords[0], { icon: shipIcon }).addTo(map);
-      shipMarkers[route.id] = { marker: shipMarker, coords: route.coords, year: route.year, isSuhulet: route.isSuhulet };
+      shipMarkers[route.id] = {
+        marker: shipMarker,
+        coords: route.coords,
+        year: route.year,
+        isSuhulet: route.isSuhulet,
+        progress: Math.random(), // Random start position
+        forward: true
+      };
     });
 
-    // Ship animation function
+    // Slow ship animation function (no rotation)
     function animateShips() {
-      Object.entries(shipMarkers).forEach(([id, data]) => {
-        if (data.marker.options.opacity === 0) return; // Skip hidden ships
+      const speed = 0.00015; // Very slow speed
 
-        const coords = data.coords;
-        const totalPoints = coords.length;
-        const duration = data.isSuhulet ? 8000 : 6000; // Slower for Suhulet
+      function updateShips() {
+        Object.entries(shipMarkers).forEach(([id, data]) => {
+          // Skip hidden ships
+          if (data.marker.getElement()?.style.opacity === '0') return;
 
-        let startTime = null;
-        let forward = true;
+          const coords = data.coords;
+          const totalPoints = coords.length;
 
-        function moveShip(timestamp) {
-          if (!startTime) startTime = timestamp;
-          const elapsed = timestamp - startTime;
-          const progress = (elapsed % (duration * 2)) / duration;
-
-          // Ping-pong animation
-          let t;
-          if (progress <= 1) {
-            t = progress;
-            forward = true;
+          // Update progress
+          if (data.forward) {
+            data.progress += speed;
+            if (data.progress >= 1) {
+              data.progress = 1;
+              data.forward = false;
+            }
           } else {
-            t = 2 - progress;
-            forward = false;
+            data.progress -= speed;
+            if (data.progress <= 0) {
+              data.progress = 0;
+              data.forward = true;
+            }
           }
 
           // Calculate position along polyline
+          const t = data.progress;
           const segmentLength = 1 / (totalPoints - 1);
           const segmentIndex = Math.min(Math.floor(t / segmentLength), totalPoints - 2);
           const segmentProgress = (t - segmentIndex * segmentLength) / segmentLength;
@@ -559,22 +519,12 @@
           const lng = startCoord[1] + (endCoord[1] - startCoord[1]) * segmentProgress;
 
           data.marker.setLatLng([lat, lng]);
+        });
 
-          // Rotate ship based on direction
-          const angle = Math.atan2(endCoord[1] - startCoord[1], endCoord[0] - startCoord[0]) * 180 / Math.PI;
-          const iconElement = data.marker.getElement();
-          if (iconElement) {
-            iconElement.style.transform += ` rotate(${forward ? angle : angle + 180}deg)`;
-          }
+        requestAnimationFrame(updateShips);
+      }
 
-          requestAnimationFrame(moveShip);
-        }
-
-        // Stagger start times
-        setTimeout(() => {
-          requestAnimationFrame(moveShip);
-        }, Math.random() * 3000);
-      });
+      requestAnimationFrame(updateShips);
     }
 
     // Start ship animations
@@ -583,11 +533,11 @@
     // Fleet data by year
     const fleetByYear = {
       1854: { ships: 6, piers: 8, routes: 2 },
-      1866: { ships: 16, piers: 9, routes: 3 },
-      1872: { ships: 26, piers: 10, routes: 4 },
-      1880: { ships: 32, piers: 10, routes: 4 },
-      1890: { ships: 40, piers: 10, routes: 4 },
-      1894: { ships: 46, piers: 10, routes: 4 }
+      1866: { ships: 16, piers: 12, routes: 3 },
+      1872: { ships: 26, piers: 15, routes: 4 },
+      1880: { ships: 32, piers: 16, routes: 4 },
+      1890: { ships: 40, piers: 17, routes: 4 },
+      1894: { ships: 46, piers: 17, routes: 4 }
     };
 
     // Update map based on selected year

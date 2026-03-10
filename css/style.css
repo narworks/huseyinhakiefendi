@@ -1097,21 +1097,16 @@ a:hover {
 /* Animated ship indicator */
 .slider-ship {
   position: absolute;
-  width: 50px;
-  height: 25px;
+  width: 44px;
+  height: 22px;
   color: var(--dark-red);
-  bottom: calc(50% + 30px);
-  left: calc(16.66% * 2 + 24px);
+  top: 8px;
+  left: calc(41.66% + 24px);
   transform: translateX(-50%);
   transition: left 0.6s var(--ease-out-expo);
-  filter: drop-shadow(0 3px 6px rgba(107, 28, 35, 0.3));
+  filter: drop-shadow(0 2px 4px rgba(107, 28, 35, 0.3));
   pointer-events: none;
-  animation: shipFloat 3s ease-in-out infinite;
-}
-
-@keyframes shipFloat {
-  0%, 100% { transform: translateX(-50%) translateY(0); }
-  50% { transform: translateX(-50%) translateY(-4px); }
+  z-index: 10;
 }
 
 .slider-ship svg {
@@ -1233,9 +1228,9 @@ a:hover {
   z-index: 1000;
 }
 
-/* Leaflet tile layer - OpenTopoMap vintage enhancement */
+/* Leaflet tile layer - clean maritime look */
 .leaflet-tile-pane {
-  filter: sepia(25%) saturate(80%) brightness(1.08) contrast(0.95) hue-rotate(-5deg);
+  filter: sepia(30%) saturate(70%) brightness(1.1) contrast(0.9);
 }
 
 /* Custom pier markers */
