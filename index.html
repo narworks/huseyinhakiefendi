@@ -34,8 +34,6 @@
   <!-- AOS Animation Library -->
   <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
 
-  <!-- Leaflet.js for Real Map -->
-  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
 
   <!-- Styles -->
   <link rel="stylesheet" href="css/style.css">
@@ -382,13 +380,248 @@
         <option value="1894">1894</option>
       </select>
 
-      <!-- Interactive Map Container - GERÇEK LEAFLET HARİTASI -->
-      <div class="interactive-map-container" data-aos="fade-up" data-aos-delay="300">
-        <!-- Leaflet Map -->
-        <div id="bosphorusMap" class="leaflet-map"></div>
-
-        <!-- Year indicator on map -->
+      <!-- Vintage SVG Map Container -->
+      <div class="vintage-map-container" data-aos="fade-up" data-aos-delay="300">
+        <!-- Year indicator (top right) -->
         <div class="map-year-badge" id="mapYearBadge">1872</div>
+
+        <!-- Vintage Bosphorus Map SVG -->
+        <svg id="bosphorusMap" class="vintage-bosphorus-map" viewBox="0 0 800 600" preserveAspectRatio="xMidYMid meet">
+          <defs>
+            <!-- Old paper texture pattern -->
+            <pattern id="paperTexture" patternUnits="userSpaceOnUse" width="100" height="100">
+              <rect width="100" height="100" fill="#f5efe0"/>
+              <circle cx="20" cy="30" r="0.5" fill="#d4c9b0" opacity="0.3"/>
+              <circle cx="70" cy="60" r="0.4" fill="#d4c9b0" opacity="0.2"/>
+              <circle cx="45" cy="85" r="0.3" fill="#d4c9b0" opacity="0.25"/>
+            </pattern>
+            <!-- Water pattern -->
+            <pattern id="waterPattern" patternUnits="userSpaceOnUse" width="20" height="20">
+              <rect width="20" height="20" fill="#c5d5dc"/>
+              <path d="M0,10 Q5,8 10,10 T20,10" stroke="#b8c9d1" stroke-width="0.5" fill="none" opacity="0.5"/>
+            </pattern>
+            <!-- Compass rose -->
+            <g id="compassRose">
+              <circle cx="0" cy="0" r="25" fill="none" stroke="#8b7355" stroke-width="1"/>
+              <polygon points="0,-20 3,-5 0,-8 -3,-5" fill="#704214"/>
+              <polygon points="0,20 3,5 0,8 -3,5" fill="#a08060"/>
+              <polygon points="-20,0 -5,3 -8,0 -5,-3" fill="#a08060"/>
+              <polygon points="20,0 5,3 8,0 5,-3" fill="#a08060"/>
+              <text x="0" y="-28" text-anchor="middle" font-size="8" fill="#704214" font-family="serif">K</text>
+            </g>
+            <!-- Pier marker symbol -->
+            <g id="pierMarker">
+              <circle cx="0" cy="0" r="6" fill="#c9a84c" stroke="#704214" stroke-width="1.5"/>
+              <circle cx="0" cy="0" r="2" fill="#704214"/>
+            </g>
+            <!-- Ship symbol for routes -->
+            <g id="shipSymbol">
+              <path d="M-8,2 L-6,5 L6,5 L8,2 L5,2 L4,4 L-4,4 L-5,2 Z" fill="currentColor"/>
+              <rect x="-5" y="-2" width="10" height="5" rx="1" fill="currentColor"/>
+              <rect x="-2" y="-5" width="4" height="4" rx="0.5" fill="currentColor"/>
+            </g>
+          </defs>
+
+          <!-- Background (old paper) -->
+          <rect width="800" height="600" fill="url(#paperTexture)"/>
+
+          <!-- Sea of Marmara (bottom) -->
+          <path id="marmaraSea" d="M0,450 Q200,430 400,440 Q600,450 800,430 L800,600 L0,600 Z"
+                fill="url(#waterPattern)" stroke="#8faab5" stroke-width="1"/>
+
+          <!-- Bosphorus Strait (simplified vintage style) -->
+          <path id="bosphorusWater"
+                d="M350,0
+                   Q340,50 360,100
+                   Q380,150 350,200
+                   Q320,250 340,300
+                   Q360,350 380,400
+                   Q420,450 450,500
+                   Q480,550 500,600
+                   L550,600
+                   Q530,550 510,500
+                   Q490,450 460,400
+                   Q430,350 420,300
+                   Q410,250 430,200
+                   Q450,150 440,100
+                   Q430,50 450,0
+                   Z"
+                fill="url(#waterPattern)" stroke="#8faab5" stroke-width="1.5"/>
+
+          <!-- Golden Horn (Haliç) -->
+          <path id="goldenHorn"
+                d="M320,380 Q280,370 240,380 Q200,390 160,385 Q120,380 80,390 L80,410 Q120,400 160,405 Q200,410 240,400 Q280,390 320,400 Z"
+                fill="url(#waterPattern)" stroke="#8faab5" stroke-width="1"/>
+
+          <!-- European Side Label -->
+          <text x="150" y="250" font-family="'Cinzel', serif" font-size="18" fill="#704214" opacity="0.6"
+                letter-spacing="8" transform="rotate(-15, 150, 250)">AVRUPA</text>
+
+          <!-- Asian Side Label -->
+          <text x="580" y="280" font-family="'Cinzel', serif" font-size="18" fill="#704214" opacity="0.6"
+                letter-spacing="8" transform="rotate(15, 580, 280)">ANADOLU</text>
+
+          <!-- Bosphorus Label -->
+          <text x="400" y="200" font-family="'Cinzel', serif" font-size="10" fill="#1b4965" opacity="0.7"
+                letter-spacing="4" text-anchor="middle" transform="rotate(75, 400, 200)">BOĞAZ</text>
+
+          <!-- Ferry Routes Group -->
+          <g id="ferryRoutes" class="ferry-routes">
+            <!-- Eminönü - Kadıköy (1851) -->
+            <path class="ferry-route" data-route="eminonu-kadikoy" data-year="1851"
+                  d="M310,420 Q380,480 480,490"
+                  fill="none" stroke="#c9a84c" stroke-width="2" stroke-dasharray="8,4" opacity="0.8"/>
+
+            <!-- Kabataş - Üsküdar (1851) -->
+            <path class="ferry-route" data-route="kabatas-uskudar" data-year="1851"
+                  d="M355,340 Q400,350 445,345"
+                  fill="none" stroke="#c9a84c" stroke-width="2" stroke-dasharray="8,4" opacity="0.8"/>
+
+            <!-- Beşiktaş - Üsküdar (1851) -->
+            <path class="ferry-route" data-route="besiktas-uskudar" data-year="1851"
+                  d="M340,280 Q390,290 440,285"
+                  fill="none" stroke="#c9a84c" stroke-width="2" stroke-dasharray="8,4" opacity="0.8"/>
+
+            <!-- Suhulet Hattı: Kabataş - Üsküdar (1872) - Arabalı Vapur -->
+            <path class="ferry-route suhulet-route" data-route="suhulet" data-year="1872"
+                  d="M355,340 Q400,355 445,345"
+                  fill="none" stroke="#6b1c23" stroke-width="3" stroke-dasharray="6,3" opacity="0.9"/>
+          </g>
+
+          <!-- Animated Ships on Routes -->
+          <g id="animatedShips" class="animated-ships">
+            <use href="#shipSymbol" class="route-ship" data-route="eminonu-kadikoy" data-year="1851"
+                 x="380" y="460" fill="#c9a84c" opacity="0.9">
+              <animateMotion dur="12s" repeatCount="indefinite" path="M-70,0 Q70,60 170,70" calcMode="linear"/>
+            </use>
+            <use href="#shipSymbol" class="route-ship" data-route="kabatas-uskudar" data-year="1851"
+                 x="400" y="340" fill="#c9a84c" opacity="0.9">
+              <animateMotion dur="8s" repeatCount="indefinite" path="M-45,0 Q0,10 90,5" calcMode="linear"/>
+            </use>
+            <use href="#shipSymbol" class="route-ship suhulet-ship" data-route="suhulet" data-year="1872"
+                 x="400" y="350" fill="#6b1c23" opacity="1" transform="scale(1.3)">
+              <animateMotion dur="10s" repeatCount="indefinite" path="M-45,0 Q0,15 90,5" calcMode="linear"/>
+            </use>
+          </g>
+
+          <!-- Pier Markers Group -->
+          <g id="pierMarkers" class="pier-markers">
+            <!-- AVRUPA YAKASI -->
+            <!-- Sarıyer (1851) -->
+            <g class="pier" data-pier="sariyer" data-year="1851" data-side="europe" transform="translate(360, 60)">
+              <use href="#pierMarker"/>
+              <text x="15" y="4" font-size="9" fill="#704214" font-family="'Source Serif 4', serif">Sarıyer</text>
+            </g>
+            <!-- Yeniköy (1851) -->
+            <g class="pier" data-pier="yenikoy" data-year="1851" data-side="europe" transform="translate(355, 110)">
+              <use href="#pierMarker"/>
+              <text x="15" y="4" font-size="9" fill="#704214" font-family="'Source Serif 4', serif">Yeniköy</text>
+            </g>
+            <!-- Emirgan (1851) -->
+            <g class="pier" data-pier="emirgan" data-year="1851" data-side="europe" transform="translate(350, 160)">
+              <use href="#pierMarker"/>
+              <text x="15" y="4" font-size="9" fill="#704214" font-family="'Source Serif 4', serif">Emirgan</text>
+            </g>
+            <!-- Bebek (1851) -->
+            <g class="pier" data-pier="bebek" data-year="1851" data-side="europe" transform="translate(345, 200)">
+              <use href="#pierMarker"/>
+              <text x="15" y="4" font-size="9" fill="#704214" font-family="'Source Serif 4', serif">Bebek</text>
+            </g>
+            <!-- Arnavutköy (1851) -->
+            <g class="pier" data-pier="arnavutkoy" data-year="1851" data-side="europe" transform="translate(340, 240)">
+              <use href="#pierMarker"/>
+              <text x="15" y="4" font-size="9" fill="#704214" font-family="'Source Serif 4', serif">Arnavutköy</text>
+            </g>
+            <!-- Ortaköy (1851) -->
+            <g class="pier" data-pier="ortakoy" data-year="1851" data-side="europe" transform="translate(338, 270)">
+              <use href="#pierMarker"/>
+              <text x="-60" y="4" font-size="9" fill="#704214" font-family="'Source Serif 4', serif">Ortaköy</text>
+            </g>
+            <!-- Beşiktaş (1851) - Ana İskele -->
+            <g class="pier major" data-pier="besiktas" data-year="1851" data-side="europe" transform="translate(340, 300)">
+              <use href="#pierMarker" transform="scale(1.3)"/>
+              <text x="-65" y="4" font-size="10" fill="#704214" font-weight="600" font-family="'Source Serif 4', serif">Beşiktaş</text>
+            </g>
+            <!-- Kabataş (1851) - Ana İskele -->
+            <g class="pier major" data-pier="kabatas" data-year="1851" data-side="europe" transform="translate(355, 340)">
+              <use href="#pierMarker" transform="scale(1.3)"/>
+              <text x="-55" y="4" font-size="10" fill="#704214" font-weight="600" font-family="'Source Serif 4', serif">Kabataş</text>
+            </g>
+            <!-- Karaköy (1851) -->
+            <g class="pier" data-pier="karakoy" data-year="1851" data-side="europe" transform="translate(335, 385)">
+              <use href="#pierMarker"/>
+              <text x="-55" y="4" font-size="9" fill="#704214" font-family="'Source Serif 4', serif">Karaköy</text>
+            </g>
+            <!-- Eminönü (1851) - Ana İskele -->
+            <g class="pier major" data-pier="eminonu" data-year="1851" data-side="europe" transform="translate(310, 420)">
+              <use href="#pierMarker" transform="scale(1.3)"/>
+              <text x="-60" y="4" font-size="10" fill="#704214" font-weight="600" font-family="'Source Serif 4', serif">Eminönü</text>
+            </g>
+
+            <!-- ANADOLU YAKASI -->
+            <!-- Beykoz (1851) -->
+            <g class="pier" data-pier="beykoz" data-year="1851" data-side="asia" transform="translate(445, 80)">
+              <use href="#pierMarker"/>
+              <text x="15" y="4" font-size="9" fill="#704214" font-family="'Source Serif 4', serif">Beykoz</text>
+            </g>
+            <!-- Paşabahçe (1866) -->
+            <g class="pier" data-pier="pasabahce" data-year="1866" data-side="asia" transform="translate(440, 120)">
+              <use href="#pierMarker"/>
+              <text x="15" y="4" font-size="9" fill="#704214" font-family="'Source Serif 4', serif">Paşabahçe</text>
+            </g>
+            <!-- Çubuklu (1851) -->
+            <g class="pier" data-pier="cubuklu" data-year="1851" data-side="asia" transform="translate(435, 155)">
+              <use href="#pierMarker"/>
+              <text x="15" y="4" font-size="9" fill="#704214" font-family="'Source Serif 4', serif">Çubuklu</text>
+            </g>
+            <!-- Kanlıca (1851) -->
+            <g class="pier" data-pier="kanlica" data-year="1851" data-side="asia" transform="translate(430, 185)">
+              <use href="#pierMarker"/>
+              <text x="15" y="4" font-size="9" fill="#704214" font-family="'Source Serif 4', serif">Kanlıca</text>
+            </g>
+            <!-- Anadolu Hisarı (1851) -->
+            <g class="pier" data-pier="anadoluhisari" data-year="1851" data-side="asia" transform="translate(425, 215)">
+              <use href="#pierMarker"/>
+              <text x="15" y="4" font-size="9" fill="#704214" font-family="'Source Serif 4', serif">A. Hisarı</text>
+            </g>
+            <!-- Kandilli (1851) -->
+            <g class="pier" data-pier="kandilli" data-year="1851" data-side="asia" transform="translate(430, 250)">
+              <use href="#pierMarker"/>
+              <text x="15" y="4" font-size="9" fill="#704214" font-family="'Source Serif 4', serif">Kandilli</text>
+            </g>
+            <!-- Beylerbeyi (1851) -->
+            <g class="pier" data-pier="beylerbeyi" data-year="1851" data-side="asia" transform="translate(440, 290)">
+              <use href="#pierMarker"/>
+              <text x="15" y="4" font-size="9" fill="#704214" font-family="'Source Serif 4', serif">Beylerbeyi</text>
+            </g>
+            <!-- Üsküdar (1851) - Ana İskele -->
+            <g class="pier major" data-pier="uskudar" data-year="1851" data-side="asia" transform="translate(445, 345)">
+              <use href="#pierMarker" transform="scale(1.3)"/>
+              <text x="15" y="4" font-size="10" fill="#704214" font-weight="600" font-family="'Source Serif 4', serif">Üsküdar</text>
+            </g>
+            <!-- Haydarpaşa (1872) - Ana İskele (Suhulet için önemli) -->
+            <g class="pier major" data-pier="haydarpasa" data-year="1872" data-side="asia" transform="translate(470, 430)">
+              <use href="#pierMarker" transform="scale(1.3)"/>
+              <text x="15" y="4" font-size="10" fill="#704214" font-weight="600" font-family="'Source Serif 4', serif">Haydarpaşa</text>
+            </g>
+            <!-- Kadıköy (1851) - Ana İskele -->
+            <g class="pier major" data-pier="kadikoy" data-year="1851" data-side="asia" transform="translate(480, 490)">
+              <use href="#pierMarker" transform="scale(1.3)"/>
+              <text x="15" y="4" font-size="10" fill="#704214" font-weight="600" font-family="'Source Serif 4', serif">Kadıköy</text>
+            </g>
+          </g>
+
+          <!-- Compass Rose -->
+          <use href="#compassRose" x="720" y="80"/>
+
+          <!-- Map Title -->
+          <text x="400" y="570" text-anchor="middle" font-family="'Cinzel', serif" font-size="12" fill="#704214" letter-spacing="3">
+            ŞİRKET-İ HAYRİYE İSKELELERİ
+          </text>
+          <text x="400" y="588" text-anchor="middle" font-family="'Source Serif 4', serif" font-size="9" fill="#8b7355">
+            İstanbul Boğazı Vapur Hatları
+          </text>
+        </svg>
 
         <!-- Legend overlay -->
         <div class="map-legend-overlay">
@@ -406,7 +639,6 @@
             <span>Suhulet</span>
           </div>
         </div>
-
       </div>
 
       <!-- Suhulet Story -->
@@ -939,7 +1171,6 @@
 
   <!-- Scripts -->
   <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
-  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
   <script src="js/main.js"></script>
   <script>
     AOS.init({
