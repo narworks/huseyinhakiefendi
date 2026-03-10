@@ -188,191 +188,101 @@
     const yearSelect = document.getElementById('yearSelect');
     const yearBadge = document.getElementById('mapYearBadge');
 
-    // Initialize Leaflet map centered on Bosphorus
+    // Initialize Leaflet map centered on Bosphorus strait entrance (between Eminönü and Üsküdar)
     const map = L.map('bosphorusMap', {
-      center: [41.05, 29.02],
-      zoom: 12,
-      minZoom: 11,
+      center: [41.015, 29.005],
+      zoom: 13,
+      minZoom: 12,
       maxZoom: 16,
       zoomControl: true,
       attributionControl: true
     });
 
-    // Add CartoDB Voyager tiles (shows water clearly, minimal but readable)
-    L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', {
-      attribution: '&copy; <a href="https://carto.com/">CARTO</a> &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
-      maxZoom: 19,
-      subdomains: 'abcd'
+    // Add OpenStreetMap tiles (shows water clearly as blue)
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
+      maxZoom: 19
     }).addTo(map);
 
     // Store markers and routes for year filtering
     const pierMarkers = {};
     const routeLines = {};
 
-    // Data for piers with real coordinates (lat, lng)
+    // Data for piers with VERIFIED Google Maps coordinates (lat, lng)
+    // Focus on main piers around Bosphorus strait entrance for cleaner view
     const pierData = {
-      // Avrupa Yakası (Kuzeyden Güneye)
-      bebek: {
-        title: 'Bebek İskelesi',
-        desc: 'Boğaz\'ın en şık semtlerinden birinde yer alan iskele. Yalıları ve mesireleriyle tanınır.',
-        year: 1856,
-        lat: 41.0775,
-        lng: 29.0437,
-        major: false
-      },
-      arnavutkoy: {
-        title: 'Arnavutköy İskelesi',
-        desc: 'Ahşap evleri ve balıkçı barınaklarıyla ünlü tarihi semt.',
-        year: 1860,
-        lat: 41.0680,
-        lng: 29.0345,
-        major: false
-      },
-      ortakoy: {
-        title: 'Ortaköy İskelesi',
-        desc: 'Boğaz\'ın en güzel manzaralı iskelelerinden biri. Camii ve çarşısıyla ünlü.',
-        year: 1856,
-        lat: 41.0475,
-        lng: 29.0270,
-        major: false
-      },
-      besiktas: {
-        title: 'Beşiktaş İskelesi',
-        desc: 'Boğaz\'ın en işlek iskelelerinden biri. Şirket-i Hayriye döneminde ana hatların başlangıç noktası.',
-        year: 1854,
-        lat: 41.0430,
-        lng: 29.0050,
-        major: true
-      },
+      // Avrupa Yakası (Ana İskeleler)
       kabatas: {
         title: 'Kabataş İskelesi',
         desc: 'Dolmabahçe Sarayı yakınında konumlanan stratejik iskele. Saray görevlilerinin ve halkın buluşma noktası.',
         year: 1854,
-        lat: 41.0335,
-        lng: 29.0245,
+        lat: 41.0339,
+        lng: 29.0252,
         major: true
       },
       karakoy: {
         title: 'Karaköy İskelesi',
         desc: 'Galata Köprüsü\'nün yanında, ticaret merkezi. Levanten tüccarların uğrak noktası.',
         year: 1854,
-        lat: 41.0215,
-        lng: 28.9750,
-        major: false
+        lat: 41.0222,
+        lng: 28.9748,
+        major: true
       },
       eminonu: {
         title: 'Eminönü İskelesi',
-        desc: 'İstanbul\'un kalbi. Suhulet arabalı vapurunun ana kalkış noktası. Ticaretin ve ulaşımın merkezi.',
+        desc: 'İstanbul\'un kalbi. Ticaretin ve ulaşımın merkezi.',
         year: 1854,
-        lat: 41.0175,
-        lng: 28.9715,
+        lat: 41.0176,
+        lng: 28.9769,
         major: true
       },
-      sirkeci: {
-        title: 'Sirkeci İskelesi',
-        desc: 'Tren garına yakınlığıyla önemli bir kavşak noktası. Avrupa ile bağlantıyı sağlayan iskele.',
+      besiktas: {
+        title: 'Beşiktaş İskelesi',
+        desc: 'Boğaz\'ın en işlek iskelelerinden biri. Ana hatların başlangıç noktası.',
         year: 1854,
-        lat: 41.0130,
-        lng: 28.9785,
-        major: false
+        lat: 41.0426,
+        lng: 29.0070,
+        major: true
       },
-      // Anadolu Yakası (Kuzeyden Güneye)
-      beykoz: {
-        title: 'Beykoz İskelesi',
-        desc: 'Boğaz\'ın kuzeydoğusunda, deri ve cam sanayisinin merkezi.',
-        year: 1854,
-        lat: 41.1315,
-        lng: 29.0945,
-        major: false
-      },
-      pasabahce: {
-        title: 'Paşabahçe İskelesi',
-        desc: 'Cam fabrikasıyla ünlü sanayi bölgesi. İşçi taşımacılığı için önemli.',
-        year: 1866,
-        lat: 41.1095,
-        lng: 29.0755,
-        major: false
-      },
-      anadoluhisari: {
-        title: 'Anadolu Hisarı İskelesi',
-        desc: 'Tarihi kale ve Göksu Deresi\'nin mansabında. Boğaz\'ın en dar noktasına yakın.',
-        year: 1858,
-        lat: 41.0835,
-        lng: 29.0660,
-        major: false
-      },
-      kandilli: {
-        title: 'Kandilli İskelesi',
-        desc: 'Rasathane ile ünlü sakin bir semt. Boğaz\'ın tam da en dar noktasında konumlu.',
-        year: 1854,
-        lat: 41.0695,
-        lng: 29.0575,
-        major: false
-      },
-      beylerbeyi: {
-        title: 'Beylerbeyi İskelesi',
-        desc: 'Beylerbeyi Sarayı\'nın hemen önünde. Padişah ve saray erkânının kullandığı iskele.',
-        year: 1860,
-        lat: 41.0475,
-        lng: 29.0380,
-        major: false
-      },
+      // Anadolu Yakası (Ana İskeleler)
       uskudar: {
         title: 'Üsküdar İskelesi',
         desc: 'Anadolu yakasının tarihi kapısı. Şirket-i Hayriye\'nin en işlek iskelelerinden biri.',
         year: 1854,
-        lat: 41.0260,
-        lng: 29.0155,
-        major: true
-      },
-      salacak: {
-        title: 'Salacak İskelesi',
-        desc: 'Kız Kulesi\'nin karşısında, küçük ama manzaralı iskele.',
-        year: 1866,
-        lat: 41.0205,
-        lng: 29.0105,
-        major: false
-      },
-      haydarpasa: {
-        title: 'Haydarpaşa İskelesi',
-        desc: 'Demiryolu bağlantısıyla önem kazanan iskele. Suhulet\'in araba ve yük taşımacılığı için kritik nokta.',
-        year: 1872,
-        lat: 40.9985,
-        lng: 29.0170,
+        lat: 41.0263,
+        lng: 29.0135,
         major: true
       },
       kadikoy: {
         title: 'Kadıköy İskelesi',
-        desc: 'Anadolu yakasının ticaret merkezi. Şirket-i Hayriye\'nin en kârlı hatlarından birinin uç noktası.',
+        desc: 'Anadolu yakasının ticaret merkezi. En kârlı hatlardan birinin uç noktası.',
         year: 1858,
-        lat: 40.9915,
-        lng: 29.0235,
+        lat: 40.9907,
+        lng: 29.0237,
+        major: true
+      },
+      haydarpasa: {
+        title: 'Haydarpaşa İskelesi',
+        desc: 'Demiryolu bağlantısıyla önem kazanan iskele. Suhulet\'in araba taşımacılığı için kritik.',
+        year: 1872,
+        lat: 40.9970,
+        lng: 29.0190,
         major: true
       }
     };
 
-    // Ferry routes - coordinates carefully placed over water (Bosphorus strait)
+    // Ferry routes - coordinates in the middle of Bosphorus/Marmara water
+    // Water is approximately between 28.98-29.02 at Eminönü level, and 29.01-29.04 at Üsküdar level
     const routeData = [
       {
         id: 'eminonu-kadikoy',
         name: 'Eminönü-Kadıköy Hattı',
         year: 1854,
         coords: [
-          [41.0170, 28.9770], // Eminönü iskelesi önü (denizde)
-          [41.0100, 28.9920], // Boğaz ortası
-          [41.0000, 29.0100], // Kadıköy'e yaklaşım
-          [40.9920, 29.0220]  // Kadıköy iskelesi önü (denizde)
-        ],
-        isSuhulet: false
-      },
-      {
-        id: 'besiktas-uskudar',
-        name: 'Beşiktaş-Üsküdar Hattı',
-        year: 1858,
-        coords: [
-          [41.0420, 29.0070], // Beşiktaş iskelesi önü (denizde)
-          [41.0360, 29.0110], // Boğaz ortası
-          [41.0290, 29.0150]  // Üsküdar iskelesi önü (denizde)
+          [41.0160, 28.9800], // Eminönü önü (Haliç ağzı, denizde)
+          [41.0050, 28.9950], // Marmara ortası
+          [40.9950, 29.0150], // Kadıköy'e yaklaşım
+          [40.9920, 29.0220]  // Kadıköy iskelesi önü
         ],
         isSuhulet: false
       },
@@ -381,9 +291,9 @@
         name: 'Karaköy-Üsküdar Hattı',
         year: 1866,
         coords: [
-          [41.0210, 28.9760], // Karaköy iskelesi önü (denizde)
-          [41.0240, 28.9950], // Boğaz ortası
-          [41.0280, 29.0130]  // Üsküdar iskelesi önü (denizde)
+          [41.0200, 28.9800], // Karaköy önü (denizde)
+          [41.0220, 28.9980], // Boğaz girişi ortası
+          [41.0250, 29.0100]  // Üsküdar iskelesi önü
         ],
         isSuhulet: false
       },
@@ -392,9 +302,9 @@
         name: 'Kabataş-Üsküdar Hattı (Suhulet)',
         year: 1872,
         coords: [
-          [41.0330, 29.0230], // Kabataş iskelesi önü (denizde)
-          [41.0305, 29.0190], // Boğaz ortası
-          [41.0280, 29.0150]  // Üsküdar iskelesi önü (denizde)
+          [41.0320, 29.0200], // Kabataş önü (Boğaz'da)
+          [41.0290, 29.0170], // Boğaz ortası
+          [41.0265, 29.0140]  // Üsküdar iskelesi önü
         ],
         isSuhulet: true
       }
