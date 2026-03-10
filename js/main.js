@@ -257,7 +257,7 @@
         // Position ship above the marker dot (100px up, 50px right offset)
         const relativeLeft = dotRect.left - trackRect.left + dotRect.width / 2;
         sliderShip.style.left = `${relativeLeft}px`;
-        sliderShip.style.transform = 'translateX(calc(-50% + 50px)) translateY(calc(-50% - 100px))';
+        sliderShip.style.transform = 'translateX(calc(-50% + 25px)) translateY(calc(-50% - 50px))';
       }
     }
 

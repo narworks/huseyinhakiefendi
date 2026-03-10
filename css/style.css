@@ -1116,7 +1116,7 @@ a:hover {
   color: var(--dark-red);
   top: 50%;
   left: 50%;
-  transform: translateX(calc(-50% + 50px)) translateY(calc(-50% - 100px));
+  transform: translateX(calc(-50% + 25px)) translateY(calc(-50% - 50px));
   transition: left 0.6s var(--ease-out-expo);
   filter: drop-shadow(0 4px 12px rgba(107, 28, 35, 0.6));
   pointer-events: none;
