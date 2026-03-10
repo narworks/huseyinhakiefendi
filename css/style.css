@@ -617,6 +617,157 @@ a:hover {
 }
 
 /* ============================================
+   HERO FERRIES - Animated Ferry Strip
+   ============================================ */
+.hero-ferries {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 80px;
+  overflow: hidden;
+  z-index: 3;
+  background: linear-gradient(to top, rgba(13, 27, 42, 0.9) 0%, transparent 100%);
+  pointer-events: none;
+}
+
+.hero-ferry {
+  position: absolute;
+  bottom: 15px;
+  width: 50px;
+  height: 25px;
+  color: var(--gold);
+  opacity: 0.7;
+  cursor: pointer;
+  pointer-events: auto;
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.hero-ferry:hover {
+  opacity: 1;
+  transform: scale(1.1);
+}
+
+.hero-ferry.active {
+  opacity: 1;
+  color: var(--gold-light);
+}
+
+.ferry-svg {
+  width: 100%;
+  height: 100%;
+  filter: drop-shadow(1px 2px 3px rgba(0, 0, 0, 0.4));
+}
+
+.ferry-carferry {
+  width: 60px;
+}
+
+/* Ferries moving left to right */
+.ferry-right {
+  animation: ferryMoveRight var(--speed, 40s) linear infinite;
+  animation-delay: var(--delay, 0s);
+}
+
+.hero-ferry[data-speed="45"] { --speed: 45s; }
+.hero-ferry[data-speed="38"] { --speed: 38s; }
+.hero-ferry[data-speed="42"] { --speed: 42s; }
+.hero-ferry[data-speed="35"] { --speed: 35s; }
+.hero-ferry[data-speed="40"] { --speed: 40s; }
+.hero-ferry[data-speed="48"] { --speed: 48s; }
+.hero-ferry[data-speed="32"] { --speed: 32s; }
+.hero-ferry[data-speed="52"] { --speed: 52s; }
+
+@keyframes ferryMoveRight {
+  0% {
+    left: -80px;
+    opacity: 0;
+  }
+  5% {
+    opacity: 0.7;
+  }
+  50% {
+    opacity: 0.85;
+  }
+  95% {
+    opacity: 0.7;
+  }
+  100% {
+    left: 100%;
+    opacity: 0;
+  }
+}
+
+/* Ferries moving right to left */
+.ferry-left {
+  animation: ferryMoveLeft var(--speed, 40s) linear infinite;
+  animation-delay: var(--delay, 0s);
+  transform: scaleX(-1);
+}
+
+@keyframes ferryMoveLeft {
+  0% {
+    left: 100%;
+    opacity: 0;
+  }
+  5% {
+    opacity: 0.7;
+  }
+  50% {
+    opacity: 0.85;
+  }
+  95% {
+    opacity: 0.7;
+  }
+  100% {
+    left: -80px;
+    opacity: 0;
+  }
+}
+
+/* Vertical positioning for variety */
+.hero-ferry:nth-child(1) { bottom: 20px; }
+.hero-ferry:nth-child(2) { bottom: 35px; }
+.hero-ferry:nth-child(3) { bottom: 12px; }
+.hero-ferry:nth-child(4) { bottom: 28px; }
+.hero-ferry:nth-child(5) { bottom: 8px; }
+.hero-ferry:nth-child(6) { bottom: 42px; }
+.hero-ferry:nth-child(7) { bottom: 18px; }
+.hero-ferry:nth-child(8) { bottom: 32px; }
+
+/* Ferry Tooltip */
+.ferry-tooltip {
+  position: fixed;
+  background: var(--navy);
+  color: var(--gold);
+  font-family: var(--font-accent);
+  font-size: 0.75rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  padding: 0.5rem 1rem;
+  border: 1px solid var(--gold);
+  border-radius: 4px;
+  pointer-events: none;
+  opacity: 0;
+  transform: translateY(-10px);
+  transition: opacity 0.3s ease, transform 0.3s ease;
+  z-index: 100;
+  white-space: nowrap;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.ferry-tooltip.visible {
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
+}
+
+/* Paused state for ferries */
+.hero-ferries.paused .hero-ferry {
+  animation-play-state: paused;
+}
+
+/* ============================================
    SECTION 2: INTRO / WHO IS THIS MAN?
    ============================================ */
 .intro {
@@ -719,6 +870,63 @@ a:hover {
   margin: 0 auto 2.5rem;
 }
 
+/* Timeline Selector */
+.timeline-selector {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  margin-bottom: 2rem;
+  flex-wrap: wrap;
+}
+
+.timeline-label {
+  font-family: var(--font-accent);
+  font-size: 0.8rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--navy);
+}
+
+.timeline-dropdown {
+  position: relative;
+}
+
+.year-select {
+  appearance: none;
+  background: var(--warm-white);
+  border: 2px solid var(--gold);
+  border-radius: 8px;
+  padding: 0.75rem 2.5rem 0.75rem 1.25rem;
+  font-family: var(--font-sans);
+  font-size: 0.95rem;
+  color: var(--navy);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  min-width: 280px;
+}
+
+.year-select:hover {
+  border-color: var(--gold-light);
+  box-shadow: 0 4px 12px rgba(201, 168, 76, 0.2);
+}
+
+.year-select:focus {
+  outline: none;
+  border-color: var(--gold-light);
+  box-shadow: 0 0 0 3px rgba(201, 168, 76, 0.2);
+}
+
+.dropdown-arrow {
+  position: absolute;
+  right: 1rem;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--gold);
+  font-size: 0.7rem;
+  pointer-events: none;
+}
+
 /* Interactive Map Container */
 .interactive-map-container {
   position: relative;
@@ -735,7 +943,64 @@ a:hover {
   display: block;
   width: 100%;
   height: auto;
-  background: var(--warm-white);
+  position: relative;
+  z-index: 2;
+}
+
+/* Vintage Map Background */
+.vintage-map-bg {
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(135deg, rgba(245, 239, 224, 0.95) 0%, rgba(240, 230, 210, 0.98) 100%);
+  background-image:
+    url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M11 18c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm48 25c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm-43-7c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm63 31c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM34 90c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm56-76c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM12 86c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm28-65c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm23-11c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-6 60c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm29 22c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zM32 63c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm57-13c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-9-21c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM60 91c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM35 41c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM12 60c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2z' fill='%23c9a84c' fill-opacity='0.03' fill-rule='evenodd'/%3E%3C/svg%3E"),
+    linear-gradient(135deg, rgba(245, 239, 224, 0.95) 0%, rgba(240, 230, 210, 0.98) 100%);
+  z-index: 1;
+}
+
+.vintage-map-bg::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse at 30% 20%, rgba(112, 66, 20, 0.05) 0%, transparent 50%),
+    radial-gradient(ellipse at 70% 80%, rgba(112, 66, 20, 0.05) 0%, transparent 50%);
+  pointer-events: none;
+}
+
+.vintage-map-bg::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(90deg, rgba(112, 66, 20, 0.08) 0%, transparent 2%, transparent 98%, rgba(112, 66, 20, 0.08) 100%),
+    linear-gradient(0deg, rgba(112, 66, 20, 0.08) 0%, transparent 2%, transparent 98%, rgba(112, 66, 20, 0.08) 100%);
+  pointer-events: none;
+}
+
+/* Coast Lines */
+.coast-line {
+  fill: rgba(201, 168, 76, 0.12);
+  stroke: rgba(201, 168, 76, 0.35);
+  stroke-width: 1.5;
+}
+
+/* Map Year Badge */
+.map-year-badge {
+  position: absolute;
+  top: 1rem;
+  left: 1rem;
+  background: var(--navy);
+  color: var(--gold);
+  font-family: var(--font-accent);
+  font-size: 1.2rem;
+  font-weight: 700;
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+  border: 2px solid var(--gold);
+  z-index: 5;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
 }
 
 /* Map Labels */
@@ -976,6 +1241,95 @@ a:hover {
   color: var(--charcoal);
   text-transform: uppercase;
   letter-spacing: 0.05em;
+}
+
+/* Suhulet Story Section */
+.suhulet-story {
+  display: flex;
+  align-items: flex-start;
+  gap: 1.5rem;
+  background: linear-gradient(135deg, rgba(107, 28, 35, 0.05) 0%, rgba(201, 168, 76, 0.05) 100%);
+  border: 1px solid rgba(107, 28, 35, 0.2);
+  border-left: 4px solid var(--dark-red);
+  border-radius: 0 12px 12px 0;
+  padding: 1.5rem 2rem;
+  margin: 2rem auto;
+  max-width: 800px;
+}
+
+.story-icon {
+  font-size: 2rem;
+  color: var(--dark-red);
+  flex-shrink: 0;
+  opacity: 0.8;
+}
+
+.story-content h3 {
+  font-family: var(--font-display);
+  font-size: 1.25rem;
+  color: var(--dark-red);
+  margin-bottom: 0.5rem;
+}
+
+.story-content p {
+  font-size: 0.95rem;
+  color: var(--text-body);
+  line-height: 1.7;
+}
+
+.story-content strong {
+  color: var(--navy);
+}
+
+.story-content em {
+  color: var(--dark-red);
+  font-style: italic;
+}
+
+/* Fleet Stats */
+.fleet-stats {
+  display: flex;
+  justify-content: center;
+  gap: 3rem;
+  margin-top: 2rem;
+  padding: 1.5rem 2rem;
+  background: var(--warm-white);
+  border-radius: 12px;
+  border: 1px solid rgba(201, 168, 76, 0.2);
+  max-width: 500px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.fleet-stat {
+  text-align: center;
+}
+
+.fleet-stat .stat-value {
+  font-family: var(--font-accent);
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--gold);
+  line-height: 1;
+}
+
+.fleet-stat .stat-label {
+  font-family: var(--font-sans);
+  font-size: 0.75rem;
+  color: var(--charcoal);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  margin-top: 0.25rem;
+}
+
+/* Pier hidden state for timeline */
+.pier.hidden {
+  opacity: 0.2;
+  pointer-events: none;
+}
+
+.ferry-route-line.hidden {
+  opacity: 0.1;
 }
 
 /* Route Cards */
@@ -1847,6 +2201,50 @@ a:hover {
   .suhulet-placeholder {
     width: 100%;
   }
+
+  /* Hero ferries tablet */
+  .hero-ferries {
+    height: 60px;
+  }
+
+  .hero-ferry {
+    width: 40px;
+    height: 20px;
+  }
+
+  .ferry-carferry {
+    width: 50px;
+  }
+
+  /* Timeline selector tablet */
+  .timeline-selector {
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .year-select {
+    min-width: 260px;
+  }
+
+  /* Suhulet story tablet */
+  .suhulet-story {
+    flex-direction: column;
+    text-align: center;
+    padding: 1.5rem;
+  }
+
+  .story-icon {
+    margin: 0 auto;
+  }
+
+  /* Fleet stats tablet */
+  .fleet-stats {
+    gap: 2rem;
+  }
+
+  .fleet-stat .stat-value {
+    font-size: 1.6rem;
+  }
 }
 
 /* Mobile */
@@ -1952,6 +2350,69 @@ a:hover {
 
   .suhulet-image-frame {
     padding: 8px;
+  }
+
+  /* Hero ferries mobile */
+  .hero-ferries {
+    height: 50px;
+  }
+
+  .hero-ferry {
+    width: 35px;
+    height: 18px;
+  }
+
+  .ferry-carferry {
+    width: 45px;
+  }
+
+  .hero-ferry:nth-child(n+5) {
+    display: none;
+  }
+
+  /* Timeline selector mobile */
+  .year-select {
+    min-width: 100%;
+    font-size: 0.85rem;
+    padding: 0.6rem 2rem 0.6rem 1rem;
+  }
+
+  /* Suhulet story mobile */
+  .suhulet-story {
+    padding: 1rem;
+    margin: 1.5rem auto;
+  }
+
+  .story-icon {
+    font-size: 1.5rem;
+  }
+
+  .story-content h3 {
+    font-size: 1.1rem;
+  }
+
+  .story-content p {
+    font-size: 0.85rem;
+  }
+
+  /* Fleet stats mobile */
+  .fleet-stats {
+    gap: 1.5rem;
+    padding: 1rem;
+  }
+
+  .fleet-stat .stat-value {
+    font-size: 1.4rem;
+  }
+
+  .fleet-stat .stat-label {
+    font-size: 0.65rem;
+  }
+
+  /* Map year badge mobile */
+  .map-year-badge {
+    font-size: 1rem;
+    padding: 0.4rem 0.8rem;
   }
 }
 

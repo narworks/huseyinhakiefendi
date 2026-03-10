@@ -68,234 +68,6 @@
        SECTION 1: HERO
        ========================================== -->
   <section class="hero" id="hero">
-    <!-- Old Paper Map - Bird's Eye View of Bosphorus -->
-    <div class="hero-map">
-      <svg class="bosphorus-map" viewBox="0 0 1200 400" preserveAspectRatio="xMidYMax slice">
-        <defs>
-          <!-- Paper texture pattern -->
-          <pattern id="paperTexture" patternUnits="userSpaceOnUse" width="100" height="100">
-            <rect width="100" height="100" fill="rgba(201,168,76,0.03)"/>
-            <circle cx="20" cy="30" r="1" fill="rgba(112,66,20,0.05)"/>
-            <circle cx="70" cy="60" r="0.5" fill="rgba(112,66,20,0.04)"/>
-            <circle cx="40" cy="80" r="0.8" fill="rgba(112,66,20,0.03)"/>
-          </pattern>
-
-          <!-- Water pattern -->
-          <pattern id="waterPattern" patternUnits="userSpaceOnUse" width="20" height="10">
-            <path d="M0,5 Q5,3 10,5 T20,5" stroke="rgba(27,73,101,0.15)" fill="none" stroke-width="0.5"/>
-          </pattern>
-
-          <!-- Land gradient -->
-          <linearGradient id="landGrad" x1="0%" y1="0%" x2="0%" y2="100%">
-            <stop offset="0%" style="stop-color:rgba(201,168,76,0.25)"/>
-            <stop offset="100%" style="stop-color:rgba(201,168,76,0.08)"/>
-          </linearGradient>
-        </defs>
-
-        <!-- Background texture -->
-        <rect width="1200" height="400" fill="url(#paperTexture)"/>
-
-        <!-- EUROPEAN SIDE (Rumeli) - Top/Left -->
-        <g class="europe-land">
-          <!-- Main coastline - organic shape -->
-          <path d="M0,0 L0,180 Q50,200 100,185 Q150,170 200,190 Q280,210 350,195 Q420,175 500,200 Q550,215 600,200 L600,0 Z"
-                fill="url(#landGrad)" stroke="rgba(201,168,76,0.3)" stroke-width="1"/>
-
-          <!-- Coastal details -->
-          <path d="M80,175 Q90,180 100,178" stroke="rgba(201,168,76,0.2)" fill="none" stroke-width="0.5"/>
-          <path d="M200,185 Q220,190 240,183" stroke="rgba(201,168,76,0.2)" fill="none" stroke-width="0.5"/>
-
-          <!-- Hills (hachure style) -->
-          <g stroke="rgba(112,66,20,0.15)" fill="none" stroke-width="0.5">
-            <path d="M50,80 Q60,60 70,80"/>
-            <path d="M55,85 Q62,70 69,85"/>
-            <path d="M150,100 Q165,75 180,100"/>
-            <path d="M155,105 Q167,82 179,105"/>
-            <path d="M300,90 Q320,60 340,90"/>
-            <path d="M305,95 Q322,68 339,95"/>
-          </g>
-
-          <!-- Settlements -->
-          <g fill="rgba(201,168,76,0.3)">
-            <rect x="120" y="140" width="8" height="6"/>
-            <rect x="130" y="142" width="6" height="4"/>
-            <rect x="250" y="150" width="10" height="7"/>
-            <rect x="262" y="152" width="5" height="5"/>
-            <rect x="400" y="145" width="8" height="6"/>
-          </g>
-
-          <!-- Minaret/Tower -->
-          <g fill="rgba(201,168,76,0.25)">
-            <rect x="135" y="130" width="3" height="12"/>
-            <circle cx="136.5" cy="128" r="2"/>
-          </g>
-
-          <!-- Label -->
-          <text x="300" y="60" class="map-label map-label-large">RUMELİ</text>
-          <text x="150" y="120" class="map-label">Beşiktaş</text>
-          <text x="380" y="130" class="map-label">Kabataş</text>
-        </g>
-
-        <!-- THE BOSPHORUS (Water) -->
-        <g class="bosphorus-water">
-          <!-- Main water body -->
-          <path d="M0,180 Q50,200 100,185 Q150,170 200,190 Q280,210 350,195 Q420,175 500,200 Q550,215 600,200
-                   L600,220 Q550,235 500,220 Q420,195 350,215 Q280,230 200,210 Q150,190 100,205 Q50,220 0,200 Z"
-                fill="rgba(27,73,101,0.12)"/>
-          <path d="M0,180 Q50,200 100,185 Q150,170 200,190 Q280,210 350,195 Q420,175 500,200 Q550,215 600,200
-                   L600,220 Q550,235 500,220 Q420,195 350,215 Q280,230 200,210 Q150,190 100,205 Q50,220 0,200 Z"
-                fill="url(#waterPattern)"/>
-
-          <!-- Water label -->
-          <text x="300" y="208" class="map-label map-label-water">B O Ğ A Z İ Ç İ</text>
-
-          <!-- Ferry routes (dashed lines) -->
-          <path class="ferry-route" d="M150,195 Q200,205 250,195 Q300,185 350,200" />
-          <path class="ferry-route" d="M200,190 Q280,210 360,195" />
-          <path class="ferry-route" d="M380,192 Q430,205 480,195" />
-        </g>
-
-        <!-- ASIAN SIDE (Anadolu) - Bottom/Right -->
-        <g class="asia-land">
-          <!-- Main coastline -->
-          <path d="M0,200 Q50,220 100,205 Q150,190 200,210 Q280,230 350,215 Q420,195 500,220 Q550,235 600,220
-                   L600,400 L0,400 Z"
-                fill="url(#landGrad)" stroke="rgba(201,168,76,0.3)" stroke-width="1"/>
-
-          <!-- Hills -->
-          <g stroke="rgba(112,66,20,0.15)" fill="none" stroke-width="0.5">
-            <path d="M80,280 Q95,255 110,280"/>
-            <path d="M85,285 Q97,262 109,285"/>
-            <path d="M220,290 Q240,260 260,290"/>
-            <path d="M225,295 Q242,268 259,295"/>
-            <path d="M400,275 Q425,245 450,275"/>
-            <path d="M405,280 Q427,253 449,280"/>
-          </g>
-
-          <!-- Settlements -->
-          <g fill="rgba(201,168,76,0.3)">
-            <rect x="150" y="240" width="10" height="7"/>
-            <rect x="162" y="242" width="6" height="5"/>
-            <rect x="320" y="250" width="8" height="6"/>
-            <rect x="330" y="252" width="5" height="4"/>
-            <rect x="450" y="245" width="9" height="6"/>
-          </g>
-
-          <!-- Minaret -->
-          <g fill="rgba(201,168,76,0.25)">
-            <rect x="165" y="228" width="3" height="14"/>
-            <circle cx="166.5" cy="226" r="2"/>
-          </g>
-
-          <!-- Label -->
-          <text x="300" y="340" class="map-label map-label-large">ANADOLU</text>
-          <text x="140" y="270" class="map-label">Üsküdar</text>
-          <text x="420" y="280" class="map-label">Kadıköy</text>
-        </g>
-
-        <!-- Compass Rose -->
-        <g class="compass" transform="translate(550, 320)">
-          <circle cx="0" cy="0" r="25" fill="none" stroke="rgba(201,168,76,0.3)" stroke-width="0.5"/>
-          <path d="M0,-20 L3,0 L0,5 L-3,0 Z" fill="rgba(201,168,76,0.4)"/>
-          <path d="M0,20 L3,0 L0,-5 L-3,0 Z" fill="rgba(201,168,76,0.2)"/>
-          <path d="M-20,0 L0,3 L5,0 L0,-3 Z" fill="rgba(201,168,76,0.2)"/>
-          <path d="M20,0 L0,3 L-5,0 L0,-3 Z" fill="rgba(201,168,76,0.2)"/>
-          <text x="0" y="-30" class="map-label" text-anchor="middle">K</text>
-        </g>
-
-        <!-- Scale indicator -->
-        <g class="scale" transform="translate(50, 350)">
-          <line x1="0" y1="0" x2="60" y2="0" stroke="rgba(201,168,76,0.4)" stroke-width="1"/>
-          <line x1="0" y1="-3" x2="0" y2="3" stroke="rgba(201,168,76,0.4)" stroke-width="1"/>
-          <line x1="60" y1="-3" x2="60" y2="3" stroke="rgba(201,168,76,0.4)" stroke-width="1"/>
-          <text x="30" y="12" class="map-label" text-anchor="middle" style="font-size: 6px;">1 Mil</text>
-        </g>
-      </svg>
-
-      <!-- Animated Ships -->
-      <!-- Paddle Steamer (Yolcu Vapuru) 1 -->
-      <div class="ship ship-paddle ship-1">
-        <svg viewBox="0 0 50 25" fill="none">
-          <g fill="rgba(201,168,76,0.7)" stroke="rgba(112,66,20,0.3)" stroke-width="0.5">
-            <!-- Hull -->
-            <path d="M2,18 L6,22 L44,22 L48,18 L40,18 L38,20 L12,20 L10,18 Z"/>
-            <!-- Deck -->
-            <rect x="8" y="13" width="34" height="6" rx="1"/>
-            <!-- Cabin -->
-            <rect x="14" y="8" width="22" height="6" rx="1"/>
-            <!-- Funnel -->
-            <rect x="22" y="2" width="6" height="7"/>
-            <!-- Smoke puff -->
-            <ellipse cx="25" cy="0" rx="4" ry="2" fill="rgba(201,168,76,0.3)" stroke="none"/>
-            <!-- Paddle wheel hint -->
-            <circle cx="25" cy="17" r="4" fill="none" stroke="rgba(201,168,76,0.4)" stroke-width="0.5" stroke-dasharray="1,1"/>
-          </g>
-        </svg>
-      </div>
-
-      <!-- Paddle Steamer 2 -->
-      <div class="ship ship-paddle ship-2">
-        <svg viewBox="0 0 50 25" fill="none">
-          <g fill="rgba(201,168,76,0.6)" stroke="rgba(112,66,20,0.25)" stroke-width="0.5">
-            <path d="M2,18 L6,22 L44,22 L48,18 L40,18 L38,20 L12,20 L10,18 Z"/>
-            <rect x="8" y="13" width="34" height="6" rx="1"/>
-            <rect x="14" y="8" width="22" height="6" rx="1"/>
-            <rect x="22" y="2" width="6" height="7"/>
-            <ellipse cx="25" cy="0" rx="4" ry="2" fill="rgba(201,168,76,0.25)" stroke="none"/>
-            <circle cx="25" cy="17" r="4" fill="none" stroke="rgba(201,168,76,0.3)" stroke-width="0.5" stroke-dasharray="1,1"/>
-          </g>
-        </svg>
-      </div>
-
-      <!-- Car Ferry (Araba Vapuru - Suhulet style) -->
-      <div class="ship ship-carferry ship-3">
-        <svg viewBox="0 0 60 25" fill="none">
-          <g fill="rgba(201,168,76,0.65)" stroke="rgba(112,66,20,0.3)" stroke-width="0.5">
-            <!-- Flat deck hull -->
-            <path d="M2,18 L5,22 L55,22 L58,18 L50,18 L48,20 L12,20 L10,18 Z"/>
-            <!-- Main flat deck (for vehicles) -->
-            <rect x="6" y="12" width="48" height="7" rx="1"/>
-            <!-- Small cabin -->
-            <rect x="24" y="6" width="12" height="7" rx="1"/>
-            <!-- Funnel -->
-            <rect x="28" y="1" width="4" height="6"/>
-            <!-- Smoke -->
-            <ellipse cx="30" cy="-1" rx="3" ry="1.5" fill="rgba(201,168,76,0.25)" stroke="none"/>
-            <!-- Ramp indicators -->
-            <line x1="8" y1="19" x2="8" y2="14" stroke="rgba(201,168,76,0.4)"/>
-            <line x1="52" y1="19" x2="52" y2="14" stroke="rgba(201,168,76,0.4)"/>
-          </g>
-        </svg>
-        <span class="ship-label">Suhulet</span>
-      </div>
-
-      <!-- Small passenger ferry -->
-      <div class="ship ship-small ship-4">
-        <svg viewBox="0 0 35 18" fill="none">
-          <g fill="rgba(201,168,76,0.5)" stroke="rgba(112,66,20,0.2)" stroke-width="0.4">
-            <path d="M2,13 L5,16 L30,16 L33,13 L28,13 L26,14.5 L9,14.5 L7,13 Z"/>
-            <rect x="5" y="9" width="25" height="5" rx="1"/>
-            <rect x="10" y="5" width="15" height="5" rx="1"/>
-            <rect x="15" y="1" width="4" height="5"/>
-          </g>
-        </svg>
-      </div>
-
-      <!-- Another paddle steamer going opposite direction -->
-      <div class="ship ship-paddle ship-5">
-        <svg viewBox="0 0 50 25" fill="none">
-          <g fill="rgba(201,168,76,0.55)" stroke="rgba(112,66,20,0.2)" stroke-width="0.5">
-            <path d="M2,18 L6,22 L44,22 L48,18 L40,18 L38,20 L12,20 L10,18 Z"/>
-            <rect x="8" y="13" width="34" height="6" rx="1"/>
-            <rect x="14" y="8" width="22" height="6" rx="1"/>
-            <rect x="22" y="2" width="6" height="7"/>
-            <ellipse cx="25" cy="0" rx="4" ry="2" fill="rgba(201,168,76,0.2)" stroke="none"/>
-            <circle cx="25" cy="17" r="4" fill="none" stroke="rgba(201,168,76,0.25)" stroke-width="0.5" stroke-dasharray="1,1"/>
-          </g>
-        </svg>
-      </div>
-    </div>
-
     <div class="hero-content">
       <!-- Portrait -->
       <div class="hero-portrait" data-aos="zoom-in" data-aos-duration="1200" data-aos-delay="200">
@@ -342,6 +114,96 @@
       </span>
       <span class="scroll-text">Keşfet</span>
     </a>
+
+    <!-- Animated Ferry Strip - Şirket-i Hayriye Vapurları -->
+    <div class="hero-ferries" id="heroFerries">
+      <!-- Ferries moving left to right -->
+      <div class="hero-ferry ferry-right" data-ferry="suhulet" data-speed="45" style="--delay: 0s;">
+        <svg viewBox="0 0 60 25" class="ferry-svg ferry-carferry">
+          <g fill="currentColor" stroke="rgba(0,0,0,0.2)" stroke-width="0.5">
+            <path d="M2,18 L5,22 L55,22 L58,18 L50,18 L48,20 L12,20 L10,18 Z"/>
+            <rect x="6" y="12" width="48" height="7" rx="1"/>
+            <rect x="24" y="6" width="12" height="7" rx="1"/>
+            <rect x="28" y="1" width="4" height="6"/>
+          </g>
+        </svg>
+      </div>
+      <div class="hero-ferry ferry-right" data-ferry="tarabya" data-speed="38" style="--delay: -8s;">
+        <svg viewBox="0 0 50 25" class="ferry-svg">
+          <g fill="currentColor" stroke="rgba(0,0,0,0.2)" stroke-width="0.5">
+            <path d="M2,18 L6,22 L44,22 L48,18 L40,18 L38,20 L12,20 L10,18 Z"/>
+            <rect x="8" y="13" width="34" height="6" rx="1"/>
+            <rect x="14" y="8" width="22" height="6" rx="1"/>
+            <rect x="22" y="2" width="6" height="7"/>
+          </g>
+        </svg>
+      </div>
+      <div class="hero-ferry ferry-right" data-ferry="goksu" data-speed="42" style="--delay: -18s;">
+        <svg viewBox="0 0 50 25" class="ferry-svg">
+          <g fill="currentColor" stroke="rgba(0,0,0,0.2)" stroke-width="0.5">
+            <path d="M2,18 L6,22 L44,22 L48,18 L40,18 L38,20 L12,20 L10,18 Z"/>
+            <rect x="8" y="13" width="34" height="6" rx="1"/>
+            <rect x="14" y="8" width="22" height="6" rx="1"/>
+            <rect x="22" y="2" width="6" height="7"/>
+          </g>
+        </svg>
+      </div>
+      <div class="hero-ferry ferry-right" data-ferry="besiktas" data-speed="35" style="--delay: -28s;">
+        <svg viewBox="0 0 50 25" class="ferry-svg">
+          <g fill="currentColor" stroke="rgba(0,0,0,0.2)" stroke-width="0.5">
+            <path d="M2,18 L6,22 L44,22 L48,18 L40,18 L38,20 L12,20 L10,18 Z"/>
+            <rect x="8" y="13" width="34" height="6" rx="1"/>
+            <rect x="14" y="8" width="22" height="6" rx="1"/>
+            <rect x="22" y="2" width="6" height="7"/>
+          </g>
+        </svg>
+      </div>
+
+      <!-- Ferries moving right to left -->
+      <div class="hero-ferry ferry-left" data-ferry="bebek" data-speed="40" style="--delay: -5s;">
+        <svg viewBox="0 0 50 25" class="ferry-svg">
+          <g fill="currentColor" stroke="rgba(0,0,0,0.2)" stroke-width="0.5">
+            <path d="M2,18 L6,22 L44,22 L48,18 L40,18 L38,20 L12,20 L10,18 Z"/>
+            <rect x="8" y="13" width="34" height="6" rx="1"/>
+            <rect x="14" y="8" width="22" height="6" rx="1"/>
+            <rect x="22" y="2" width="6" height="7"/>
+          </g>
+        </svg>
+      </div>
+      <div class="hero-ferry ferry-left" data-ferry="kandilli" data-speed="48" style="--delay: -15s;">
+        <svg viewBox="0 0 50 25" class="ferry-svg">
+          <g fill="currentColor" stroke="rgba(0,0,0,0.2)" stroke-width="0.5">
+            <path d="M2,18 L6,22 L44,22 L48,18 L40,18 L38,20 L12,20 L10,18 Z"/>
+            <rect x="8" y="13" width="34" height="6" rx="1"/>
+            <rect x="14" y="8" width="22" height="6" rx="1"/>
+            <rect x="22" y="2" width="6" height="7"/>
+          </g>
+        </svg>
+      </div>
+      <div class="hero-ferry ferry-left" data-ferry="beykoz" data-speed="32" style="--delay: -25s;">
+        <svg viewBox="0 0 50 25" class="ferry-svg">
+          <g fill="currentColor" stroke="rgba(0,0,0,0.2)" stroke-width="0.5">
+            <path d="M2,18 L6,22 L44,22 L48,18 L40,18 L38,20 L12,20 L10,18 Z"/>
+            <rect x="8" y="13" width="34" height="6" rx="1"/>
+            <rect x="14" y="8" width="22" height="6" rx="1"/>
+            <rect x="22" y="2" width="6" height="7"/>
+          </g>
+        </svg>
+      </div>
+      <div class="hero-ferry ferry-left" data-ferry="istinye" data-speed="52" style="--delay: -35s;">
+        <svg viewBox="0 0 50 25" class="ferry-svg">
+          <g fill="currentColor" stroke="rgba(0,0,0,0.2)" stroke-width="0.5">
+            <path d="M2,18 L6,22 L44,22 L48,18 L40,18 L38,20 L12,20 L10,18 Z"/>
+            <rect x="8" y="13" width="34" height="6" rx="1"/>
+            <rect x="14" y="8" width="22" height="6" rx="1"/>
+            <rect x="22" y="2" width="6" height="7"/>
+          </g>
+        </svg>
+      </div>
+
+      <!-- Ferry name tooltip (shown on click) -->
+      <div class="ferry-tooltip" id="ferryTooltip"></div>
+    </div>
   </section>
 
   <!-- ==========================================
@@ -399,7 +261,7 @@
   </section>
 
   <!-- ==========================================
-       SECTION 2.5: INTERACTIVE BOSPHORUS MAP
+       SECTION 2.5: INTERACTIVE BOSPHORUS MAP WITH TIMELINE
        ========================================== -->
   <section class="bosphorus-routes section-padding" id="hatlar">
     <div class="container">
@@ -409,35 +271,34 @@
           Boğaziçi'nde Deniz Ulaşımı
         </h2>
         <p class="routes-subtitle" data-aos="fade-up" data-aos-delay="200">
-          Hüseyin Haki Efendi döneminde işletilen hatları keşfedin. İskele ve vapurlara tıklayın.
+          Yılı seçin ve o dönemde hizmette olan iskele ve vapurları görün. Üzerlerine tıklayarak bilgi alın.
         </p>
+      </div>
+
+      <!-- Timeline Selector -->
+      <div class="timeline-selector" data-aos="fade-up" data-aos-delay="250">
+        <label for="yearSelect" class="timeline-label">Yıl Seçin:</label>
+        <div class="timeline-dropdown">
+          <select id="yearSelect" class="year-select">
+            <option value="1854">1854 — Kuruluş</option>
+            <option value="1866">1866 — Haki Efendi Göreve Başlıyor</option>
+            <option value="1872" selected>1872 — Suhulet Hizmete Giriyor</option>
+            <option value="1880">1880 — Filo Genişliyor</option>
+            <option value="1890">1890 — 39-40. Vapurlar</option>
+            <option value="1894">1894 — 46 Vapurluk Filo</option>
+          </select>
+          <span class="dropdown-arrow">▼</span>
+        </div>
       </div>
 
       <!-- Interactive Map Container -->
       <div class="interactive-map-container" data-aos="fade-up" data-aos-delay="300">
+        <!-- Vintage Map Background (CSS styled) -->
+        <div class="vintage-map-bg"></div>
+
+        <!-- SVG Overlay for interactive elements -->
         <svg class="interactive-map" viewBox="0 0 800 500" preserveAspectRatio="xMidYMid meet">
           <defs>
-            <!-- Paper texture -->
-            <pattern id="mapPaper" patternUnits="userSpaceOnUse" width="150" height="150">
-              <rect width="150" height="150" fill="#f5efe0"/>
-              <circle cx="30" cy="45" r="1.5" fill="rgba(112,66,20,0.04)"/>
-              <circle cx="100" cy="90" r="1" fill="rgba(112,66,20,0.03)"/>
-              <circle cx="60" cy="120" r="1.2" fill="rgba(112,66,20,0.03)"/>
-            </pattern>
-
-            <!-- Water texture -->
-            <pattern id="mapWater" patternUnits="userSpaceOnUse" width="30" height="15">
-              <path d="M0,7.5 Q7.5,4 15,7.5 T30,7.5" stroke="rgba(27,73,101,0.1)" fill="none" stroke-width="0.8"/>
-            </pattern>
-
-            <!-- Route line gradient -->
-            <linearGradient id="routeGrad" x1="0%" y1="0%" x2="100%" y2="0%">
-              <stop offset="0%" style="stop-color:#c9a84c;stop-opacity:0.3"/>
-              <stop offset="50%" style="stop-color:#c9a84c;stop-opacity:0.6"/>
-              <stop offset="100%" style="stop-color:#c9a84c;stop-opacity:0.3"/>
-            </linearGradient>
-
-            <!-- Glow filter for hover -->
             <filter id="glow" x="-50%" y="-50%" width="200%" height="200%">
               <feGaussianBlur stdDeviation="3" result="blur"/>
               <feMerge>
@@ -447,173 +308,85 @@
             </filter>
           </defs>
 
-          <!-- Background -->
-          <rect width="800" height="500" fill="url(#mapPaper)"/>
+          <!-- European Coast outline -->
+          <path class="coast-line" d="M0,0 L0,500 L180,500 Q200,450 190,400 Q175,350 195,300 Q210,250 185,200 Q165,150 190,100 Q205,50 180,0 Z"/>
 
-          <!-- EUROPEAN COAST (Left side - Rumeli) -->
-          <g class="coast-europe">
-            <path d="M0,0 L0,500 L180,500 Q200,450 190,400 Q175,350 195,300 Q210,250 185,200 Q165,150 190,100 Q205,50 180,0 Z"
-                  fill="rgba(201,168,76,0.15)" stroke="rgba(201,168,76,0.4)" stroke-width="1.5"/>
+          <!-- Asian Coast outline -->
+          <path class="coast-line" d="M800,0 L800,500 L620,500 Q600,450 610,400 Q625,350 605,300 Q590,250 615,200 Q635,150 610,100 Q595,50 620,0 Z"/>
 
-            <!-- Hills -->
-            <g stroke="rgba(112,66,20,0.2)" fill="none" stroke-width="0.8">
-              <path d="M60,80 Q80,50 100,80"/>
-              <path d="M65,88 Q82,60 99,88"/>
-              <path d="M40,200 Q65,165 90,200"/>
-              <path d="M45,208 Q67,175 89,208"/>
-              <path d="M50,350 Q80,310 110,350"/>
-              <path d="M55,358 Q82,320 109,358"/>
+          <!-- Region Labels -->
+          <text x="90" y="250" class="map-region-label" transform="rotate(-90, 90, 250)">RUMELİ YAKASI</text>
+          <text x="710" y="250" class="map-region-label" transform="rotate(90, 710, 250)">ANADOLU YAKASI</text>
+
+          <!-- Water Label -->
+          <text x="400" y="250" class="map-water-label">BOĞAZİÇİ</text>
+
+          <!-- FERRY PIERS (visibility controlled by JS based on year) -->
+          <g class="piers-group" id="piersGroup">
+            <!-- European Side -->
+            <g class="pier" data-pier="besiktas" data-year="1854" tabindex="0">
+              <circle cx="195" cy="120" r="14" class="pier-bg"/>
+              <circle cx="195" cy="120" r="9" class="pier-inner"/>
+            </g>
+            <g class="pier" data-pier="ortakoy" data-year="1856" tabindex="0">
+              <circle cx="200" cy="170" r="14" class="pier-bg"/>
+              <circle cx="200" cy="170" r="9" class="pier-inner"/>
+            </g>
+            <g class="pier" data-pier="kabatas" data-year="1854" tabindex="0">
+              <circle cx="190" cy="220" r="14" class="pier-bg"/>
+              <circle cx="190" cy="220" r="9" class="pier-inner"/>
+            </g>
+            <g class="pier" data-pier="eminonu" data-year="1854" tabindex="0">
+              <circle cx="185" cy="320" r="14" class="pier-bg"/>
+              <circle cx="185" cy="320" r="9" class="pier-inner"/>
+            </g>
+            <g class="pier" data-pier="sirkeci" data-year="1854" tabindex="0">
+              <circle cx="190" cy="380" r="14" class="pier-bg"/>
+              <circle cx="190" cy="380" r="9" class="pier-inner"/>
             </g>
 
-            <!-- Region Label -->
-            <text x="90" y="30" class="map-region-label">RUMELİ YAKASI</text>
-          </g>
-
-          <!-- ASIAN COAST (Right side - Anadolu) -->
-          <g class="coast-asia">
-            <path d="M800,0 L800,500 L620,500 Q600,450 610,400 Q625,350 605,300 Q590,250 615,200 Q635,150 610,100 Q595,50 620,0 Z"
-                  fill="rgba(201,168,76,0.15)" stroke="rgba(201,168,76,0.4)" stroke-width="1.5"/>
-
-            <!-- Hills -->
-            <g stroke="rgba(112,66,20,0.2)" fill="none" stroke-width="0.8">
-              <path d="M700,100 Q720,65 740,100"/>
-              <path d="M705,108 Q722,75 739,108"/>
-              <path d="M710,250 Q735,210 760,250"/>
-              <path d="M715,258 Q737,220 759,258"/>
-              <path d="M690,400 Q720,360 750,400"/>
-              <path d="M695,408 Q722,370 749,408"/>
+            <!-- Asian Side -->
+            <g class="pier" data-pier="beykoz" data-year="1854" tabindex="0">
+              <circle cx="605" cy="80" r="14" class="pier-bg"/>
+              <circle cx="605" cy="80" r="9" class="pier-inner"/>
             </g>
-
-            <!-- Region Label -->
-            <text x="710" y="30" class="map-region-label">ANADOLU YAKASI</text>
-          </g>
-
-          <!-- THE BOSPHORUS (Water) -->
-          <g class="bosphorus">
-            <path d="M180,0 Q205,50 190,100 Q165,150 185,200 Q210,250 195,300 Q175,350 190,400 Q200,450 180,500
-                     L620,500 Q600,450 610,400 Q625,350 605,300 Q590,250 615,200 Q635,150 610,100 Q595,50 620,0 Z"
-                  fill="rgba(27,73,101,0.08)"/>
-            <path d="M180,0 Q205,50 190,100 Q165,150 185,200 Q210,250 195,300 Q175,350 190,400 Q200,450 180,500
-                     L620,500 Q600,450 610,400 Q625,350 605,300 Q590,250 615,200 Q635,150 610,100 Q595,50 620,0 Z"
-                  fill="url(#mapWater)"/>
-
-            <!-- Water label -->
-            <text x="400" y="250" class="map-water-label">BOĞAZİÇİ</text>
+            <g class="pier" data-pier="kandilli" data-year="1854" tabindex="0">
+              <circle cx="600" cy="140" r="14" class="pier-bg"/>
+              <circle cx="600" cy="140" r="9" class="pier-inner"/>
+            </g>
+            <g class="pier" data-pier="uskudar" data-year="1854" tabindex="0">
+              <circle cx="610" cy="220" r="14" class="pier-bg"/>
+              <circle cx="610" cy="220" r="9" class="pier-inner"/>
+            </g>
+            <g class="pier" data-pier="haydarpasa" data-year="1872" tabindex="0">
+              <circle cx="615" cy="300" r="14" class="pier-bg"/>
+              <circle cx="615" cy="300" r="9" class="pier-inner"/>
+            </g>
+            <g class="pier" data-pier="kadikoy" data-year="1858" tabindex="0">
+              <circle cx="610" cy="380" r="14" class="pier-bg"/>
+              <circle cx="610" cy="380" r="9" class="pier-inner"/>
+            </g>
           </g>
 
           <!-- FERRY ROUTES -->
-          <g class="ferry-routes-group">
-            <!-- Route 1: Beşiktaş - Üsküdar -->
-            <path class="ferry-route-line" d="M220,180 Q400,160 580,180" data-route="besiktas-uskudar"/>
-
-            <!-- Route 2: Kabataş - Kadıköy -->
-            <path class="ferry-route-line" d="M215,280 Q400,300 585,280" data-route="kabatas-kadikoy"/>
-
-            <!-- Route 3: Eminönü - Üsküdar (Suhulet Route) -->
-            <path class="ferry-route-line route-suhulet" d="M210,380 Q400,350 590,380" data-route="eminonu-uskudar"/>
+          <g class="ferry-routes-group" id="routesGroup">
+            <path class="ferry-route-line" d="M200,120 Q400,100 605,80" data-route="besiktas-beykoz" data-year="1854"/>
+            <path class="ferry-route-line" d="M190,220 Q400,200 610,220" data-route="kabatas-uskudar" data-year="1854"/>
+            <path class="ferry-route-line route-suhulet" d="M185,320 Q400,290 610,320" data-route="eminonu-haydarpasa" data-year="1872"/>
+            <path class="ferry-route-line" d="M190,380 Q400,400 610,380" data-route="sirkeci-kadikoy" data-year="1858"/>
           </g>
 
-          <!-- FERRY PIERS (Clickable) -->
-          <g class="piers-group">
-            <!-- European Side Piers -->
-            <g class="pier" data-pier="besiktas" tabindex="0">
-              <circle cx="195" cy="180" r="12" class="pier-bg"/>
-              <circle cx="195" cy="180" r="8" class="pier-inner"/>
-              <text x="195" y="160" class="pier-label">Beşiktaş</text>
-            </g>
-
-            <g class="pier" data-pier="kabatas" tabindex="0">
-              <circle cx="190" cy="280" r="12" class="pier-bg"/>
-              <circle cx="190" cy="280" r="8" class="pier-inner"/>
-              <text x="190" y="260" class="pier-label">Kabataş</text>
-            </g>
-
-            <g class="pier" data-pier="eminonu" tabindex="0">
-              <circle cx="185" cy="380" r="12" class="pier-bg"/>
-              <circle cx="185" cy="380" r="8" class="pier-inner"/>
-              <text x="185" y="360" class="pier-label">Eminönü</text>
-            </g>
-
-            <!-- Asian Side Piers -->
-            <g class="pier" data-pier="uskudar" tabindex="0">
-              <circle cx="605" cy="180" r="12" class="pier-bg"/>
-              <circle cx="605" cy="180" r="8" class="pier-inner"/>
-              <text x="605" y="160" class="pier-label">Üsküdar</text>
-            </g>
-
-            <g class="pier" data-pier="kadikoy" tabindex="0">
-              <circle cx="610" cy="280" r="12" class="pier-bg"/>
-              <circle cx="610" cy="280" r="8" class="pier-inner"/>
-              <text x="610" y="260" class="pier-label">Kadıköy</text>
-            </g>
-
-            <g class="pier" data-pier="haydarpasa" tabindex="0">
-              <circle cx="615" cy="380" r="12" class="pier-bg"/>
-              <circle cx="615" cy="380" r="8" class="pier-inner"/>
-              <text x="615" y="360" class="pier-label">Haydarpaşa</text>
-            </g>
-          </g>
-
-          <!-- SHIPS (Clickable) -->
-          <g class="ships-group">
-            <!-- Regular Paddle Steamer -->
-            <g class="map-ship" data-ship="paddle-steamer" tabindex="0" transform="translate(350, 165)">
-              <rect x="-25" y="-12" width="50" height="24" fill="transparent" class="ship-hitbox"/>
-              <g class="ship-icon">
-                <path d="M-20,8 L-16,12 L16,12 L20,8 L14,8 L12,10 L-12,10 L-14,8 Z" fill="rgba(201,168,76,0.8)"/>
-                <rect x="-14" y="2" width="28" height="7" rx="1" fill="rgba(201,168,76,0.8)"/>
-                <rect x="-8" y="-4" width="16" height="7" rx="1" fill="rgba(201,168,76,0.8)"/>
-                <rect x="-3" y="-10" width="6" height="7" fill="rgba(201,168,76,0.8)"/>
-                <ellipse cx="0" cy="-12" rx="4" ry="2" fill="rgba(201,168,76,0.4)"/>
-              </g>
-            </g>
-
-            <!-- Suhulet (Car Ferry) - Special -->
-            <g class="map-ship ship-suhulet" data-ship="suhulet" tabindex="0" transform="translate(400, 365)">
-              <rect x="-30" y="-15" width="60" height="30" fill="transparent" class="ship-hitbox"/>
-              <g class="ship-icon">
-                <path d="M-25,10 L-21,15 L21,15 L25,10 L18,10 L16,12 L-16,12 L-18,10 Z" fill="rgba(201,168,76,0.9)"/>
-                <rect x="-20" y="2" width="40" height="9" rx="1" fill="rgba(201,168,76,0.9)"/>
-                <rect x="-8" y="-6" width="16" height="9" rx="1" fill="rgba(201,168,76,0.9)"/>
-                <rect x="-3" y="-12" width="6" height="7" fill="rgba(201,168,76,0.9)"/>
-                <ellipse cx="0" cy="-14" rx="4" ry="2" fill="rgba(201,168,76,0.5)"/>
-                <!-- Car deck markers -->
-                <line x1="-18" y1="10" x2="-18" y2="4" stroke="rgba(112,66,20,0.4)" stroke-width="1"/>
-                <line x1="18" y1="10" x2="18" y2="4" stroke="rgba(112,66,20,0.4)" stroke-width="1"/>
-              </g>
-              <text x="0" y="28" class="ship-name">Suhulet</text>
-            </g>
-
-            <!-- Small Ferry -->
-            <g class="map-ship" data-ship="small-ferry" tabindex="0" transform="translate(450, 285)">
-              <rect x="-18" y="-10" width="36" height="20" fill="transparent" class="ship-hitbox"/>
-              <g class="ship-icon">
-                <path d="M-14,6 L-11,10 L11,10 L14,6 L10,6 L8,8 L-8,8 L-10,6 Z" fill="rgba(201,168,76,0.7)"/>
-                <rect x="-10" y="0" width="20" height="7" rx="1" fill="rgba(201,168,76,0.7)"/>
-                <rect x="-5" y="-5" width="10" height="6" rx="1" fill="rgba(201,168,76,0.7)"/>
-                <rect x="-2" y="-9" width="4" height="5" fill="rgba(201,168,76,0.7)"/>
-              </g>
-            </g>
+          <!-- ANIMATED SHIPS (visibility controlled by JS) -->
+          <g class="ships-group" id="shipsGroup">
+            <!-- Ships will be added/shown dynamically based on year -->
           </g>
 
           <!-- Compass -->
-          <g class="map-compass" transform="translate(730, 460)">
-            <circle cx="0" cy="0" r="25" fill="rgba(245,239,224,0.9)" stroke="rgba(201,168,76,0.5)" stroke-width="1"/>
-            <path d="M0,-18 L4,0 L0,6 L-4,0 Z" fill="rgba(107,28,35,0.7)"/>
-            <path d="M0,18 L4,0 L0,-6 L-4,0 Z" fill="rgba(201,168,76,0.5)"/>
-            <text x="0" y="-28" class="compass-label">K</text>
-          </g>
-
-          <!-- Legend -->
-          <g class="map-legend" transform="translate(50, 440)">
-            <rect x="0" y="0" width="150" height="55" fill="rgba(245,239,224,0.95)" stroke="rgba(201,168,76,0.4)" rx="4"/>
-            <text x="10" y="18" class="legend-title">Harita Açıklaması</text>
-            <circle cx="20" cy="32" r="5" class="pier-inner"/>
-            <text x="32" y="36" class="legend-text">İskele</text>
-            <line x1="80" y1="32" x2="110" y2="32" stroke="rgba(201,168,76,0.6)" stroke-width="2" stroke-dasharray="4,2"/>
-            <text x="118" y="36" class="legend-text">Hat</text>
-            <path d="M15,47 L25,47" stroke="rgba(201,168,76,0.8)" stroke-width="3"/>
-            <text x="32" y="50" class="legend-text">Vapur</text>
+          <g class="map-compass" transform="translate(730, 50)">
+            <circle cx="0" cy="0" r="22" fill="rgba(245,239,224,0.95)" stroke="rgba(201,168,76,0.6)" stroke-width="1"/>
+            <path d="M0,-16 L3,0 L0,5 L-3,0 Z" fill="rgba(107,28,35,0.8)"/>
+            <path d="M0,16 L3,0 L0,-5 L-3,0 Z" fill="rgba(201,168,76,0.6)"/>
+            <text x="0" y="-26" class="compass-label">K</text>
           </g>
         </svg>
 
@@ -626,33 +399,40 @@
             <div class="info-stats"></div>
           </div>
         </div>
+
+        <!-- Year indicator on map -->
+        <div class="map-year-badge" id="mapYearBadge">1872</div>
       </div>
 
-      <!-- Route Cards -->
-      <div class="route-cards" data-aos="fade-up" data-aos-delay="400">
-        <div class="route-card" data-route-card="suhulet">
-          <div class="route-icon">&#9875;</div>
-          <div class="route-info">
-            <h4>Suhulet Hattı</h4>
-            <p>Dünyanın ilk arabalı vapuru, Eminönü-Üsküdar arasında araba ve yük taşıdı.</p>
-          </div>
-          <span class="route-year">1871</span>
+      <!-- Suhulet Story -->
+      <div class="suhulet-story" data-aos="fade-up" data-aos-delay="400">
+        <div class="story-icon">⚓</div>
+        <div class="story-content">
+          <h3>Suhulet'in Hikayesi</h3>
+          <p>
+            İstanbul'un iki yakası arasında hem yolcu hem araba taşıyacak bir gemiye ihtiyaç olduğunu fark eden
+            Hüseyin Haki Efendi, dünyada eşi benzeri olmayan bir vapur tasarladı. İngiliz tersaneciler bile
+            böyle bir gemi daha önce yapmamıştı. Prototipi Hasköy Tersanesi Sermimarı <strong>Mehmet Usta</strong> ve
+            Müfettiş <strong>İskender Efendi</strong> ile birlikte çizdi. İngiltere'nin <em>Maudslay, Sons & Field</em>
+            tersanesinde inşa edilen gemi, 1872 başında İstanbul'da hizmete girdi. Adını şair <strong>Namık Kemal</strong>
+            verdi: <em>"Suhulet"</em> — kolaylık.
+          </p>
         </div>
-        <div class="route-card">
-          <div class="route-icon">&#9978;</div>
-          <div class="route-info">
-            <h4>Yolcu Hatları</h4>
-            <p>Beşiktaş, Kabataş, Üsküdar ve Kadıköy arasında düzenli seferler.</p>
-          </div>
-          <span class="route-year">1866+</span>
+      </div>
+
+      <!-- Fleet Stats by Year -->
+      <div class="fleet-stats" data-aos="fade-up" data-aos-delay="450">
+        <div class="fleet-stat" id="fleetStatShips">
+          <span class="stat-value">26</span>
+          <span class="stat-label">Vapur</span>
         </div>
-        <div class="route-card">
-          <div class="route-icon">&#9733;</div>
-          <div class="route-info">
-            <h4>46 Vapur</h4>
-            <p>Haki Efendi döneminde filo 16'dan 46 vapura çıkarıldı.</p>
-          </div>
-          <span class="route-year">1894</span>
+        <div class="fleet-stat" id="fleetStatPiers">
+          <span class="stat-value">10</span>
+          <span class="stat-label">İskele</span>
+        </div>
+        <div class="fleet-stat" id="fleetStatRoutes">
+          <span class="stat-value">4</span>
+          <span class="stat-label">Hat</span>
         </div>
       </div>
     </div>
