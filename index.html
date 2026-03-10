@@ -34,9 +34,6 @@
   <!-- AOS Animation Library -->
   <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
 
-  <!-- Leaflet Map Library -->
-  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="">
-
   <!-- Styles -->
   <link rel="stylesheet" href="css/style.css">
 
@@ -360,58 +357,251 @@
 
         <!-- Animated ship indicator that moves along the track -->
         <div class="slider-ship" id="sliderShip">
-          <svg viewBox="0 0 50 25" fill="currentColor">
-            <!-- Arabalı vapur - Suhulet -->
-            <path d="M3,18 L7,23 L43,23 L47,18 L40,18 L38,21 L12,21 L10,18 Z"/>
-            <rect x="8" y="10" width="34" height="9" rx="1"/>
-            <rect x="18" y="4" width="14" height="7" rx="1"/>
-            <rect x="22" y="0" width="6" height="5"/>
-            <!-- Duman -->
-            <ellipse cx="25" cy="0" rx="3" ry="1.5" opacity="0.4"/>
+          <svg viewBox="0 0 64 32" fill="currentColor">
+            <!-- Gövde - zarif kavisli -->
+            <path d="M4,24 Q1,22 4,20 L60,20 Q63,22 60,24 L55,28 L9,28 Z"/>
+            <!-- Ana güverte -->
+            <rect x="7" y="14" width="50" height="7" rx="1.5"/>
+            <!-- Kabin -->
+            <rect x="20" y="7" width="24" height="8" rx="1.5"/>
+            <!-- Pencereler -->
+            <rect x="23" y="9" width="4" height="4" rx="1" fill="#f5efe0" opacity="0.5"/>
+            <rect x="30" y="9" width="4" height="4" rx="1" fill="#f5efe0" opacity="0.5"/>
+            <rect x="37" y="9" width="4" height="4" rx="1" fill="#f5efe0" opacity="0.5"/>
+            <!-- Baca -->
+            <rect x="29" y="1" width="6" height="7" rx="1"/>
+            <!-- Duman animasyonlu -->
+            <ellipse cx="32" cy="0" rx="5" ry="2" opacity="0.35">
+              <animate attributeName="cy" values="0;-2;0" dur="2s" repeatCount="indefinite"/>
+              <animate attributeName="rx" values="5;7;5" dur="2s" repeatCount="indefinite"/>
+              <animate attributeName="opacity" values="0.35;0.2;0.35" dur="2s" repeatCount="indefinite"/>
+            </ellipse>
+            <ellipse cx="36" cy="-1" rx="3" ry="1.5" opacity="0.2">
+              <animate attributeName="cy" values="-1;-4;-1" dur="2.5s" repeatCount="indefinite"/>
+            </ellipse>
+            <!-- Yan çarklar (paddle wheels) -->
+            <g>
+              <circle cx="14" cy="20" r="4" fill="none" stroke="currentColor" stroke-width="1.5"/>
+              <line x1="14" y1="16" x2="14" y2="24" stroke="currentColor" stroke-width="1"/>
+              <line x1="10" y1="20" x2="18" y2="20" stroke="currentColor" stroke-width="1"/>
+            </g>
+            <g>
+              <circle cx="50" cy="20" r="4" fill="none" stroke="currentColor" stroke-width="1.5"/>
+              <line x1="50" y1="16" x2="50" y2="24" stroke="currentColor" stroke-width="1"/>
+              <line x1="46" y1="20" x2="54" y2="20" stroke="currentColor" stroke-width="1"/>
+            </g>
+            <!-- Bayrak direği ve bayrak -->
+            <line x1="56" y1="7" x2="56" y2="0" stroke="currentColor" stroke-width="1.5"/>
+            <path d="M56,0 L63,2.5 L56,5" fill="#c9a84c"/>
           </svg>
         </div>
       </div>
 
-      <!-- Hidden select for JS compatibility -->
-      <select id="yearSelect" class="year-select-hidden" aria-hidden="true">
-        <option value="1854">1854</option>
-        <option value="1866">1866</option>
-        <option value="1872" selected>1872</option>
-        <option value="1880">1880</option>
-        <option value="1890">1890</option>
-        <option value="1894">1894</option>
-      </select>
+      <!-- Scrollytelling: Yıllara Göre Filo Gelişimi -->
+      <div class="scrollytelling-container" data-aos="fade-up" data-aos-delay="300">
 
-      <!-- Real Leaflet Map -->
-      <div class="vintage-map-container" data-aos="fade-up" data-aos-delay="300">
-        <!-- Year indicator (top right) -->
-        <div class="map-year-badge" id="mapYearBadge">1872</div>
-
-        <!-- Map Title -->
-        <div class="map-title-overlay">
-          <div class="map-title">ŞİRKET-İ HAYRİYE</div>
-          <div class="map-subtitle">Boğaziçi İskeleleri ve Vapur Hatları</div>
+        <!-- 1854 - Kuruluş -->
+        <div class="story-year" data-year="1854">
+          <div class="year-badge-large">1854</div>
+          <h3 class="year-title">Kuruluş</h3>
+          <div class="year-stats">
+            <div class="stat-item-scroll">
+              <span class="stat-number-scroll">6</span>
+              <span class="stat-label-scroll">Vapur</span>
+            </div>
+            <div class="stat-item-scroll">
+              <span class="stat-number-scroll">12</span>
+              <span class="stat-label-scroll">İskele</span>
+            </div>
+            <div class="stat-item-scroll">
+              <span class="stat-number-scroll">2</span>
+              <span class="stat-label-scroll">Hat</span>
+            </div>
+          </div>
+          <div class="route-diagram">
+            <div class="route-side europe">
+              <span class="pier-dot"></span> Beşiktaş
+              <span class="pier-dot"></span> Kabataş
+              <span class="pier-dot"></span> Eminönü
+            </div>
+            <div class="route-lines">
+              <svg viewBox="0 0 60 80" preserveAspectRatio="none">
+                <path d="M0,20 Q30,25 60,15" stroke="currentColor" stroke-width="2" fill="none" stroke-dasharray="4,3"/>
+                <path d="M0,50 Q30,55 60,45" stroke="currentColor" stroke-width="2" fill="none" stroke-dasharray="4,3"/>
+              </svg>
+            </div>
+            <div class="route-side asia">
+              <span class="pier-dot"></span> Üsküdar
+              <span class="pier-dot"></span> Kadıköy
+            </div>
+          </div>
+          <p class="year-narrative">
+            Şirket-i Hayriye kuruldu. İlk vapurlar İngiltere'den sipariş edildi.
+            Boğaziçi'nde düzenli yolcu taşımacılığı başladı.
+          </p>
         </div>
 
-        <!-- Leaflet Map Container -->
-        <div id="bosphorusMap" class="leaflet-map-container"></div>
-
-        <!-- Legend overlay -->
-        <div class="map-legend-overlay">
-          <div class="legend-title">LEJANT</div>
-          <div class="legend-item">
-            <span class="legend-pier"></span>
-            <span>İskele</span>
+        <!-- 1866 - Haki Efendi Dönemi -->
+        <div class="story-year" data-year="1866">
+          <div class="year-badge-large">1866</div>
+          <h3 class="year-title">Haki Efendi Göreve Başlıyor</h3>
+          <div class="year-stats">
+            <div class="stat-item-scroll">
+              <span class="stat-number-scroll">16</span>
+              <span class="stat-label-scroll">Vapur</span>
+            </div>
+            <div class="stat-item-scroll">
+              <span class="stat-number-scroll">15</span>
+              <span class="stat-label-scroll">İskele</span>
+            </div>
+            <div class="stat-item-scroll">
+              <span class="stat-number-scroll">3</span>
+              <span class="stat-label-scroll">Hat</span>
+            </div>
           </div>
-          <div class="legend-item">
-            <span class="legend-route"></span>
-            <span>Vapur Hattı</span>
+          <div class="route-diagram">
+            <div class="route-side europe">
+              <span class="pier-dot"></span> Sarıyer
+              <span class="pier-dot"></span> Bebek
+              <span class="pier-dot"></span> Beşiktaş
+              <span class="pier-dot"></span> Kabataş
+              <span class="pier-dot"></span> Eminönü
+            </div>
+            <div class="route-lines">
+              <svg viewBox="0 0 60 100" preserveAspectRatio="none">
+                <path d="M0,25 Q30,30 60,20" stroke="currentColor" stroke-width="2" fill="none" stroke-dasharray="4,3"/>
+                <path d="M0,50 Q30,55 60,45" stroke="currentColor" stroke-width="2" fill="none" stroke-dasharray="4,3"/>
+                <path d="M0,75 Q30,80 60,70" stroke="currentColor" stroke-width="2" fill="none" stroke-dasharray="4,3"/>
+              </svg>
+            </div>
+            <div class="route-side asia">
+              <span class="pier-dot"></span> Beykoz
+              <span class="pier-dot"></span> Kandilli
+              <span class="pier-dot"></span> Üsküdar
+              <span class="pier-dot"></span> Kadıköy
+            </div>
           </div>
-          <div class="legend-item">
-            <span class="legend-suhulet"></span>
-            <span>Suhulet (1872)</span>
-          </div>
+          <p class="year-narrative">
+            Hüseyin Haki Efendi, iflasın eşiğindeki şirketin başına getirildi.
+            Muhasebe sistemini modernleştirdi, disiplini sağladı.
+          </p>
         </div>
+
+        <!-- 1872 - Suhulet (Özel Vurgu) -->
+        <div class="story-year story-year-highlight" data-year="1872">
+          <div class="year-badge-large suhulet-badge">1872</div>
+          <h3 class="year-title">Suhulet Hizmete Girdi</h3>
+          <div class="year-stats">
+            <div class="stat-item-scroll">
+              <span class="stat-number-scroll">26</span>
+              <span class="stat-label-scroll">Vapur</span>
+            </div>
+            <div class="stat-item-scroll">
+              <span class="stat-number-scroll">18</span>
+              <span class="stat-label-scroll">İskele</span>
+            </div>
+            <div class="stat-item-scroll highlight">
+              <span class="stat-number-scroll">4</span>
+              <span class="stat-label-scroll">Hat</span>
+            </div>
+          </div>
+          <div class="suhulet-highlight-box">
+            <div class="suhulet-icon">
+              <svg viewBox="0 0 80 40" fill="currentColor">
+                <path d="M5,30 Q2,28 5,26 L75,26 Q78,28 75,30 L70,35 L10,35 Z"/>
+                <rect x="8" y="18" width="64" height="9" rx="1.5"/>
+                <rect x="25" y="10" width="30" height="9" rx="1.5"/>
+                <rect x="36" y="2" width="8" height="9" rx="1"/>
+                <ellipse cx="40" cy="0" rx="6" ry="2.5" opacity="0.3"/>
+              </svg>
+            </div>
+            <div class="suhulet-text">
+              <strong>Dünyanın İlk Arabalı Vapuru</strong>
+              <span>Kabataş - Üsküdar hattında hizmete girdi</span>
+            </div>
+          </div>
+          <p class="year-narrative">
+            Hüseyin Haki Efendi'nin tasarladığı Suhulet, İngiltere'de inşa edildi.
+            Hem yolcu hem araba taşıyabilen bu gemi, dünyada bir ilkti.
+          </p>
+        </div>
+
+        <!-- 1880 - Genişleme -->
+        <div class="story-year" data-year="1880">
+          <div class="year-badge-large">1880</div>
+          <h3 class="year-title">Filo Genişliyor</h3>
+          <div class="year-stats">
+            <div class="stat-item-scroll">
+              <span class="stat-number-scroll">32</span>
+              <span class="stat-label-scroll">Vapur</span>
+            </div>
+            <div class="stat-item-scroll">
+              <span class="stat-number-scroll">19</span>
+              <span class="stat-label-scroll">İskele</span>
+            </div>
+            <div class="stat-item-scroll">
+              <span class="stat-number-scroll">4</span>
+              <span class="stat-label-scroll">Hat</span>
+            </div>
+          </div>
+          <p class="year-narrative">
+            Yeni vapurlar filosuna katıldı. Sefer sıklığı artırıldı.
+            Boğaziçi'nin kuzey uçlarına kadar düzenli ulaşım sağlandı.
+          </p>
+        </div>
+
+        <!-- 1890 - 40 Vapur -->
+        <div class="story-year" data-year="1890">
+          <div class="year-badge-large">1890</div>
+          <h3 class="year-title">40 Vapurluk Filo</h3>
+          <div class="year-stats">
+            <div class="stat-item-scroll">
+              <span class="stat-number-scroll">40</span>
+              <span class="stat-label-scroll">Vapur</span>
+            </div>
+            <div class="stat-item-scroll">
+              <span class="stat-number-scroll">20</span>
+              <span class="stat-label-scroll">İskele</span>
+            </div>
+            <div class="stat-item-scroll">
+              <span class="stat-number-scroll">4</span>
+              <span class="stat-label-scroll">Hat</span>
+            </div>
+          </div>
+          <p class="year-narrative">
+            Filo 40 vapura ulaştı. Şirket-i Hayriye, dünyanın en büyük
+            yolcu taşıma şirketlerinden biri haline geldi.
+          </p>
+        </div>
+
+        <!-- 1894 - Altın Çağ -->
+        <div class="story-year" data-year="1894">
+          <div class="year-badge-large">1894</div>
+          <h3 class="year-title">Altın Çağ</h3>
+          <div class="year-stats">
+            <div class="stat-item-scroll">
+              <span class="stat-number-scroll">46</span>
+              <span class="stat-label-scroll">Vapur</span>
+            </div>
+            <div class="stat-item-scroll">
+              <span class="stat-number-scroll">20</span>
+              <span class="stat-label-scroll">İskele</span>
+            </div>
+            <div class="stat-item-scroll">
+              <span class="stat-number-scroll">4</span>
+              <span class="stat-label-scroll">Hat</span>
+            </div>
+          </div>
+          <div class="growth-summary">
+            <div class="growth-arrow">16 → 46</div>
+            <span>28 yılda filo 3 katına çıktı</span>
+          </div>
+          <p class="year-narrative">
+            Hüseyin Haki Efendi'nin 28 yıllık müdürlüğünün son yılı.
+            İflasın eşiğindeki şirketi, 46 vapurluk bir filoya dönüştürdü.
+          </p>
+        </div>
+
       </div>
 
       <!-- Suhulet Story -->
@@ -944,7 +1134,6 @@
 
   <!-- Scripts -->
   <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
-  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
   <script src="js/main.js"></script>
   <script>
     AOS.init({

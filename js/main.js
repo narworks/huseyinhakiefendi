@@ -180,358 +180,59 @@
     });
   }
 
-  // --- Interactive Leaflet Bosphorus Map ---
-  function initInteractiveMap() {
-    const mapContainer = document.getElementById('bosphorusMap');
-    if (!mapContainer || typeof L === 'undefined') return;
-
-    const yearSelect = document.getElementById('yearSelect');
-    const yearBadge = document.getElementById('mapYearBadge');
-
-    // Bosphorus center coordinates
-    const bosphorusCenter = [41.085, 29.035];
-    const defaultZoom = 12;
-
-    // Initialize map
-    const map = L.map('bosphorusMap', {
-      center: bosphorusCenter,
-      zoom: defaultZoom,
-      minZoom: 11,
-      maxZoom: 15,
-      zoomControl: false,
-      attributionControl: false
-    });
-
-    // Add zoom control to bottom right
-    L.control.zoom({ position: 'bottomright' }).addTo(map);
-
-    // Use CartoDB Positron for a clean, minimal look
-    L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
-      subdomains: 'abcd',
-      maxZoom: 19
-    }).addTo(map);
-
-    // Pier data with coordinates - European Side (west)
-    const piersEurope = [
-      { id: 'sariyer', name: 'Sarıyer', lat: 41.1672, lng: 29.0497, year: 1851, major: false },
-      { id: 'yenikoy', name: 'Yeniköy', lat: 41.1339, lng: 29.0583, year: 1851, major: false },
-      { id: 'emirgan', name: 'Emirgân', lat: 41.1075, lng: 29.0544, year: 1851, major: false },
-      { id: 'bebek', name: 'Bebek', lat: 41.0767, lng: 29.0433, year: 1851, major: false },
-      { id: 'arnavutkoy', name: 'Arnavutköy', lat: 41.0683, lng: 29.0344, year: 1851, major: false },
-      { id: 'ortakoy', name: 'Ortaköy', lat: 41.0472, lng: 29.0269, year: 1851, major: false },
-      { id: 'besiktas', name: 'Beşiktaş', lat: 41.0422, lng: 29.0064, year: 1851, major: true },
-      { id: 'kabatas', name: 'Kabataş', lat: 41.0333, lng: 29.0239, year: 1851, major: true },
-      { id: 'karakoy', name: 'Karaköy', lat: 41.0217, lng: 28.9753, year: 1851, major: false },
-      { id: 'eminonu', name: 'Eminönü', lat: 41.0175, lng: 28.9714, year: 1851, major: true }
-    ];
-
-    // Pier data - Asian Side (east)
-    const piersAsia = [
-      { id: 'beykoz', name: 'Beykoz', lat: 41.1317, lng: 29.0986, year: 1851, major: false },
-      { id: 'pasabahce', name: 'Paşabahçe', lat: 41.1083, lng: 29.0897, year: 1866, major: false },
-      { id: 'cubuklu', name: 'Çubuklu', lat: 41.0953, lng: 29.0711, year: 1851, major: false },
-      { id: 'kanlica', name: 'Kanlıca', lat: 41.0833, lng: 29.0583, year: 1851, major: false },
-      { id: 'anadoluhisari', name: 'A. Hisarı', lat: 41.0811, lng: 29.0650, year: 1851, major: false },
-      { id: 'kandilli', name: 'Kandilli', lat: 41.0697, lng: 29.0589, year: 1851, major: false },
-      { id: 'beylerbeyi', name: 'Beylerbeyi', lat: 41.0439, lng: 29.0378, year: 1851, major: false },
-      { id: 'uskudar', name: 'Üsküdar', lat: 41.0261, lng: 29.0158, year: 1851, major: true },
-      { id: 'haydarpasa', name: 'Haydarpaşa', lat: 40.9972, lng: 29.0186, year: 1872, major: true },
-      { id: 'kadikoy', name: 'Kadıköy', lat: 40.9911, lng: 29.0236, year: 1851, major: true }
-    ];
-
-    const allPiers = [...piersEurope, ...piersAsia];
-
-    // Pier descriptions
-    const pierDescriptions = {
-      sariyer: 'Boğaz\'ın kuzeyinde, yazlık konak bölgesi.',
-      yenikoy: 'Varlıklı ailelerin tercih ettiği sakin semt.',
-      emirgan: 'Cami önünde ahşap olarak yapılan tarihi iskele.',
-      bebek: 'Boğaz\'ın en şık semti.',
-      arnavutkoy: 'Ahşap evleri ve balıkçı barınaklarıyla ünlü.',
-      ortakoy: 'Boğaz\'ın en güzel manzarası.',
-      besiktas: 'Şirket-i Hayriye\'nin ana merkezi.',
-      kabatas: 'Dolmabahçe Sarayı yakınında stratejik iskele.',
-      karakoy: 'Galata Köprüsü yanında, ticaret merkezi.',
-      eminonu: 'İstanbul\'un kalbi. Ticaretin merkezi.',
-      beykoz: '"Hünkar İskelesi" adıyla yapıldı.',
-      pasabahce: 'Cam fabrikasıyla ünlü sanayi bölgesi.',
-      cubuklu: 'Boğazın sembolü olarak nitelendirilen iskele.',
-      kanlica: 'Ünlü yoğurt bölgesinde hizmet veren iskele.',
-      anadoluhisari: 'Boğaz\'ın en dar noktası.',
-      kandilli: 'Rasathane ile ünlü sakin semt.',
-      beylerbeyi: 'Beylerbeyi Sarayı\'nın hemen önünde.',
-      uskudar: 'Anadolu yakasının tarihi kapısı.',
-      haydarpasa: 'Suhulet için kritik iskele.',
-      kadikoy: 'Fevaid-i Osmaniye tarafından kuruldu.'
-    };
-
-    // Ferry routes data
-    const routesData = [
-      {
-        id: 'eminonu-kadikoy',
-        name: 'Eminönü - Kadıköy',
-        year: 1851,
-        coords: [[41.0175, 28.9714], [41.005, 29.000], [40.9911, 29.0236]],
-        color: '#0d1b2a',
-        isSuhulet: false
-      },
-      {
-        id: 'kabatas-uskudar',
-        name: 'Kabataş - Üsküdar',
-        year: 1851,
-        coords: [[41.0333, 29.0239], [41.030, 29.020], [41.0261, 29.0158]],
-        color: '#0d1b2a',
-        isSuhulet: false
-      },
-      {
-        id: 'besiktas-beylerbeyi',
-        name: 'Beşiktaş - Beylerbeyi',
-        year: 1851,
-        coords: [[41.0422, 29.0064], [41.043, 29.022], [41.0439, 29.0378]],
-        color: '#0d1b2a',
-        isSuhulet: false
-      },
-      {
-        id: 'suhulet',
-        name: 'Suhulet Hattı (Arabalı Vapur)',
-        year: 1872,
-        coords: [[41.0333, 29.0239], [41.028, 29.018], [41.0261, 29.0158]],
-        color: '#8b2030',
-        isSuhulet: true
-      }
-    ];
-
-    // Store references
-    const pierMarkers = [];
-    const routeLines = [];
-    const shipMarkers = [];
-
-    // Create custom pier label icon with active/inactive state
-    function createPierIcon(pier, isActive) {
-      const size = pier.major ? 'major' : 'normal';
-      const activeClass = isActive ? 'active' : 'inactive';
-      return L.divIcon({
-        className: `pier-label-icon ${size} ${activeClass}`,
-        html: `<span class="pier-name">${pier.name}</span>`,
-        iconSize: null,
-        iconAnchor: [0, 0]
-      });
-    }
-
-    // Create ship icon for animated markers
-    function createShipIcon(isSuhulet) {
-      const shipClass = isSuhulet ? 'ship-marker suhulet' : 'ship-marker';
-      return L.divIcon({
-        className: shipClass,
-        html: `<svg viewBox="0 0 40 20" fill="currentColor">
-          <path d="M2,14 L5,18 L35,18 L38,14 L32,14 L30,16 L10,16 L8,14 Z"/>
-          <rect x="6" y="8" width="28" height="7" rx="1"/>
-          <rect x="14" y="3" width="12" height="6" rx="1"/>
-          <rect x="18" y="0" width="4" height="4"/>
-        </svg>`,
-        iconSize: [40, 20],
-        iconAnchor: [20, 10]
-      });
-    }
-
-    // Add pier markers - all piers added to map, styled based on active state
-    allPiers.forEach(pier => {
-      const marker = L.marker([pier.lat, pier.lng], {
-        icon: createPierIcon(pier, true)
-      });
-
-      // Popup content
-      const popupContent = `
-        <div class="pier-popup-content">
-          <h4>${pier.name} İskelesi</h4>
-          <p>${pierDescriptions[pier.id] || ''}</p>
-          <span class="pier-year">Kuruluş: ${pier.year}</span>
-        </div>
-      `;
-
-      marker.bindPopup(popupContent, {
-        className: 'pier-popup',
-        maxWidth: 250
-      });
-
-      marker.pierData = pier;
-      marker.addTo(map);
-      pierMarkers.push(marker);
-    });
-
-    // Add route polylines
-    routesData.forEach(route => {
-      const polyline = L.polyline(route.coords, {
-        color: route.color,
-        weight: route.isSuhulet ? 4 : 3,
-        opacity: route.isSuhulet ? 0.9 : 0.7,
-        dashArray: route.isSuhulet ? '10, 6' : '8, 5',
-        lineCap: 'round'
-      });
-
-      // Route tooltip
-      polyline.bindTooltip(route.name, {
-        permanent: false,
-        direction: 'center',
-        className: 'route-tooltip'
-      });
-
-      polyline.routeData = route;
-      routeLines.push(polyline);
-
-      // Add animated ship marker for this route
-      const shipMarker = L.marker(route.coords[0], {
-        icon: createShipIcon(route.isSuhulet)
-      });
-      shipMarker.routeData = route;
-      shipMarkers.push(shipMarker);
-    });
-
-    // Animate ships along routes
-    function animateShips() {
-      shipMarkers.forEach((ship, index) => {
-        if (!map.hasLayer(ship)) return;
-
-        const route = ship.routeData;
-        const coords = route.coords;
-        const duration = route.isSuhulet ? 8000 : 6000;
-        const startTime = Date.now() + (index * 2000); // Stagger start times
-
-        function moveShip() {
-          if (!map.hasLayer(ship)) return;
-
-          const elapsed = (Date.now() - startTime) % (duration * 2);
-          const progress = elapsed < duration
-            ? elapsed / duration
-            : 2 - (elapsed / duration);
-
-          // Interpolate position along route
-          const totalPoints = coords.length - 1;
-          const segmentProgress = progress * totalPoints;
-          const segmentIndex = Math.min(Math.floor(segmentProgress), totalPoints - 1);
-          const segmentFraction = segmentProgress - segmentIndex;
-
-          const startCoord = coords[segmentIndex];
-          const endCoord = coords[Math.min(segmentIndex + 1, coords.length - 1)];
-
-          const lat = startCoord[0] + (endCoord[0] - startCoord[0]) * segmentFraction;
-          const lng = startCoord[1] + (endCoord[1] - startCoord[1]) * segmentFraction;
-
-          ship.setLatLng([lat, lng]);
-          requestAnimationFrame(moveShip);
-        }
-
-        moveShip();
-      });
-    }
-
-    // Fleet data by year
-    const fleetByYear = {
-      1854: { ships: 6, piers: 12, routes: 2 },
-      1866: { ships: 16, piers: 15, routes: 3 },
-      1872: { ships: 26, piers: 18, routes: 4 },
-      1880: { ships: 32, piers: 19, routes: 4 },
-      1890: { ships: 40, piers: 20, routes: 4 },
-      1894: { ships: 46, piers: 20, routes: 4 }
-    };
-
-    const yearMapping = {
-      1854: 1851,
-      1866: 1866,
-      1872: 1872,
-      1880: 1880,
-      1890: 1890,
-      1894: 1894
-    };
-
-    // Update map based on selected year
-    function updateMapByYear(year) {
-      const selectedYear = parseInt(year, 10);
-      const visibilityYear = yearMapping[selectedYear] || selectedYear;
-
-      // Update year badge
-      if (yearBadge) {
-        yearBadge.textContent = selectedYear;
-      }
-
-      // Update pier styling based on active state (all remain visible)
-      pierMarkers.forEach(marker => {
-        const pierYear = marker.pierData.year;
-        const isActive = pierYear <= visibilityYear;
-        marker.setIcon(createPierIcon(marker.pierData, isActive));
-      });
-
-      // Update route visibility and styling
-      routeLines.forEach((line, index) => {
-        const routeYear = line.routeData.year;
-        const isActive = routeYear <= visibilityYear;
-
-        if (isActive) {
-          if (!map.hasLayer(line)) {
-            line.addTo(map);
-          }
-          line.setStyle({ opacity: line.routeData.isSuhulet ? 0.9 : 0.7 });
-        } else {
-          if (map.hasLayer(line)) {
-            map.removeLayer(line);
-          }
-        }
-
-        // Update ship marker visibility
-        const ship = shipMarkers[index];
-        if (ship) {
-          if (isActive) {
-            if (!map.hasLayer(ship)) {
-              ship.addTo(map);
-            }
-          } else {
-            if (map.hasLayer(ship)) {
-              map.removeLayer(ship);
-            }
-          }
-        }
-      });
-
-      // Start ship animations
-      animateShips();
-
-      // Update fleet stats display
-      const stats = fleetByYear[selectedYear] || fleetByYear[1872];
-      const shipsStat = document.querySelector('#fleetStatShips .stat-value');
-      const piersStat = document.querySelector('#fleetStatPiers .stat-value');
-      const routesStat = document.querySelector('#fleetStatRoutes .stat-value');
-
-      if (shipsStat) shipsStat.textContent = stats.ships;
-      if (piersStat) piersStat.textContent = stats.piers;
-      if (routesStat) routesStat.textContent = stats.routes;
-    }
-
-    // Initialize timeline selector
-    if (yearSelect) {
-      yearSelect.addEventListener('change', (e) => {
-        updateMapByYear(e.target.value);
-      });
-    }
-
-    // Initialize maritime slider markers
+  // --- Scrollytelling & Timeline Slider ---
+  function initScrollytelling() {
+    const storyYears = document.querySelectorAll('.story-year');
     const sliderMarkers = document.querySelectorAll('.slider-marker');
     const sliderShip = document.getElementById('sliderShip');
 
-    if (sliderMarkers.length > 0) {
-      function updateSliderShip(year) {
-        if (sliderShip) {
-          const activeMarker = document.querySelector(`.slider-marker[data-year="${year}"]`);
-          if (activeMarker) {
-            const track = document.querySelector('.timeline-slider-track');
-            const trackRect = track.getBoundingClientRect();
-            const markerRect = activeMarker.getBoundingClientRect();
-            const relativeLeft = markerRect.left - trackRect.left + markerRect.width / 2;
-            sliderShip.style.left = `${relativeLeft}px`;
-            sliderShip.style.transform = 'translateX(-50%) translateY(-50%)';
-          }
-        }
-      }
+    // Scroll-based animation for story cards
+    if (storyYears.length > 0) {
+      const observer = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              entry.target.classList.add('visible');
 
+              // Update timeline slider when a story card becomes visible
+              const year = entry.target.getAttribute('data-year');
+              if (year && sliderMarkers.length > 0) {
+                sliderMarkers.forEach(m => m.classList.remove('active'));
+                const activeMarker = document.querySelector(`.slider-marker[data-year="${year}"]`);
+                if (activeMarker) {
+                  activeMarker.classList.add('active');
+                  updateSliderShip(parseInt(year, 10));
+                }
+              }
+            }
+          });
+        },
+        {
+          threshold: 0.4,
+          rootMargin: '-10% 0px -10% 0px'
+        }
+      );
+
+      storyYears.forEach((el) => observer.observe(el));
+    }
+
+    // Timeline slider ship position
+    function updateSliderShip(year) {
+      if (!sliderShip) return;
+
+      const activeMarker = document.querySelector(`.slider-marker[data-year="${year}"]`);
+      if (activeMarker) {
+        const track = document.querySelector('.timeline-slider-track');
+        const trackRect = track.getBoundingClientRect();
+        const markerRect = activeMarker.getBoundingClientRect();
+        const relativeLeft = markerRect.left - trackRect.left + markerRect.width / 2;
+        sliderShip.style.left = `${relativeLeft}px`;
+        sliderShip.style.transform = 'translateX(-50%) translateY(-100%)';
+      }
+    }
+
+    // Timeline slider click handlers
+    if (sliderMarkers.length > 0) {
       sliderMarkers.forEach(marker => {
         marker.addEventListener('click', () => {
           const year = marker.getAttribute('data-year');
@@ -540,20 +241,18 @@
           sliderMarkers.forEach(m => m.classList.remove('active'));
           marker.classList.add('active');
 
-          // Update hidden select
-          if (yearSelect) {
-            yearSelect.value = year;
-          }
-
           // Update ship position on timeline
           updateSliderShip(parseInt(year, 10));
 
-          // Update Leaflet map
-          updateMapByYear(year);
+          // Scroll to corresponding story card
+          const targetCard = document.querySelector(`.story-year[data-year="${year}"]`);
+          if (targetCard) {
+            targetCard.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          }
         });
       });
 
-      // Set initial ship position with delay for layout stability
+      // Set initial ship position
       setTimeout(() => updateSliderShip(1872), 100);
 
       // Update ship position on resize
@@ -565,8 +264,39 @@
       });
     }
 
-    // Initialize map with default year
-    updateMapByYear(yearSelect?.value || 1872);
+    // Animate stat numbers when visible
+    const statNumbers = document.querySelectorAll('.stat-number-scroll');
+    if (statNumbers.length > 0) {
+      const numberObserver = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting && !entry.target.classList.contains('counted')) {
+              entry.target.classList.add('counted');
+              const target = parseInt(entry.target.getAttribute('data-count'), 10);
+              const duration = 1500;
+              const start = performance.now();
+
+              function updateNumber(now) {
+                const elapsed = now - start;
+                const progress = Math.min(elapsed / duration, 1);
+                const eased = 1 - Math.pow(1 - progress, 3);
+                const current = Math.round(eased * target);
+                entry.target.textContent = current;
+
+                if (progress < 1) {
+                  requestAnimationFrame(updateNumber);
+                }
+              }
+
+              requestAnimationFrame(updateNumber);
+            }
+          });
+        },
+        { threshold: 0.5 }
+      );
+
+      statNumbers.forEach((el) => numberObserver.observe(el));
+    }
   }
 
   // --- Initialize ---
@@ -578,6 +308,6 @@
     initTimeline();
     initSmoothScroll();
     initHeroFerries();
-    initInteractiveMap();
+    initScrollytelling();
   });
 })();

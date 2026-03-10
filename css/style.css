@@ -1086,17 +1086,17 @@ a:hover {
   font-weight: 600;
 }
 
-/* Ship indicator - positioned at active marker */
+/* Ship indicator - positioned above the timeline line */
 .slider-ship {
   position: absolute;
-  width: 44px;
-  height: 22px;
+  width: 56px;
+  height: 28px;
   color: var(--dark-red);
   top: 50%;
   left: 50%;
-  transform: translate(-50%, -50%);
+  transform: translateX(-50%) translateY(-100%);
   transition: left 0.5s var(--ease-out-expo);
-  filter: drop-shadow(0 3px 6px rgba(107, 28, 35, 0.4));
+  filter: drop-shadow(0 4px 8px rgba(107, 28, 35, 0.5));
   pointer-events: none;
   z-index: 10;
 }
@@ -1183,844 +1183,306 @@ a:hover {
   }
 
   .slider-ship {
-    width: 32px;
-    height: 16px;
-    bottom: calc(50% + 22px);
+    width: 40px;
+    height: 20px;
   }
 }
 
-/* Vintage Map Container - Authentic Historical Appearance */
-.vintage-map-container {
-  position: relative;
-  max-width: 900px;
+/* ==========================================
+   SCROLLYTELLING - Yıllara Göre Filo Gelişimi
+   ========================================== */
+
+.scrollytelling-container {
+  max-width: 800px;
   margin: 0 auto 3rem;
-  border-radius: 8px;
-  overflow: hidden;
-  background: #f5efe0;
-  box-shadow:
-    0 8px 32px rgba(80, 60, 30, 0.25),
-    0 2px 8px rgba(80, 60, 30, 0.15),
-    inset 0 0 0 4px #c9a84c;
-}
-
-/* Leaflet Map Container */
-.leaflet-map-container {
-  width: 100%;
-  height: 500px;
-  z-index: 1;
-}
-
-/* Apply sepia filter to map tiles for vintage feel */
-.leaflet-map-container .leaflet-tile-pane {
-  filter: sepia(15%) saturate(85%) contrast(95%);
-}
-
-/* Map Title Overlay */
-.map-title-overlay {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  z-index: 1000;
-  background: linear-gradient(180deg, rgba(13, 27, 42, 0.9) 0%, rgba(13, 27, 42, 0.7) 70%, transparent 100%);
-  padding: 1rem 1rem 2rem;
-  text-align: center;
-  pointer-events: none;
-}
-
-.map-title-overlay .map-title {
-  font-family: var(--font-accent);
-  font-size: 1.2rem;
-  color: var(--gold);
-  letter-spacing: 0.15em;
-  font-weight: 700;
-  margin-bottom: 0.25rem;
-}
-
-.map-title-overlay .map-subtitle {
-  font-family: var(--font-serif);
-  font-size: 0.85rem;
-  color: var(--cream);
-  font-style: italic;
-  letter-spacing: 0.1em;
-}
-
-/* Map year badge - top right, historical seal style */
-.vintage-map-container .map-year-badge {
-  position: absolute;
-  top: 4.5rem;
-  right: 1rem;
-  left: auto;
-  background: linear-gradient(135deg, var(--navy) 0%, #1a3a5c 100%);
-  color: var(--gold);
-  font-family: var(--font-accent);
-  font-size: 1.2rem;
-  font-weight: 700;
-  padding: 0.5rem 1rem;
-  border-radius: 50%;
-  width: 56px;
-  height: 56px;
   display: flex;
-  align-items: center;
-  justify-content: center;
-  border: 2px solid var(--gold);
-  z-index: 1001;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+  flex-direction: column;
+  gap: 2rem;
 }
 
-.vintage-map-container .map-year-badge::before {
-  content: '';
+/* Her yıl için hikaye kartı */
+.story-year {
+  background: linear-gradient(135deg, var(--navy) 0%, #1a3a5c 100%);
+  border: 2px solid var(--gold);
+  border-radius: 12px;
+  padding: 2rem;
+  position: relative;
+  opacity: 0;
+  transform: translateY(30px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+
+.story-year.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Suhulet yılı özel vurgu */
+.story-year.story-year-highlight {
+  background: linear-gradient(135deg, #2a1520 0%, #3d2030 100%);
+  border-color: var(--dark-red);
+  box-shadow: 0 8px 32px rgba(139, 32, 48, 0.3);
+}
+
+/* Yıl rozeti */
+.year-badge-large {
   position: absolute;
-  inset: 3px;
-  border: 1px solid rgba(201, 168, 76, 0.4);
-  border-radius: 50%;
-}
-
-/* Pier Label Icons - Custom Leaflet markers */
-.pier-label-icon {
-  background: none !important;
-  border: none !important;
-}
-
-.pier-label-icon .pier-name {
-  display: inline-block;
-  background: rgba(13, 27, 42, 0.92);
-  color: var(--cream);
-  font-family: var(--font-serif);
-  font-size: 11px;
-  font-weight: 500;
-  padding: 4px 10px;
-  border-radius: 4px;
-  border: 1px solid rgba(201, 168, 76, 0.5);
-  white-space: nowrap;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
-  transition: all 0.2s ease;
-  cursor: pointer;
-}
-
-.pier-label-icon .pier-name:hover {
-  background: var(--navy);
-  border-color: var(--gold);
-  color: var(--gold);
-  transform: scale(1.05);
-}
-
-.pier-label-icon.major .pier-name {
-  background: var(--navy);
-  color: var(--gold);
-  font-size: 12px;
-  font-weight: 600;
-  padding: 5px 12px;
-  border: 2px solid var(--gold);
-}
-
-.pier-label-icon.major .pier-name:hover {
+  top: -1.25rem;
+  left: 2rem;
   background: var(--gold);
   color: var(--navy);
+  font-family: var(--font-accent);
+  font-size: 1.5rem;
+  font-weight: 700;
+  padding: 0.5rem 1.5rem;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
 }
 
-/* Inactive pier styling - grayed out */
-.pier-label-icon.inactive .pier-name {
-  background: rgba(100, 100, 100, 0.6);
-  color: rgba(180, 180, 180, 0.7);
-  border-color: rgba(120, 120, 120, 0.4);
-  opacity: 0.5;
-}
-
-.pier-label-icon.inactive.major .pier-name {
-  background: rgba(80, 80, 80, 0.65);
-  color: rgba(160, 160, 160, 0.8);
-  border-color: rgba(100, 100, 100, 0.5);
-}
-
-.pier-label-icon.inactive .pier-name:hover {
-  background: rgba(80, 80, 80, 0.8);
-  color: rgba(200, 200, 200, 0.9);
-  transform: scale(1.02);
-}
-
-/* Ship markers on routes */
-.ship-marker {
-  background: none !important;
-  border: none !important;
-}
-
-.ship-marker svg {
-  width: 40px;
-  height: 20px;
-  fill: var(--gold);
-  filter: drop-shadow(1px 1px 2px rgba(0, 0, 0, 0.4));
-  animation: shipBob 2s ease-in-out infinite;
-}
-
-.ship-marker.suhulet svg {
-  fill: #8b2030;
-  width: 48px;
-  height: 24px;
-}
-
-@keyframes shipBob {
-  0%, 100% { transform: translateY(0) rotate(0deg); }
-  25% { transform: translateY(-2px) rotate(1deg); }
-  75% { transform: translateY(2px) rotate(-1deg); }
-}
-
-/* Leaflet popup styles */
-.leaflet-popup-content-wrapper {
-  background: var(--navy) !important;
-  color: var(--cream) !important;
-  border-radius: 8px !important;
-  border: 2px solid var(--gold) !important;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4) !important;
-}
-
-.leaflet-popup-content {
-  margin: 0 !important;
-}
-
-.leaflet-popup-tip {
-  background: var(--navy) !important;
-  border-color: var(--gold) !important;
-}
-
-.leaflet-popup-close-button {
-  color: var(--gold) !important;
-  font-size: 20px !important;
-  padding: 6px 8px !important;
-}
-
-.leaflet-popup-close-button:hover {
-  color: var(--cream) !important;
-}
-
-/* Custom pier markers */
-.pier-marker {
-  width: 24px;
-  height: 24px;
-  background: var(--gold);
-  border: 3px solid var(--warm-white);
-  border-radius: 50%;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.25);
-  cursor: pointer;
-  transition: all 0.3s ease;
-}
-
-.pier-marker:hover {
-  transform: scale(1.2);
-  background: var(--gold-light);
-  box-shadow: 0 4px 12px rgba(201, 168, 76, 0.5);
-}
-
-.pier-marker.major {
-  width: 28px;
-  height: 28px;
-  border-width: 4px;
-}
-
-.pier-marker.hidden {
-  opacity: 0.3;
-  pointer-events: none;
-}
-
-/* Pier label popup - improved readability */
-.pier-popup .leaflet-popup-content-wrapper {
-  background: rgba(13, 27, 42, 0.98);
+.year-badge-large.suhulet-badge {
+  background: var(--dark-red);
   color: var(--cream);
-  border-radius: 10px;
-  padding: 0;
-  border: 2px solid var(--gold);
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
 }
 
-.pier-popup .leaflet-popup-content {
-  margin: 0;
-  min-width: 220px;
-}
-
-.pier-popup .leaflet-popup-tip {
-  background: var(--navy);
-  border: 1px solid var(--gold);
-}
-
-.pier-popup-content {
-  padding: 16px 20px;
-  text-align: center;
-  min-width: 180px;
-}
-
-.pier-popup-content h4 {
+/* Yıl başlığı */
+.year-title {
   font-family: var(--font-display);
-  font-size: 1rem;
-  color: var(--gold);
-  margin: 0 0 8px 0;
-  letter-spacing: 0.05em;
-  padding-bottom: 8px;
-  border-bottom: 1px solid rgba(201, 168, 76, 0.3);
+  font-size: 1.4rem;
+  color: var(--cream);
+  margin: 0.75rem 0 1.25rem;
+  padding-top: 0.5rem;
 }
 
-.pier-popup-content p {
-  font-family: var(--font-body);
+/* İstatistik satırı */
+.year-stats {
+  display: flex;
+  gap: 2rem;
+  margin-bottom: 1.5rem;
+  flex-wrap: wrap;
+}
+
+.stat-item-scroll {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 0.75rem 1rem;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 8px;
+  border: 1px solid rgba(201, 168, 76, 0.2);
+}
+
+.stat-item-scroll.highlight {
+  border-color: var(--dark-red);
+  background: rgba(139, 32, 48, 0.2);
+}
+
+.stat-number-scroll {
+  font-family: var(--font-accent);
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--gold);
+  line-height: 1;
+}
+
+.stat-label-scroll {
+  font-family: var(--font-serif);
+  font-size: 0.8rem;
+  color: var(--cream);
+  opacity: 0.8;
+  margin-top: 0.25rem;
+}
+
+/* Rota diyagramı */
+.route-diagram {
+  display: flex;
+  align-items: stretch;
+  gap: 1rem;
+  margin: 1.5rem 0;
+  padding: 1rem;
+  background: rgba(255, 255, 255, 0.03);
+  border-radius: 8px;
+}
+
+.route-side {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  font-family: var(--font-serif);
   font-size: 0.85rem;
   color: var(--cream);
-  line-height: 1.5;
-  margin: 0 0 10px 0;
 }
 
-.pier-popup-content .pier-year {
+.route-side.europe {
+  text-align: right;
+  padding-right: 0.5rem;
+  border-right: 2px solid rgba(201, 168, 76, 0.3);
+}
+
+.route-side.asia {
+  text-align: left;
+  padding-left: 0.5rem;
+  border-left: 2px solid rgba(201, 168, 76, 0.3);
+}
+
+.pier-dot {
   display: inline-block;
-  font-family: var(--font-accent);
-  font-size: 0.7rem;
-  color: var(--gold-light);
-  background: rgba(201, 168, 76, 0.15);
-  padding: 4px 12px;
-  border-radius: 12px;
-  letter-spacing: 0.1em;
+  width: 8px;
+  height: 8px;
+  background: var(--gold);
+  border-radius: 50%;
+  margin: 0 0.5rem;
+  vertical-align: middle;
 }
 
-/* Custom tooltip for piers */
-.pier-tooltip {
-  background: rgba(13, 27, 42, 0.95) !important;
-  border: 1px solid var(--gold) !important;
-  border-radius: 6px !important;
-  color: var(--gold) !important;
-  font-family: var(--font-accent) !important;
-  font-size: 0.75rem !important;
-  letter-spacing: 0.08em !important;
-  padding: 6px 12px !important;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3) !important;
+.route-lines {
+  width: 60px;
+  flex-shrink: 0;
+  color: var(--gold);
+  opacity: 0.6;
 }
 
-.pier-tooltip::before {
-  border-top-color: var(--navy) !important;
+.route-lines svg {
+  width: 100%;
+  height: 100%;
 }
 
-/* Route tooltip - Leaflet */
-.route-tooltip {
-  background: var(--navy) !important;
-  border: 2px solid var(--gold) !important;
-  border-radius: 6px !important;
-  color: var(--cream) !important;
-  font-family: var(--font-serif) !important;
-  font-size: 0.85rem !important;
-  padding: 8px 14px !important;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4) !important;
+/* Suhulet vurgu kutusu */
+.suhulet-highlight-box {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  background: linear-gradient(135deg, rgba(139, 32, 48, 0.3) 0%, rgba(139, 32, 48, 0.1) 100%);
+  border: 2px solid var(--dark-red);
+  border-radius: 10px;
+  padding: 1.25rem;
+  margin: 1.5rem 0;
+}
+
+.suhulet-icon {
+  width: 80px;
+  height: 40px;
+  color: var(--dark-red);
+  flex-shrink: 0;
+}
+
+.suhulet-icon svg {
+  width: 100%;
+  height: 100%;
+}
+
+.suhulet-text {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.suhulet-text strong {
+  font-family: var(--font-display);
+  font-size: 1.1rem;
+  color: var(--cream);
+}
+
+.suhulet-text span {
+  font-family: var(--font-serif);
+  font-size: 0.9rem;
+  color: rgba(255, 255, 255, 0.7);
   font-style: italic;
 }
 
-.route-tooltip::before {
-  border-top-color: var(--gold) !important;
-}
-
-/* Animated ship markers */
-.animated-ship {
-  color: var(--gold);
-  opacity: 0.9;
-  transition: opacity 0.3s ease;
-  filter: drop-shadow(1px 2px 3px rgba(0, 0, 0, 0.4));
-}
-
-.animated-ship svg {
-  width: 100%;
-  height: 100%;
-}
-
-.animated-ship.suhulet-ship {
-  color: var(--dark-red);
-}
-
-.animated-ship:hover {
-  opacity: 1;
-  filter: drop-shadow(2px 3px 5px rgba(0, 0, 0, 0.5));
-}
-
-/* Ferry route lines on map */
-.ferry-route-path {
-  stroke: var(--gold);
-  stroke-width: 3;
-  stroke-dasharray: 8, 5;
-  fill: none;
-  opacity: 0.7;
-}
-
-.ferry-route-path.suhulet {
-  stroke: var(--dark-red);
-  stroke-width: 4;
-  opacity: 0.8;
-}
-
-.ferry-route-path.hidden {
-  opacity: 0.15;
-}
-
-/* Map legend overlay - Historical cartouche style */
-.map-legend-overlay {
-  position: absolute;
-  bottom: 25px;
-  left: 25px;
-  background: rgba(13, 27, 42, 0.95);
-  border: 2px solid var(--gold);
-  border-radius: 6px;
-  padding: 14px 18px;
-  z-index: 1001;
-  font-family: var(--font-serif);
-  font-size: 0.8rem;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
-}
-
-.map-legend-overlay::before {
-  content: '';
-  position: absolute;
-  inset: 3px;
-  border: 1px solid rgba(201, 168, 76, 0.3);
-  border-radius: 4px;
-  pointer-events: none;
-}
-
-.map-legend-overlay .legend-title {
-  font-family: var(--font-accent);
-  font-size: 0.7rem;
-  letter-spacing: 0.2em;
-  color: var(--gold);
-  margin-bottom: 10px;
-  text-transform: uppercase;
-  border-bottom: 1px solid rgba(201, 168, 76, 0.4);
-  padding-bottom: 6px;
-}
-
-.map-legend-overlay .legend-item {
+/* Büyüme özeti */
+.growth-summary {
   display: flex;
   align-items: center;
-  gap: 10px;
-  margin-bottom: 6px;
+  gap: 1rem;
+  background: rgba(201, 168, 76, 0.1);
+  border: 1px solid var(--gold);
+  border-radius: 8px;
+  padding: 1rem 1.5rem;
+  margin: 1.5rem 0;
+}
+
+.growth-arrow {
+  font-family: var(--font-accent);
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--gold);
+}
+
+.growth-summary span {
+  font-family: var(--font-serif);
   color: var(--cream);
-  font-size: 0.75rem;
+  font-style: italic;
 }
 
-.map-legend-overlay .legend-pier {
-  width: 10px;
-  height: 10px;
-  background: var(--gold);
-  border: 2px solid var(--navy);
-  border-radius: 50%;
-  box-shadow: 0 0 0 1px var(--gold);
-}
-
-.map-legend-overlay .legend-route {
-  width: 28px;
-  height: 3px;
-  background: repeating-linear-gradient(
-    90deg,
-    var(--navy),
-    var(--navy) 5px,
-    transparent 5px,
-    transparent 9px
-  );
-}
-
-.map-legend-overlay .legend-suhulet {
-  width: 28px;
-  height: 4px;
-  background: repeating-linear-gradient(
-    90deg,
-    #8b2030,
-    #8b2030 5px,
-    transparent 5px,
-    transparent 9px
-  );
-}
-
-/* Animated ship markers */
-.ship-marker {
-  width: 30px;
-  height: 15px;
-}
-
-.ship-marker svg {
-  width: 100%;
-  height: 100%;
-  fill: var(--gold);
-  filter: drop-shadow(1px 1px 2px rgba(0, 0, 0, 0.3));
-}
-
-.ship-marker.suhulet svg {
-  fill: var(--dark-red);
-}
-
-/* Leaflet controls styling */
-.leaflet-control-zoom {
-  border: 1px solid var(--gold) !important;
-  border-radius: 6px !important;
-  overflow: hidden;
-}
-
-.leaflet-control-zoom a {
-  background: var(--warm-white) !important;
-  color: var(--navy) !important;
-  border-color: var(--gold) !important;
-}
-
-.leaflet-control-zoom a:hover {
-  background: var(--gold-light) !important;
-  color: var(--navy) !important;
-}
-
-.leaflet-control-attribution {
-  background: rgba(245, 239, 224, 0.9) !important;
-  font-size: 0.65rem !important;
+/* Hikaye metni */
+.year-narrative {
+  font-family: var(--font-serif);
+  font-size: 1rem;
+  color: var(--cream);
+  line-height: 1.7;
+  margin: 0;
+  opacity: 0.9;
 }
 
 /* Responsive */
 @media (max-width: 768px) {
-  .leaflet-map {
-    height: 450px;
+  .scrollytelling-container {
+    padding: 0 1rem;
   }
 
-  .map-legend-overlay {
-    bottom: 10px;
-    left: 10px;
-    padding: 8px 12px;
-    font-size: 0.65rem;
+  .story-year {
+    padding: 1.5rem;
   }
 
-  .map-title-overlay {
-    padding: 0.75rem 0.75rem 1.5rem;
+  .year-badge-large {
+    font-size: 1.2rem;
+    padding: 0.4rem 1rem;
   }
 
-  .map-title-overlay .map-title {
-    font-size: 1rem;
+  .year-title {
+    font-size: 1.2rem;
   }
 
-  .map-title-overlay .map-subtitle {
-    font-size: 0.75rem;
+  .year-stats {
+    gap: 1rem;
   }
 
-  .pier-label-icon .pier-name {
-    font-size: 9px;
-    padding: 3px 6px;
+  .stat-number-scroll {
+    font-size: 1.5rem;
   }
 
-  .pier-label-icon.major .pier-name {
-    font-size: 10px;
-    padding: 4px 8px;
+  .route-diagram {
+    flex-direction: column;
+  }
+
+  .route-side.europe,
+  .route-side.asia {
+    text-align: center;
+    border: none;
+    padding: 0;
+  }
+
+  .route-lines {
+    display: none;
+  }
+
+  .suhulet-highlight-box {
+    flex-direction: column;
+    text-align: center;
   }
 }
 
 @media (max-width: 480px) {
-  .leaflet-map-container {
-    height: 400px;
+  .year-stats {
+    justify-content: center;
   }
 
-  .vintage-map-container .map-year-badge {
-    width: 48px;
-    height: 48px;
-    font-size: 1rem;
+  .stat-item-scroll {
+    min-width: 80px;
   }
 }
 
-.interactive-map {
-  display: block;
-  width: 100%;
-  height: auto;
-  position: relative;
-  z-index: 2;
-}
-
-/* Vintage Map Background */
-.vintage-map-bg {
-  position: absolute;
-  inset: 0;
-  background:
-    linear-gradient(135deg, rgba(245, 239, 224, 0.95) 0%, rgba(240, 230, 210, 0.98) 100%);
-  background-image:
-    url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M11 18c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm48 25c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm-43-7c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm63 31c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM34 90c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm56-76c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM12 86c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm28-65c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm23-11c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-6 60c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm29 22c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zM32 63c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm57-13c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-9-21c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM60 91c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM35 41c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM12 60c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2z' fill='%23c9a84c' fill-opacity='0.03' fill-rule='evenodd'/%3E%3C/svg%3E"),
-    linear-gradient(135deg, rgba(245, 239, 224, 0.95) 0%, rgba(240, 230, 210, 0.98) 100%);
-  z-index: 1;
-}
-
-.vintage-map-bg::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background:
-    radial-gradient(ellipse at 30% 20%, rgba(112, 66, 20, 0.05) 0%, transparent 50%),
-    radial-gradient(ellipse at 70% 80%, rgba(112, 66, 20, 0.05) 0%, transparent 50%);
-  pointer-events: none;
-}
-
-.vintage-map-bg::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background:
-    linear-gradient(90deg, rgba(112, 66, 20, 0.08) 0%, transparent 2%, transparent 98%, rgba(112, 66, 20, 0.08) 100%),
-    linear-gradient(0deg, rgba(112, 66, 20, 0.08) 0%, transparent 2%, transparent 98%, rgba(112, 66, 20, 0.08) 100%);
-  pointer-events: none;
-}
-
-/* Coast Lines */
-.coast-line {
-  fill: rgba(201, 168, 76, 0.12);
-  stroke: rgba(201, 168, 76, 0.35);
-  stroke-width: 1.5;
-}
-
-/* Map Year Badge - positioned via container-specific styles */
-.map-year-badge {
-  position: absolute;
-  top: 1rem;
-  right: 1rem;
-  background: var(--navy);
-  color: var(--gold);
-  font-family: var(--font-accent);
-  font-size: 1.2rem;
-  font-weight: 700;
-  padding: 0.5rem 1rem;
-  border-radius: 6px;
-  border: 2px solid var(--gold);
-  z-index: 100;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-  pointer-events: none;
-}
-
-/* Map Labels */
-.map-region-label {
-  font-family: var(--font-accent);
-  font-size: 11px;
-  fill: rgba(112, 66, 20, 0.5);
-  letter-spacing: 0.2em;
-}
-
-.map-water-label {
-  font-family: var(--font-accent);
-  font-size: 16px;
-  fill: rgba(27, 73, 101, 0.25);
-  letter-spacing: 0.6em;
-  text-anchor: middle;
-}
-
-/* Ferry Route Lines */
-.ferry-route-line {
-  fill: none;
-  stroke: rgba(201, 168, 76, 0.4);
-  stroke-width: 2;
-  stroke-dasharray: 8, 4;
-  transition: all 0.3s ease;
-}
-
-.ferry-route-line:hover,
-.ferry-route-line.active {
-  stroke: var(--gold);
-  stroke-width: 3;
-}
-
-.route-suhulet {
-  stroke: rgba(107, 28, 35, 0.5);
-  stroke-width: 3;
-}
-
-.route-suhulet:hover,
-.route-suhulet.active {
-  stroke: var(--dark-red);
-}
-
-/* Piers */
-.pier {
-  cursor: pointer;
-  transition: all 0.3s ease;
-}
-
-.pier-bg {
-  fill: rgba(201, 168, 76, 0.2);
-  transition: all 0.3s ease;
-}
-
-.pier-inner {
-  fill: var(--gold);
-  stroke: var(--warm-white);
-  stroke-width: 2;
-  transition: all 0.3s ease;
-}
-
-.pier-label {
-  font-family: var(--font-sans);
-  font-size: 10px;
-  fill: var(--navy);
-  text-anchor: middle;
-  font-weight: 500;
-  pointer-events: none;
-}
-
-.pier:hover .pier-bg,
-.pier:focus .pier-bg {
-  fill: rgba(201, 168, 76, 0.4);
-  r: 16;
-}
-
-.pier:hover .pier-inner,
-.pier:focus .pier-inner {
-  fill: var(--gold-light);
-  filter: url(#glow);
-}
-
-.pier.active .pier-bg {
-  fill: rgba(201, 168, 76, 0.5);
-}
-
-.pier.active .pier-inner {
-  fill: var(--dark-red);
-}
-
-/* Ships on Map */
-.map-ship {
-  cursor: pointer;
-  transition: all 0.3s ease;
-}
-
-.map-ship:hover,
-.map-ship:focus {
-  filter: url(#glow);
-}
-
-.map-ship:hover .ship-icon,
-.map-ship:focus .ship-icon {
-  transform: scale(1.15);
-}
-
-.ship-icon {
-  transition: transform 0.3s ease;
-}
-
-.ship-name {
-  font-family: var(--font-accent);
-  font-size: 9px;
-  fill: var(--dark-red);
-  text-anchor: middle;
-  letter-spacing: 0.1em;
-}
-
-.ship-hitbox {
-  cursor: pointer;
-}
-
-.ship-suhulet .ship-icon path,
-.ship-suhulet .ship-icon rect {
-  fill: rgba(107, 28, 35, 0.7);
-}
-
-.ship-suhulet:hover .ship-icon path,
-.ship-suhulet:hover .ship-icon rect,
-.ship-suhulet:focus .ship-icon path,
-.ship-suhulet:focus .ship-icon rect {
-  fill: var(--dark-red);
-}
-
-/* Compass */
-.compass-label {
-  font-family: var(--font-accent);
-  font-size: 10px;
-  fill: var(--navy);
-  text-anchor: middle;
-  font-weight: 600;
-}
-
-/* Legend */
-.legend-title {
-  font-family: var(--font-sans);
-  font-size: 8px;
-  fill: var(--charcoal);
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-}
-
-.legend-text {
-  font-family: var(--font-sans);
-  font-size: 9px;
-  fill: var(--text-body);
-}
-
-/* Info Panel */
-.map-info-panel {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%) scale(0.9);
-  background: var(--warm-white);
-  border: 2px solid var(--gold);
-  border-radius: 12px;
-  padding: 1.5rem;
-  max-width: 320px;
-  width: 90%;
-  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
-  opacity: 0;
-  visibility: hidden;
-  transition: all 0.3s var(--ease-out-expo);
-  z-index: 10;
-}
-
-.map-info-panel.visible {
-  opacity: 1;
-  visibility: visible;
-  transform: translate(-50%, -50%) scale(1);
-}
-
-.info-close {
-  position: absolute;
-  top: 0.5rem;
-  right: 0.75rem;
-  background: none;
-  border: none;
-  font-size: 1.5rem;
-  color: var(--charcoal);
-  cursor: pointer;
-  transition: color 0.2s ease;
-  line-height: 1;
-}
-
-.info-close:hover {
-  color: var(--dark-red);
-}
-
-.info-title {
-  font-family: var(--font-display);
-  font-size: 1.3rem;
-  color: var(--navy);
-  margin-bottom: 0.5rem;
-}
-
-.info-desc {
-  font-size: 0.95rem;
-  color: var(--text-body);
-  line-height: 1.6;
-  margin-bottom: 1rem;
-}
-
-.info-stats {
-  display: flex;
-  gap: 1rem;
-  flex-wrap: wrap;
-}
-
-.info-stat {
-  background: rgba(201, 168, 76, 0.1);
-  padding: 0.5rem 0.75rem;
-  border-radius: 6px;
-  text-align: center;
-}
-
-.info-stat-value {
-  font-family: var(--font-accent);
-  font-size: 1.1rem;
-  color: var(--gold);
-  font-weight: 700;
-}
-
-.info-stat-label {
-  font-family: var(--font-sans);
-  font-size: 0.65rem;
-  color: var(--charcoal);
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-}
 
 /* Suhulet Story Section */
 .suhulet-story {
@@ -2112,122 +1574,6 @@ a:hover {
   margin-top: 0.25rem;
 }
 
-/* Pier hidden state for timeline */
-.pier.hidden {
-  opacity: 0.2;
-  pointer-events: none;
-}
-
-.ferry-route-line.hidden {
-  opacity: 0.1;
-}
-
-/* Animated Ships on Routes */
-.route-ship {
-  fill: var(--gold);
-  filter: drop-shadow(1px 1px 2px rgba(0,0,0,0.3));
-  cursor: pointer;
-  transition: fill 0.3s ease;
-}
-
-.route-ship:hover {
-  fill: var(--gold-light);
-}
-
-.route-ship.ship-suhulet {
-  fill: var(--dark-red);
-}
-
-.route-ship.ship-suhulet:hover {
-  fill: #8b2430;
-}
-
-/* Ship animation along path */
-.route-ship-group {
-  offset-rotate: auto;
-}
-
-.route-ship-group[data-direction="forward"] {
-  animation: shipMoveForward var(--ship-duration, 12s) linear infinite;
-}
-
-.route-ship-group[data-direction="reverse"] {
-  animation: shipMoveReverse var(--ship-duration, 12s) linear infinite;
-}
-
-@keyframes shipMoveForward {
-  0% {
-    offset-distance: 0%;
-    opacity: 0;
-  }
-  5% {
-    opacity: 1;
-  }
-  95% {
-    opacity: 1;
-  }
-  100% {
-    offset-distance: 100%;
-    opacity: 0;
-  }
-}
-
-@keyframes shipMoveReverse {
-  0% {
-    offset-distance: 100%;
-    opacity: 0;
-  }
-  5% {
-    opacity: 1;
-  }
-  95% {
-    opacity: 1;
-  }
-  100% {
-    offset-distance: 0%;
-    opacity: 0;
-  }
-}
-
-/* Fallback for browsers without offset-path */
-@supports not (offset-path: path("M0,0")) {
-  .route-ship-group[data-direction="forward"] {
-    animation: shipMoveFallback var(--ship-duration, 12s) linear infinite;
-  }
-
-  .route-ship-group[data-direction="reverse"] {
-    animation: shipMoveFallbackReverse var(--ship-duration, 12s) linear infinite;
-  }
-
-  @keyframes shipMoveFallback {
-    0% { transform: translateX(0); opacity: 0; }
-    5% { opacity: 1; }
-    95% { opacity: 1; }
-    100% { transform: translateX(400px); opacity: 0; }
-  }
-
-  @keyframes shipMoveFallbackReverse {
-    0% { transform: translateX(400px); opacity: 0; }
-    5% { opacity: 1; }
-    95% { opacity: 1; }
-    100% { transform: translateX(0); opacity: 0; }
-  }
-}
-
-/* Ship wake effect */
-.ship-wake {
-  fill: none;
-  stroke: rgba(255, 255, 255, 0.3);
-  stroke-width: 2;
-  stroke-linecap: round;
-  opacity: 0.5;
-}
-
-/* Route ship hover info */
-.route-ship-group:hover .ship-wake {
-  stroke: rgba(255, 255, 255, 0.5);
-}
-
 /* Route Cards */
 .route-cards {
   display: grid;
@@ -2289,28 +1635,6 @@ a:hover {
 
 /* Responsive */
 @media (max-width: 768px) {
-  .interactive-map-container {
-    margin: 0 -1rem 2rem;
-    border-radius: 0;
-  }
-
-  .map-region-label {
-    font-size: 9px;
-  }
-
-  .map-water-label {
-    font-size: 12px;
-  }
-
-  .pier-label {
-    font-size: 8px;
-  }
-
-  .map-info-panel {
-    max-width: 280px;
-    padding: 1rem;
-  }
-
   .route-cards {
     grid-template-columns: 1fr;
   }
