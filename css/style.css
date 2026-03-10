@@ -1094,16 +1094,16 @@ a:hover {
   font-weight: 600;
 }
 
-/* Animated ship indicator */
+/* Animated ship indicator - positioned above track line */
 .slider-ship {
   position: absolute;
-  width: 44px;
-  height: 22px;
+  width: 36px;
+  height: 18px;
   color: var(--dark-red);
-  top: 8px;
-  left: calc(41.66% + 24px);
-  transform: translateX(-50%);
-  transition: left 0.6s var(--ease-out-expo);
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -200%);
+  transition: left 0.5s var(--ease-out-expo);
   filter: drop-shadow(0 2px 4px rgba(107, 28, 35, 0.3));
   pointer-events: none;
   z-index: 10;

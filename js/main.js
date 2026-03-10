@@ -198,8 +198,8 @@
       attributionControl: true
     });
 
-    // Add CartoDB Positron tiles (clean, minimal labels, free)
-    L.tileLayer('https://{s}.basemaps.cartocdn.com/light_nolabels/{z}/{x}/{y}{r}.png', {
+    // Add CartoDB Voyager tiles (shows water clearly, minimal but readable)
+    L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', {
       attribution: '&copy; <a href="https://carto.com/">CARTO</a> &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
       maxZoom: 19,
       subdomains: 'abcd'
@@ -351,51 +351,52 @@
       }
     };
 
-    // Ferry routes - only main historical routes (water-based coordinates)
+    // Ferry routes - coordinates carefully placed over water (Bosphorus strait)
     const routeData = [
-      {
-        id: 'kabatas-uskudar-suhulet',
-        name: 'Kabataş-Üsküdar Hattı (Suhulet)',
-        year: 1872,
-        coords: [
-          [41.0320, 29.0230], // Kabataş (deniz üzeri)
-          [41.0295, 29.0195], // Boğaz ortası
-          [41.0270, 29.0165]  // Üsküdar (deniz üzeri)
-        ],
-        isSuhulet: true
-      },
       {
         id: 'eminonu-kadikoy',
         name: 'Eminönü-Kadıköy Hattı',
         year: 1854,
         coords: [
-          [41.0165, 28.9740], // Eminönü (deniz üzeri)
-          [41.0080, 28.9900], // Boğaz ortası
-          [40.9950, 29.0180]  // Kadıköy (deniz üzeri)
-        ],
-        isSuhulet: false
-      },
-      {
-        id: 'karakoy-uskudar',
-        name: 'Karaköy-Üsküdar Hattı',
-        year: 1860,
-        coords: [
-          [41.0200, 28.9780], // Karaköy (deniz üzeri)
-          [41.0220, 28.9950], // Boğaz ortası
-          [41.0265, 29.0140]  // Üsküdar (deniz üzeri)
+          [41.0170, 28.9770], // Eminönü iskelesi önü (denizde)
+          [41.0100, 28.9920], // Boğaz ortası
+          [41.0000, 29.0100], // Kadıköy'e yaklaşım
+          [40.9920, 29.0220]  // Kadıköy iskelesi önü (denizde)
         ],
         isSuhulet: false
       },
       {
         id: 'besiktas-uskudar',
         name: 'Beşiktaş-Üsküdar Hattı',
-        year: 1854,
+        year: 1858,
         coords: [
-          [41.0410, 29.0070], // Beşiktaş (deniz üzeri)
-          [41.0350, 29.0120], // Boğaz ortası
-          [41.0270, 29.0160]  // Üsküdar (deniz üzeri)
+          [41.0420, 29.0070], // Beşiktaş iskelesi önü (denizde)
+          [41.0360, 29.0110], // Boğaz ortası
+          [41.0290, 29.0150]  // Üsküdar iskelesi önü (denizde)
         ],
         isSuhulet: false
+      },
+      {
+        id: 'karakoy-uskudar',
+        name: 'Karaköy-Üsküdar Hattı',
+        year: 1866,
+        coords: [
+          [41.0210, 28.9760], // Karaköy iskelesi önü (denizde)
+          [41.0240, 28.9950], // Boğaz ortası
+          [41.0280, 29.0130]  // Üsküdar iskelesi önü (denizde)
+        ],
+        isSuhulet: false
+      },
+      {
+        id: 'kabatas-uskudar-suhulet',
+        name: 'Kabataş-Üsküdar Hattı (Suhulet)',
+        year: 1872,
+        coords: [
+          [41.0330, 29.0230], // Kabataş iskelesi önü (denizde)
+          [41.0305, 29.0190], // Boğaz ortası
+          [41.0280, 29.0150]  // Üsküdar iskelesi önü (denizde)
+        ],
+        isSuhulet: true
       }
     ];
 
@@ -600,20 +601,17 @@
     const sliderShip = document.getElementById('sliderShip');
 
     if (sliderMarkers.length > 0) {
-      // Year positions for ship indicator (percentage based)
-      const yearPositions = {
-        1854: 8.33,
-        1866: 25,
-        1872: 41.66,
-        1880: 58.33,
-        1890: 75,
-        1894: 91.66
-      };
-
       function updateSliderShip(year) {
         if (sliderShip) {
-          const position = yearPositions[year] || 41.66;
-          sliderShip.style.left = `calc(${position}% + 12px)`;
+          // Find the marker with this year and position ship above it
+          const activeMarker = document.querySelector(`.slider-marker[data-year="${year}"]`);
+          if (activeMarker) {
+            const container = document.querySelector('.timeline-slider-track');
+            const containerRect = container.getBoundingClientRect();
+            const markerRect = activeMarker.getBoundingClientRect();
+            const relativeLeft = markerRect.left - containerRect.left + markerRect.width / 2;
+            sliderShip.style.left = `${relativeLeft}px`;
+          }
         }
       }
 
