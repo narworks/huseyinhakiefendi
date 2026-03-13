@@ -439,8 +439,8 @@ a:hover {
 }
 
 .portrait-frame {
-  width: 140px;
-  height: 140px;
+  width: 160px;
+  height: 160px;
   border-radius: 50%;
   padding: 4px;
   background: linear-gradient(135deg, var(--gold), var(--gold-light), var(--gold));
@@ -454,6 +454,7 @@ a:hover {
   width: 100%;
   height: 100%;
   object-fit: cover;
+  object-position: center 15%;
   border-radius: 50%;
   border: 3px solid var(--navy);
   filter: sepia(15%) contrast(1.05);
@@ -2686,8 +2687,12 @@ a:hover {
   }
 
   .portrait-frame {
-    width: 110px;
-    height: 110px;
+    width: 130px;
+    height: 130px;
+  }
+
+  .portrait-frame img {
+    object-position: center 15%;
   }
 
   /* Map tablet adjustments */
@@ -2791,8 +2796,12 @@ a:hover {
   }
 
   .portrait-frame {
-    width: 100px;
-    height: 100px;
+    width: 120px;
+    height: 120px;
+  }
+
+  .portrait-frame img {
+    object-position: center 15%;
   }
 
   .hero-scroll {
