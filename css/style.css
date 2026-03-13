@@ -439,8 +439,8 @@ a:hover {
 }
 
 .portrait-frame {
-  width: 160px;
-  height: 160px;
+  width: 150px;
+  height: 185px;
   border-radius: 50%;
   padding: 4px;
   background: linear-gradient(135deg, var(--gold), var(--gold-light), var(--gold));
@@ -454,10 +454,10 @@ a:hover {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  object-position: center 15%;
+  object-position: center center;
   border-radius: 50%;
   border: 3px solid var(--navy);
-  filter: sepia(15%) contrast(1.05);
+  filter: sepia(10%) contrast(1.05);
 }
 
 .portrait-glow {
@@ -2687,12 +2687,8 @@ a:hover {
   }
 
   .portrait-frame {
-    width: 130px;
-    height: 130px;
-  }
-
-  .portrait-frame img {
-    object-position: center 15%;
+    width: 120px;
+    height: 150px;
   }
 
   /* Map tablet adjustments */
@@ -2796,12 +2792,8 @@ a:hover {
   }
 
   .portrait-frame {
-    width: 120px;
-    height: 120px;
-  }
-
-  .portrait-frame img {
-    object-position: center 15%;
+    width: 110px;
+    height: 135px;
   }
 
   .hero-scroll {
@@ -3040,7 +3032,7 @@ a:hover {
 
 .welcome-logo-frame {
   width: 100px;
-  height: 100px;
+  height: 125px;
   border-radius: 50%;
   padding: 4px;
   background: linear-gradient(135deg, var(--gold), var(--gold-light), var(--gold));
@@ -3054,7 +3046,7 @@ a:hover {
   object-fit: cover;
   border-radius: 50%;
   border: 3px solid #0d1b2a;
-  filter: sepia(15%) contrast(1.05);
+  filter: sepia(10%) contrast(1.05);
 }
 
 @keyframes welcomeGlow {
