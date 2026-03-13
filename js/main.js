@@ -391,9 +391,20 @@
     const currentSubtitle = gallery.querySelector('.video-current-subtitle');
     const loadingSpinner = gallery.querySelector('.video-loading');
 
+    // URL params for debugging/forcing gallery
+    const urlParams = new URLSearchParams(window.location.search);
+    const forceVideo = urlParams.has('video') || urlParams.has('intro');
+    const resetVideo = urlParams.has('reset');
+
+    // Reset session if requested
+    if (resetVideo) {
+      sessionStorage.removeItem('videoGallerySeen');
+    }
+
     // Check if user has seen the video gallery before (session storage)
+    // Skip check if force parameter is present
     const hasSeenGallery = sessionStorage.getItem('videoGallerySeen');
-    if (hasSeenGallery) {
+    if (hasSeenGallery && !forceVideo) {
       closeGallery(true);
       return;
     }
