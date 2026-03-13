@@ -335,6 +335,328 @@
     });
   }
 
+  // --- Video Gallery - Fullscreen Video Experience ---
+  function initVideoGallery() {
+    // Video configuration
+    const GALLERY_VIDEOS = [
+      {
+        id: 'video-1',
+        title: 'Boğaz\'ın Dalgaları',
+        subtitle: 'İstanbul Boğazı\'nda Yolculuk',
+        youtubeId: 'dQw4w9WgXcQ', // Placeholder - replace with actual video ID
+        duration: 30 // seconds
+      },
+      {
+        id: 'video-2',
+        title: 'Şirket-i Hayriye',
+        subtitle: 'Osmanlı\'nın İlk Anonim Şirketi',
+        youtubeId: 'dQw4w9WgXcQ', // Placeholder - replace with actual video ID
+        duration: 45
+      },
+      {
+        id: 'video-3',
+        title: 'Suhulet\'in Hikayesi',
+        subtitle: 'Dünyanın İlk Arabalı Vapuru',
+        youtubeId: 'dQw4w9WgXcQ', // Placeholder - replace with actual video ID
+        duration: 60
+      }
+    ];
+
+    // State
+    const state = {
+      isOpen: true, // Gallery opens on page load
+      hasStarted: false,
+      currentIndex: 0,
+      isPlaying: false,
+      isMuted: false,
+      progress: 0,
+      controlsVisible: true,
+      skipVisible: false
+    };
+
+    // DOM Elements
+    const gallery = document.getElementById('videoGallery');
+    if (!gallery) return;
+
+    const welcomeScreen = gallery.querySelector('.video-welcome');
+    const startBtn = gallery.querySelector('.welcome-start-btn');
+    const playerContainer = gallery.querySelector('.video-player-container');
+    const iframeWrapper = gallery.querySelector('.video-iframe-wrapper');
+    const videoOverlay = gallery.querySelector('.video-overlay');
+    const videoControls = gallery.querySelector('.video-controls');
+    const muteBtn = gallery.querySelector('.mute-btn');
+    const closeBtn = gallery.querySelector('.close-btn');
+    const skipBtn = gallery.querySelector('.skip-btn');
+    const progressBar = gallery.querySelector('.progress-bar');
+    const progressDots = gallery.querySelectorAll('.progress-dot');
+    const titleOverlay = gallery.querySelector('.video-title-overlay');
+    const currentTitle = gallery.querySelector('.video-current-title');
+    const currentSubtitle = gallery.querySelector('.video-current-subtitle');
+    const loadingSpinner = gallery.querySelector('.video-loading');
+
+    let progressInterval = null;
+    let skipTimeout = null;
+    let controlsTimeout = null;
+    let videoStartTime = null;
+
+    // Check if user has seen the video gallery before (session storage)
+    const hasSeenGallery = sessionStorage.getItem('videoGallerySeen');
+    if (hasSeenGallery) {
+      closeGallery(true); // Close immediately without animation
+      return;
+    }
+
+    // Show gallery on load
+    gallery.classList.add('active');
+    document.body.style.overflow = 'hidden';
+
+    // Start button click - User gesture for autoplay
+    startBtn.addEventListener('click', () => {
+      state.hasStarted = true;
+      welcomeScreen.classList.add('hidden');
+      startVideo(0);
+    });
+
+    // Close button
+    closeBtn.addEventListener('click', () => {
+      closeGallery();
+    });
+
+    // Mute button
+    muteBtn.addEventListener('click', () => {
+      state.isMuted = !state.isMuted;
+      updateMuteIcon();
+      // Mute toggle applies to current video by reloading iframe
+      if (state.isPlaying) {
+        loadVideo(state.currentIndex);
+      }
+    });
+
+    // Skip button
+    skipBtn.addEventListener('click', () => {
+      nextVideo();
+    });
+
+    // Mouse movement for controls visibility
+    let mouseTimer;
+    gallery.addEventListener('mousemove', () => {
+      showControls();
+      clearTimeout(mouseTimer);
+      mouseTimer = setTimeout(() => {
+        if (state.isPlaying) {
+          hideControls();
+        }
+      }, 3000);
+    });
+
+    // Touch support
+    gallery.addEventListener('touchstart', () => {
+      if (state.controlsVisible) {
+        hideControls();
+      } else {
+        showControls();
+        clearTimeout(mouseTimer);
+        mouseTimer = setTimeout(() => {
+          if (state.isPlaying) {
+            hideControls();
+          }
+        }, 3000);
+      }
+    });
+
+    // Keyboard controls
+    document.addEventListener('keydown', (e) => {
+      if (!state.isOpen || !state.hasStarted) return;
+
+      if (e.key === 'Escape') {
+        closeGallery();
+      } else if (e.key === 'ArrowRight' || e.key === ' ') {
+        e.preventDefault();
+        nextVideo();
+      } else if (e.key === 'm' || e.key === 'M') {
+        state.isMuted = !state.isMuted;
+        updateMuteIcon();
+        if (state.isPlaying) {
+          loadVideo(state.currentIndex);
+        }
+      }
+    });
+
+    function startVideo(index) {
+      state.currentIndex = index;
+      state.isPlaying = true;
+      loadVideo(index);
+      startProgressTracking();
+      showVideoTitle();
+
+      // Show skip button after 3 seconds
+      clearTimeout(skipTimeout);
+      skipTimeout = setTimeout(() => {
+        state.skipVisible = true;
+        skipBtn.classList.add('visible');
+      }, 3000);
+    }
+
+    function loadVideo(index) {
+      const video = GALLERY_VIDEOS[index];
+      if (!video) return;
+
+      // Show loading
+      if (loadingSpinner) loadingSpinner.style.display = 'block';
+
+      // Build YouTube embed URL
+      const muteParam = state.isMuted ? '1' : '0';
+      const embedUrl = `https://www.youtube.com/embed/${video.youtubeId}?autoplay=1&mute=${muteParam}&controls=0&showinfo=0&rel=0&modestbranding=1&playsinline=1&enablejsapi=1&loop=0`;
+
+      // Create or update iframe
+      let iframe = iframeWrapper.querySelector('iframe');
+      if (!iframe) {
+        iframe = document.createElement('iframe');
+        iframe.setAttribute('allow', 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture');
+        iframe.setAttribute('allowfullscreen', '');
+        iframeWrapper.appendChild(iframe);
+      }
+
+      iframe.src = embedUrl;
+
+      // Hide loading after a delay
+      setTimeout(() => {
+        if (loadingSpinner) loadingSpinner.style.display = 'none';
+      }, 1500);
+
+      // Update progress dots
+      updateProgressDots();
+
+      // Update title
+      if (currentTitle) currentTitle.textContent = video.title;
+      if (currentSubtitle) currentSubtitle.textContent = video.subtitle;
+
+      // Reset video start time for progress tracking
+      videoStartTime = Date.now();
+      state.progress = 0;
+    }
+
+    function startProgressTracking() {
+      clearInterval(progressInterval);
+
+      progressInterval = setInterval(() => {
+        if (!state.isPlaying) return;
+
+        const video = GALLERY_VIDEOS[state.currentIndex];
+        if (!video || !videoStartTime) return;
+
+        const elapsed = (Date.now() - videoStartTime) / 1000;
+        state.progress = Math.min((elapsed / video.duration) * 100, 100);
+
+        if (progressBar) {
+          progressBar.style.width = `${state.progress}%`;
+        }
+
+        // Auto advance to next video when current finishes
+        if (state.progress >= 100) {
+          nextVideo();
+        }
+      }, 100);
+    }
+
+    function nextVideo() {
+      // Hide skip button
+      state.skipVisible = false;
+      skipBtn.classList.remove('visible');
+      clearTimeout(skipTimeout);
+
+      // Move to next video or close gallery
+      if (state.currentIndex < GALLERY_VIDEOS.length - 1) {
+        state.currentIndex++;
+        state.progress = 0;
+        videoStartTime = Date.now();
+        loadVideo(state.currentIndex);
+        showVideoTitle();
+
+        // Show skip button after 3 seconds
+        skipTimeout = setTimeout(() => {
+          state.skipVisible = true;
+          skipBtn.classList.add('visible');
+        }, 3000);
+      } else {
+        // Last video finished, close gallery
+        closeGallery();
+      }
+    }
+
+    function closeGallery(immediate = false) {
+      state.isOpen = false;
+      state.isPlaying = false;
+      clearInterval(progressInterval);
+      clearTimeout(skipTimeout);
+
+      // Mark as seen in session storage
+      sessionStorage.setItem('videoGallerySeen', 'true');
+
+      // Remove iframe
+      const iframe = iframeWrapper.querySelector('iframe');
+      if (iframe) iframe.remove();
+
+      if (immediate) {
+        gallery.classList.remove('active');
+        gallery.style.display = 'none';
+        document.body.style.overflow = '';
+      } else {
+        gallery.classList.add('closing');
+        setTimeout(() => {
+          gallery.classList.remove('active', 'closing');
+          gallery.style.display = 'none';
+          document.body.style.overflow = '';
+        }, 500);
+      }
+    }
+
+    function showControls() {
+      state.controlsVisible = true;
+      if (videoOverlay) videoOverlay.classList.remove('hidden');
+      if (videoControls) videoControls.classList.remove('hidden');
+    }
+
+    function hideControls() {
+      state.controlsVisible = false;
+      if (videoOverlay) videoOverlay.classList.add('hidden');
+      if (videoControls) videoControls.classList.add('hidden');
+    }
+
+    function showVideoTitle() {
+      if (titleOverlay) {
+        titleOverlay.classList.add('visible');
+        setTimeout(() => {
+          titleOverlay.classList.remove('visible');
+        }, 4000);
+      }
+    }
+
+    function updateProgressDots() {
+      progressDots.forEach((dot, i) => {
+        dot.classList.remove('active', 'completed');
+        if (i === state.currentIndex) {
+          dot.classList.add('active');
+        } else if (i < state.currentIndex) {
+          dot.classList.add('completed');
+        }
+      });
+    }
+
+    function updateMuteIcon() {
+      const volumeOnIcon = muteBtn.querySelector('.icon-volume-on');
+      const volumeOffIcon = muteBtn.querySelector('.icon-volume-off');
+
+      if (state.isMuted) {
+        if (volumeOnIcon) volumeOnIcon.style.display = 'none';
+        if (volumeOffIcon) volumeOffIcon.style.display = 'block';
+      } else {
+        if (volumeOnIcon) volumeOnIcon.style.display = 'block';
+        if (volumeOffIcon) volumeOffIcon.style.display = 'none';
+      }
+    }
+  }
+
   // --- Initialize ---
   document.addEventListener('DOMContentLoaded', () => {
     checkQRVisitor();
@@ -345,5 +667,6 @@
     initSmoothScroll();
     initHeroFerries();
     initScrollytelling();
+    initVideoGallery();
   });
 })();
