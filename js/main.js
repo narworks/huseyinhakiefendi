@@ -341,9 +341,9 @@
     const GALLERY_VIDEOS = [
       {
         id: 'video-1',
-        title: 'Boğaz\'da Yolculuk',
-        subtitle: 'İstanbul Boğazı\'nın Eşsiz Güzelliği',
-        youtubeId: 'Pl1sG6AontQ'
+        title: 'İstanbul Boğazı',
+        subtitle: 'Tarihi Bir Yolculuk',
+        youtubeId: 'IH-Ntd8GlKE'
       },
       {
         id: 'video-2',
