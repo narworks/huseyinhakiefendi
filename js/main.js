@@ -377,7 +377,7 @@
     if (!gallery) return;
 
     const welcomeScreen = gallery.querySelector('.video-welcome');
-    const startBtn = gallery.querySelector('.welcome-start-btn');
+    const startBtn = gallery.querySelector('.welcome-start-btn-fullscreen');
     const iframeWrapper = gallery.querySelector('.video-iframe-wrapper');
     const videoOverlay = gallery.querySelector('.video-overlay');
     const videoControls = gallery.querySelector('.video-controls');

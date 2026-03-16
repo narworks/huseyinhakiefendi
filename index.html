@@ -68,27 +68,24 @@
        VIDEO GALLERY - Fullscreen Video Experience
        ========================================== -->
   <div class="video-gallery" id="videoGallery">
-    <!-- Welcome Screen -->
-    <div class="video-welcome">
-      <div class="welcome-logo">
-        <div class="welcome-logo-frame">
-          <img src="assets/images/huseyin-haki-efendi.jpg" alt="Hüseyin Haki Efendi">
-        </div>
-      </div>
-      <h2 class="welcome-title">Hüseyin Haki Efendi'nin Dünyasına Hoş Geldiniz</h2>
-      <p class="welcome-subtitle">Bir Vizyonerin Hikayesi</p>
-      <button class="welcome-start-btn" type="button">
-        <svg viewBox="0 0 24 24" fill="currentColor">
-          <path d="M8 5v14l11-7z"/>
-        </svg>
-        Başlat
-      </button>
-      <p class="welcome-hint">
-        <svg viewBox="0 0 24 24" fill="currentColor">
-          <path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/>
-        </svg>
-        Sesli video deneyimi için tıklayın
-      </p>
+    <!-- Welcome Screen - Fullscreen Responsive -->
+    <div class="video-welcome" id="videoWelcome">
+      <!-- Yatay cihazlar için görsel (landscape/desktop) -->
+      <img
+        src="assets/images/welcome-screen.jpg"
+        alt="Hüseyin Haki Efendi - Hoş Geldiniz"
+        class="welcome-image welcome-image-landscape"
+        loading="eager"
+      >
+      <!-- Dikey cihazlar için görsel (portrait/mobile) -->
+      <img
+        src="assets/images/welcome-screen-vertical.png"
+        alt="Hüseyin Haki Efendi - Hoş Geldiniz"
+        class="welcome-image welcome-image-portrait"
+        loading="eager"
+      >
+      <!-- Tam ekran tıklanabilir alan -->
+      <button class="welcome-start-btn-fullscreen" type="button" aria-label="Başlat"></button>
     </div>
 
     <!-- Video Player Container -->
