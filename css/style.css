@@ -3180,13 +3180,18 @@ a:hover {
   opacity: 0.9;
 }
 
-/* Video Controls */
+/* Video Controls - Hidden until playback starts */
 .video-controls {
   position: absolute;
   z-index: 20;
   pointer-events: none;
-  opacity: 1;
+  opacity: 0;
   transition: opacity 0.3s ease;
+}
+
+/* Show controls when video is playing */
+.video-gallery.playing .video-controls {
+  opacity: 1;
 }
 
 .video-controls.hidden {
@@ -3252,6 +3257,15 @@ a:hover {
   align-items: center;
   gap: 1rem;
   z-index: 15;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+}
+
+/* Show progress when video is playing */
+.video-gallery.playing .video-progress {
+  opacity: 1;
+  pointer-events: auto;
 }
 
 @media (min-width: 768px) {

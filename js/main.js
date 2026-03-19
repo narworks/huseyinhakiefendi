@@ -492,6 +492,7 @@
 
     function startPlayback() {
       welcomeScreen.classList.add('hidden');
+      gallery.classList.add('playing');
       if (loadingSpinner) loadingSpinner.style.display = 'block';
       loadVideo(0);
     }
