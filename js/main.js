@@ -335,21 +335,21 @@
     });
   }
 
-  // --- Video Gallery - Fullscreen Video Experience ---
+  // --- Video Gallery - Local Video Experience ---
   function initVideoGallery() {
-    // Video configuration - actual videos
+    // Video configuration - local video files
     const GALLERY_VIDEOS = [
       {
         id: 'video-1',
+        src: 'assets/videos/video-1.mp4',
         title: 'İstanbul Boğazı',
-        subtitle: 'Tarihi Bir Yolculuk',
-        youtubeId: 'IH-Ntd8GlKE'
+        subtitle: 'Tarihi Bir Yolculuk'
       },
       {
         id: 'video-2',
+        src: 'assets/videos/video-2.mp4',
         title: 'Şirket-i Hayriye',
-        subtitle: 'Osmanlı Denizcilik Mirası',
-        youtubeId: 'f1tcRcxX_5c'
+        subtitle: 'Osmanlı Denizcilik Mirası'
       }
     ];
 
@@ -362,14 +362,11 @@
       isMuted: false,
       progress: 0,
       controlsVisible: true,
-      skipVisible: false,
-      videoDuration: 0
+      isPortrait: false
     };
 
-    // YouTube Player instance
-    let player = null;
+    // Timers
     let progressInterval = null;
-    let skipTimeout = null;
     let mouseTimer = null;
 
     // DOM Elements
@@ -377,18 +374,15 @@
     if (!gallery) return;
 
     const welcomeScreen = gallery.querySelector('.video-welcome');
-    const startBtn = gallery.querySelector('.welcome-start-btn-fullscreen');
-    const iframeWrapper = gallery.querySelector('.video-iframe-wrapper');
+    const soundBtn = gallery.querySelector('.welcome-sound-btn');
+    const clickArea = gallery.querySelector('.welcome-click-area');
+    const videoElement = document.getElementById('videoPlayer');
     const videoOverlay = gallery.querySelector('.video-overlay');
     const videoControls = gallery.querySelector('.video-controls');
     const muteBtn = gallery.querySelector('.mute-btn');
     const closeBtn = gallery.querySelector('.close-btn');
-    const skipBtn = gallery.querySelector('.skip-btn');
-    const progressBar = gallery.querySelector('.progress-bar');
-    const progressDots = gallery.querySelectorAll('.progress-dot');
-    const titleOverlay = gallery.querySelector('.video-title-overlay');
-    const currentTitle = gallery.querySelector('.video-current-title');
-    const currentSubtitle = gallery.querySelector('.video-current-subtitle');
+    const progressDotsContainer = gallery.querySelector('.progress-dots');
+    const videoCounter = gallery.querySelector('.video-counter');
     const loadingSpinner = gallery.querySelector('.video-loading');
 
     // URL params for skipping gallery
@@ -401,53 +395,115 @@
       return;
     }
 
-    // Load YouTube IFrame API
-    loadYouTubeAPI();
-
     // Show gallery on load
     gallery.classList.add('active');
     document.body.style.overflow = 'hidden';
 
-    // Update progress dots count based on video count
-    updateProgressDotsCount();
+    // Check orientation
+    checkOrientation();
+    window.addEventListener('resize', checkOrientation);
+    window.addEventListener('orientationchange', checkOrientation);
 
-    function loadYouTubeAPI() {
-      if (window.YT && window.YT.Player) {
-        return; // Already loaded
-      }
-      const tag = document.createElement('script');
-      tag.src = 'https://www.youtube.com/iframe_api';
-      const firstScriptTag = document.getElementsByTagName('script')[0];
-      firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+    // Build progress dots with ring animation
+    buildProgressDots();
+
+    // Update video counter
+    updateVideoCounter();
+
+    function checkOrientation() {
+      state.isPortrait = window.innerHeight > window.innerWidth;
+      // CSS handles object-fit via media query, but we track state for potential use
     }
 
-    function updateProgressDotsCount() {
-      const dotsContainer = gallery.querySelector('.progress-dots');
-      if (dotsContainer) {
-        dotsContainer.innerHTML = '';
-        GALLERY_VIDEOS.forEach((_, i) => {
-          const dot = document.createElement('span');
-          dot.className = 'progress-dot';
-          dotsContainer.appendChild(dot);
+    function buildProgressDots() {
+      if (!progressDotsContainer) return;
+      progressDotsContainer.innerHTML = '';
+
+      // SVG circumference for ring (r=24, C = 2*PI*r ≈ 150.8)
+      const circumference = 150.8;
+
+      GALLERY_VIDEOS.forEach((_, i) => {
+        const wrapper = document.createElement('div');
+        wrapper.className = 'progress-dot-wrapper';
+        wrapper.dataset.index = i;
+
+        // Ring SVG for active video
+        const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+        svg.setAttribute('class', 'progress-ring');
+        svg.setAttribute('viewBox', '0 0 56 56');
+        svg.innerHTML = `
+          <circle class="progress-ring-bg" cx="28" cy="28" r="24" />
+          <circle class="progress-ring-fill" cx="28" cy="28" r="24"
+                  stroke-dasharray="${circumference}"
+                  stroke-dashoffset="${circumference}" />
+        `;
+
+        const dot = document.createElement('span');
+        dot.className = 'progress-dot';
+
+        wrapper.appendChild(svg);
+        wrapper.appendChild(dot);
+        progressDotsContainer.appendChild(wrapper);
+
+        // Click to navigate
+        wrapper.addEventListener('click', () => {
+          if (state.hasStarted && i !== state.currentIndex) {
+            goToVideo(i);
+          }
         });
+      });
+    }
+
+    function updateVideoCounter() {
+      if (videoCounter) {
+        videoCounter.textContent = `${state.currentIndex + 1}/${GALLERY_VIDEOS.length}`;
       }
     }
 
-    // Start button click - User gesture for autoplay with sound
-    startBtn.addEventListener('click', () => {
+    function updateProgressRing(progress) {
+      const circumference = 150.8;
+      const wrappers = progressDotsContainer.querySelectorAll('.progress-dot-wrapper');
+
+      wrappers.forEach((wrapper, i) => {
+        const dot = wrapper.querySelector('.progress-dot');
+        const ring = wrapper.querySelector('.progress-ring');
+        const ringFill = wrapper.querySelector('.progress-ring-fill');
+
+        dot.classList.remove('active', 'completed');
+        ring.style.display = 'none';
+
+        if (i === state.currentIndex) {
+          dot.classList.add('active');
+          ring.style.display = 'block';
+          // Update ring progress
+          const offset = circumference - (circumference * progress) / 100;
+          ringFill.style.strokeDashoffset = offset;
+        } else if (i < state.currentIndex) {
+          dot.classList.add('completed');
+        }
+      });
+    }
+
+    // Sound button click - Start with sound
+    soundBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
       state.hasStarted = true;
+      state.isMuted = false;
+      startPlayback();
+    });
+
+    // Click area - Start muted (for mobile autoplay compliance)
+    clickArea.addEventListener('click', () => {
+      state.hasStarted = true;
+      state.isMuted = true;
+      startPlayback();
+    });
+
+    function startPlayback() {
       welcomeScreen.classList.add('hidden');
       if (loadingSpinner) loadingSpinner.style.display = 'block';
-
-      // Wait for YouTube API to be ready
-      if (window.YT && window.YT.Player) {
-        startVideo(0);
-      } else {
-        window.onYouTubeIframeAPIReady = () => {
-          startVideo(0);
-        };
-      }
-    });
+      loadVideo(0);
+    }
 
     // Close button
     closeBtn.addEventListener('click', () => {
@@ -457,19 +513,8 @@
     // Mute button
     muteBtn.addEventListener('click', () => {
       state.isMuted = !state.isMuted;
+      videoElement.muted = state.isMuted;
       updateMuteIcon();
-      if (player) {
-        if (state.isMuted) {
-          player.mute();
-        } else {
-          player.unMute();
-        }
-      }
-    });
-
-    // Skip button
-    skipBtn.addEventListener('click', () => {
-      nextVideo();
     });
 
     // Mouse movement for controls visibility
@@ -507,158 +552,117 @@
       } else if (e.key === 'ArrowRight' || e.key === ' ') {
         e.preventDefault();
         nextVideo();
+      } else if (e.key === 'ArrowLeft') {
+        e.preventDefault();
+        prevVideo();
       } else if (e.key === 'm' || e.key === 'M') {
         state.isMuted = !state.isMuted;
+        videoElement.muted = state.isMuted;
         updateMuteIcon();
-        if (player) {
-          state.isMuted ? player.mute() : player.unMute();
-        }
       }
     });
-
-    function startVideo(index) {
-      state.currentIndex = index;
-      state.isPlaying = true;
-      loadVideo(index);
-      showVideoTitle();
-
-      // Show skip button after 3 seconds
-      clearTimeout(skipTimeout);
-      skipTimeout = setTimeout(() => {
-        state.skipVisible = true;
-        skipBtn.classList.add('visible');
-      }, 3000);
-    }
 
     function loadVideo(index) {
       const video = GALLERY_VIDEOS[index];
       if (!video) return;
 
-      // Update title
-      if (currentTitle) currentTitle.textContent = video.title;
-      if (currentSubtitle) currentSubtitle.textContent = video.subtitle;
+      state.currentIndex = index;
+      state.progress = 0;
+
+      // Update counter
+      updateVideoCounter();
 
       // Update progress dots
-      updateProgressDots();
+      updateProgressRing(0);
 
-      // Create player container if needed
-      let playerDiv = iframeWrapper.querySelector('#ytPlayer');
-      if (!playerDiv) {
-        playerDiv = document.createElement('div');
-        playerDiv.id = 'ytPlayer';
-        iframeWrapper.appendChild(playerDiv);
-      }
+      // Set video source
+      videoElement.src = video.src;
+      videoElement.currentTime = 0;
+      videoElement.muted = state.isMuted;
 
-      // Destroy existing player
-      if (player) {
-        player.destroy();
-      }
-
-      // Create new YouTube player
-      player = new YT.Player('ytPlayer', {
-        videoId: video.youtubeId,
-        playerVars: {
-          autoplay: 1,
-          controls: 0,
-          showinfo: 0,
-          rel: 0,
-          modestbranding: 1,
-          playsinline: 1,
-          iv_load_policy: 3,
-          fs: 0
-        },
-        events: {
-          onReady: onPlayerReady,
-          onStateChange: onPlayerStateChange
-        }
+      // Mobile autoplay requires muted start
+      videoElement.play().then(() => {
+        state.isPlaying = true;
+        if (loadingSpinner) loadingSpinner.style.display = 'none';
+        startProgressTracking();
+      }).catch((err) => {
+        // Autoplay blocked - try muted
+        console.log('Autoplay blocked, trying muted:', err);
+        videoElement.muted = true;
+        state.isMuted = true;
+        updateMuteIcon();
+        videoElement.play().then(() => {
+          state.isPlaying = true;
+          if (loadingSpinner) loadingSpinner.style.display = 'none';
+          startProgressTracking();
+        });
       });
     }
 
-    function onPlayerReady(event) {
-      // Hide loading
+    // Video events
+    videoElement.addEventListener('canplay', () => {
       if (loadingSpinner) loadingSpinner.style.display = 'none';
+    });
 
-      // Get video duration
-      state.videoDuration = player.getDuration();
+    videoElement.addEventListener('playing', () => {
+      state.isPlaying = true;
+      if (loadingSpinner) loadingSpinner.style.display = 'none';
+    });
 
-      // Set mute state
-      if (state.isMuted) {
-        player.mute();
-      } else {
-        player.unMute();
-      }
+    videoElement.addEventListener('ended', () => {
+      nextVideo();
+    });
 
-      // Start progress tracking
-      startProgressTracking();
-    }
-
-    function onPlayerStateChange(event) {
-      // YT.PlayerState.ENDED = 0
-      if (event.data === 0) {
-        nextVideo();
-      }
-      // YT.PlayerState.PLAYING = 1
-      if (event.data === 1) {
-        state.isPlaying = true;
-        // Update duration if not set
-        if (!state.videoDuration || state.videoDuration === 0) {
-          state.videoDuration = player.getDuration();
-        }
-      }
-      // YT.PlayerState.PAUSED = 2
-      if (event.data === 2) {
-        state.isPlaying = false;
-      }
-    }
+    videoElement.addEventListener('waiting', () => {
+      if (loadingSpinner) loadingSpinner.style.display = 'block';
+    });
 
     function startProgressTracking() {
       clearInterval(progressInterval);
 
       progressInterval = setInterval(() => {
-        if (!player || !state.isPlaying) return;
+        if (!videoElement || videoElement.paused) return;
 
-        try {
-          const currentTime = player.getCurrentTime();
-          const duration = state.videoDuration || player.getDuration();
+        const currentTime = videoElement.currentTime;
+        const duration = videoElement.duration;
 
-          if (duration > 0) {
-            state.progress = Math.min((currentTime / duration) * 100, 100);
-            if (progressBar) {
-              progressBar.style.width = `${state.progress}%`;
-            }
-          }
-        } catch (e) {
-          // Player might not be ready
+        if (duration > 0) {
+          state.progress = Math.min((currentTime / duration) * 100, 100);
+          updateProgressRing(state.progress);
         }
       }, 100);
     }
 
-    function nextVideo() {
-      // Hide skip button
-      state.skipVisible = false;
-      skipBtn.classList.remove('visible');
-      clearTimeout(skipTimeout);
+    function goToVideo(index) {
       clearInterval(progressInterval);
-
-      // Reset progress
       state.progress = 0;
-      if (progressBar) progressBar.style.width = '0%';
 
-      // Move to next video or close gallery
-      if (state.currentIndex < GALLERY_VIDEOS.length - 1) {
-        state.currentIndex++;
+      if (index >= 0 && index < GALLERY_VIDEOS.length) {
         if (loadingSpinner) loadingSpinner.style.display = 'block';
-        loadVideo(state.currentIndex);
-        showVideoTitle();
+        loadVideo(index);
+      }
+    }
 
-        // Show skip button after 3 seconds
-        skipTimeout = setTimeout(() => {
-          state.skipVisible = true;
-          skipBtn.classList.add('visible');
-        }, 3000);
+    function nextVideo() {
+      clearInterval(progressInterval);
+      state.progress = 0;
+
+      if (state.currentIndex < GALLERY_VIDEOS.length - 1) {
+        if (loadingSpinner) loadingSpinner.style.display = 'block';
+        loadVideo(state.currentIndex + 1);
       } else {
         // Last video finished, close gallery
         closeGallery();
+      }
+    }
+
+    function prevVideo() {
+      clearInterval(progressInterval);
+      state.progress = 0;
+
+      if (state.currentIndex > 0) {
+        if (loadingSpinner) loadingSpinner.style.display = 'block';
+        loadVideo(state.currentIndex - 1);
       }
     }
 
@@ -666,15 +670,12 @@
       state.isOpen = false;
       state.isPlaying = false;
       clearInterval(progressInterval);
-      clearTimeout(skipTimeout);
       clearTimeout(mouseTimer);
 
-      // Destroy player
-      if (player) {
-        try {
-          player.destroy();
-        } catch (e) {}
-        player = null;
+      // Stop video
+      if (videoElement) {
+        videoElement.pause();
+        videoElement.src = '';
       }
 
       if (immediate) {
@@ -701,27 +702,6 @@
       state.controlsVisible = false;
       if (videoOverlay) videoOverlay.classList.add('hidden');
       if (videoControls) videoControls.classList.add('hidden');
-    }
-
-    function showVideoTitle() {
-      if (titleOverlay) {
-        titleOverlay.classList.add('visible');
-        setTimeout(() => {
-          titleOverlay.classList.remove('visible');
-        }, 4000);
-      }
-    }
-
-    function updateProgressDots() {
-      const dots = gallery.querySelectorAll('.progress-dot');
-      dots.forEach((dot, i) => {
-        dot.classList.remove('active', 'completed');
-        if (i === state.currentIndex) {
-          dot.classList.add('active');
-        } else if (i < state.currentIndex) {
-          dot.classList.add('completed');
-        }
-      });
     }
 
     function updateMuteIcon() {

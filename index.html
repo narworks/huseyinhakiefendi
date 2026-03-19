@@ -84,14 +84,27 @@
         class="welcome-image welcome-image-portrait"
         loading="eager"
       >
-      <!-- Tam ekran tıklanabilir alan -->
-      <button class="welcome-start-btn-fullscreen" type="button" aria-label="Başlat"></button>
+      <!-- Sesi Aç Butonu -->
+      <button class="welcome-sound-btn" type="button">
+        <svg class="sound-icon" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/>
+        </svg>
+        <span>Sesi Aç</span>
+      </button>
+      <!-- Tam ekran tıklanabilir alan (buton dışı) -->
+      <div class="welcome-click-area"></div>
     </div>
 
     <!-- Video Player Container -->
     <div class="video-player-container">
-      <!-- Video iframe will be inserted here -->
-      <div class="video-iframe-wrapper"></div>
+      <!-- Local Video Element -->
+      <video
+        id="videoPlayer"
+        class="video-element"
+        playsinline
+        webkit-playsinline="true"
+        preload="auto"
+      ></video>
 
       <!-- Loading Spinner -->
       <div class="video-loading" style="display: none;">
@@ -127,33 +140,12 @@
             </svg>
           </button>
         </div>
-
-        <!-- Bottom Right - Skip Button -->
-        <div class="controls-bottom-right">
-          <button class="skip-btn" type="button">
-            Atla
-            <svg viewBox="0 0 24 24" fill="currentColor">
-              <path d="M6 18l8.5-6L6 6v12zM16 6v12h2V6h-2z"/>
-            </svg>
-          </button>
-        </div>
       </div>
 
-      <!-- Video Title Overlay -->
-      <div class="video-title-overlay">
-        <h3 class="video-current-title"></h3>
-        <p class="video-current-subtitle"></p>
-      </div>
-
-      <!-- Video Progress -->
+      <!-- Video Progress - Bottom -->
       <div class="video-progress">
-        <div class="progress-bar-container">
-          <div class="progress-bar"></div>
-        </div>
-        <div class="progress-dots">
-          <span class="progress-dot"></span>
-          <span class="progress-dot"></span>
-        </div>
+        <div class="progress-dots"></div>
+        <div class="video-counter"></div>
       </div>
     </div>
   </div>

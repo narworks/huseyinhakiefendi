@@ -3061,16 +3061,65 @@ a:hover {
   }
 }
 
-/* Fullscreen clickable button */
-.welcome-start-btn-fullscreen {
+/* Fullscreen clickable area (behind button) */
+.welcome-click-area {
   position: absolute;
   inset: 0;
-  z-index: 10;
+  z-index: 5;
   cursor: pointer;
-  background: transparent;
-  border: none;
-  outline: none;
-  -webkit-tap-highlight-color: transparent;
+}
+
+/* Sesi Aç Button - Styled */
+.welcome-sound-btn {
+  position: absolute;
+  bottom: 3rem;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  background: rgba(0, 0, 0, 0.7);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: 1rem;
+  color: white;
+  font-family: var(--font-display);
+  font-size: 1rem;
+  font-weight: 600;
+  padding: 1rem 2rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+@media (min-width: 768px) {
+  .welcome-sound-btn {
+    bottom: 5rem;
+    padding: 1.25rem 2.5rem;
+    font-size: 1.1rem;
+  }
+}
+
+.welcome-sound-btn:hover {
+  background: rgba(0, 0, 0, 0.85);
+  border-color: rgba(255, 255, 255, 0.5);
+  transform: translateX(-50%) scale(1.05);
+}
+
+.welcome-sound-btn:active {
+  transform: translateX(-50%) scale(0.95);
+}
+
+.welcome-sound-btn .sound-icon {
+  width: 24px;
+  height: 24px;
+  animation: soundPulse 2s ease-in-out infinite;
+}
+
+@keyframes soundPulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.1); }
 }
 
 
@@ -3082,21 +3131,26 @@ a:hover {
   background: #000;
 }
 
-.video-iframe-wrapper {
+/* Video Element - Responsive sizing */
+.video-element {
   position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  min-width: 100vw;
-  min-height: 100vh;
-  width: 177.78vh; /* 16:9 aspect ratio */
-  height: 56.25vw;
-}
-
-.video-iframe-wrapper iframe {
+  top: 0;
+  left: 0;
   width: 100%;
   height: 100%;
-  border: none;
+  background: #000;
+}
+
+/* Portrait mode: contain (letterbox - video kesilmez) */
+.video-element {
+  object-fit: contain;
+}
+
+/* Landscape mode: cover (tam ekran) */
+@media (orientation: landscape) {
+  .video-element {
+    object-fit: cover;
+  }
 }
 
 /* Video Overlay - Logo */
@@ -3202,90 +3256,96 @@ a:hover {
   height: 44px;
 }
 
-/* Bottom right - Skip button */
-.controls-bottom-right {
-  position: absolute;
-  bottom: 5rem;
-  right: 1.5rem;
+/* Mute button - Updated sizing */
+.controls-top-right .mute-btn {
+  width: 3.5rem;
+  height: 3.5rem;
 }
 
-.skip-btn {
-  pointer-events: auto;
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  background: rgba(13, 27, 42, 0.8);
-  border: 1px solid rgba(201, 168, 76, 0.3);
-  border-radius: 25px;
-  color: var(--cream);
-  font-family: var(--font-sans);
-  font-size: 0.85rem;
-  padding: 0.6rem 1.25rem;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  opacity: 0;
-  transform: translateX(20px);
+@media (min-width: 768px) {
+  .controls-top-right .mute-btn {
+    width: 4rem;
+    height: 4rem;
+  }
 }
 
-.skip-btn.visible {
-  opacity: 1;
-  transform: translateX(0);
+.controls-top-right .mute-btn svg {
+  width: 1.75rem;
+  height: 1.75rem;
 }
 
-.skip-btn:hover {
-  background: rgba(201, 168, 76, 0.2);
-  border-color: var(--gold);
-}
-
-.skip-btn svg {
-  width: 16px;
-  height: 16px;
+@media (min-width: 768px) {
+  .controls-top-right .mute-btn svg {
+    width: 2rem;
+    height: 2rem;
+  }
 }
 
 /* Video Progress */
 .video-progress {
   position: absolute;
-  bottom: 0;
+  bottom: 4rem;
   left: 0;
   right: 0;
-  padding: 1.5rem 2rem;
-  background: linear-gradient(0deg, rgba(0, 0, 0, 0.7) 0%, transparent 100%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
   z-index: 15;
 }
 
-.progress-bar-container {
-  height: 4px;
-  background: rgba(255, 255, 255, 0.2);
-  border-radius: 2px;
-  overflow: hidden;
-  margin-bottom: 1rem;
+@media (min-width: 768px) {
+  .video-progress {
+    bottom: 5rem;
+  }
 }
 
-.progress-bar {
-  height: 100%;
-  background: linear-gradient(90deg, var(--gold), var(--gold-light));
-  border-radius: 2px;
-  width: 0%;
-  transition: width 0.1s linear;
-}
-
+/* Progress Dots with Ring Animation */
 .progress-dots {
   display: flex;
   justify-content: center;
-  gap: 0.75rem;
+  align-items: center;
+  gap: 1rem;
+}
+
+.progress-dot-wrapper {
+  position: relative;
+  width: 3.5rem;
+  height: 3.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+@media (min-width: 768px) {
+  .progress-dot-wrapper {
+    width: 4rem;
+    height: 4rem;
+  }
 }
 
 .progress-dot {
-  width: 10px;
-  height: 10px;
+  width: 1.25rem;
+  height: 1.25rem;
   border-radius: 50%;
-  background: rgba(255, 255, 255, 0.3);
+  background: rgba(255, 255, 255, 0.4);
   transition: all 0.3s ease;
+}
+
+@media (min-width: 768px) {
+  .progress-dot {
+    width: 1.5rem;
+    height: 1.5rem;
+  }
+}
+
+.progress-dot-wrapper:hover .progress-dot {
+  background: rgba(255, 255, 255, 0.6);
 }
 
 .progress-dot.active {
   background: var(--gold);
-  box-shadow: 0 0 10px rgba(201, 168, 76, 0.5);
 }
 
 .progress-dot.completed {
@@ -3293,36 +3353,42 @@ a:hover {
   opacity: 0.6;
 }
 
-/* Video title overlay */
-.video-title-overlay {
+/* Progress Ring SVG */
+.progress-ring {
   position: absolute;
-  bottom: 5rem;
-  left: 2rem;
-  z-index: 15;
-  opacity: 0;
-  transform: translateY(20px);
-  transition: all 0.5s ease;
+  width: 100%;
+  height: 100%;
+  transform: rotate(-90deg);
 }
 
-.video-title-overlay.visible {
-  opacity: 1;
-  transform: translateY(0);
+.progress-ring-bg {
+  fill: none;
+  stroke: rgba(201, 168, 76, 0.3);
+  stroke-width: 3;
 }
 
-.video-current-title {
+.progress-ring-fill {
+  fill: none;
+  stroke: var(--gold);
+  stroke-width: 3;
+  stroke-linecap: round;
+  transition: stroke-dashoffset 0.1s linear;
+}
+
+/* Video Counter */
+.video-counter {
   font-family: var(--font-display);
-  font-size: 1.5rem;
-  color: var(--cream);
-  margin-bottom: 0.25rem;
-  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+  font-size: 0.875rem;
+  color: rgba(255, 255, 255, 0.7);
+  letter-spacing: 0.1em;
 }
 
-.video-current-subtitle {
-  font-family: var(--font-sans);
-  font-size: 0.85rem;
-  color: var(--gold);
-  opacity: 0.9;
+@media (min-width: 768px) {
+  .video-counter {
+    font-size: 1rem;
+  }
 }
+
 
 /* Loading spinner */
 .video-loading {
