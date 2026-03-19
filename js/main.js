@@ -375,12 +375,10 @@
 
     const welcomeScreen = gallery.querySelector('.video-welcome');
     const soundBtn = gallery.querySelector('.welcome-sound-btn');
-    const clickArea = gallery.querySelector('.welcome-click-area');
     const videoElement = document.getElementById('videoPlayer');
     const videoOverlay = gallery.querySelector('.video-overlay');
     const videoControls = gallery.querySelector('.video-controls');
     const muteBtn = gallery.querySelector('.mute-btn');
-    const closeBtn = gallery.querySelector('.close-btn');
     const progressDotsContainer = gallery.querySelector('.progress-dots');
     const videoCounter = gallery.querySelector('.video-counter');
     const loadingSpinner = gallery.querySelector('.video-loading');
@@ -484,18 +482,11 @@
       });
     }
 
-    // Sound button click - Start with sound
+    // Sound button click - Start with sound (tek giriş noktası)
     soundBtn.addEventListener('click', (e) => {
       e.stopPropagation();
       state.hasStarted = true;
       state.isMuted = false;
-      startPlayback();
-    });
-
-    // Click area - Start muted (for mobile autoplay compliance)
-    clickArea.addEventListener('click', () => {
-      state.hasStarted = true;
-      state.isMuted = true;
       startPlayback();
     });
 
@@ -504,11 +495,6 @@
       if (loadingSpinner) loadingSpinner.style.display = 'block';
       loadVideo(0);
     }
-
-    // Close button
-    closeBtn.addEventListener('click', () => {
-      closeGallery();
-    });
 
     // Mute button
     muteBtn.addEventListener('click', () => {
@@ -543,13 +529,11 @@
       }
     });
 
-    // Keyboard controls
+    // Keyboard controls (sadece navigasyon ve ses)
     document.addEventListener('keydown', (e) => {
       if (!state.isOpen || !state.hasStarted) return;
 
-      if (e.key === 'Escape') {
-        closeGallery();
-      } else if (e.key === 'ArrowRight' || e.key === ' ') {
+      if (e.key === 'ArrowRight' || e.key === ' ') {
         e.preventDefault();
         nextVideo();
       } else if (e.key === 'ArrowLeft') {

@@ -3041,15 +3041,7 @@ a:hover {
   object-position: center;
 }
 
-/* Fullscreen clickable area (behind button) */
-.welcome-click-area {
-  position: absolute;
-  inset: 0;
-  z-index: 5;
-  cursor: pointer;
-}
-
-/* Sesi Aç Button - Styled */
+/* Sesi Aç Button - Styled (bg-black/70, rounded-2xl, pulse animation) */
 .welcome-sound-btn {
   position: absolute;
   bottom: 3rem;
@@ -3058,7 +3050,7 @@ a:hover {
   z-index: 10;
   display: flex;
   align-items: center;
-  gap: 0.75rem;
+  gap: 1rem;
   background: rgba(0, 0, 0, 0.7);
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
@@ -3066,9 +3058,9 @@ a:hover {
   border-radius: 1rem;
   color: white;
   font-family: var(--font-display);
-  font-size: 1rem;
+  font-size: 1.1rem;
   font-weight: 600;
-  padding: 1rem 2rem;
+  padding: 2rem 3rem;
   cursor: pointer;
   transition: all 0.3s ease;
 }
@@ -3076,8 +3068,9 @@ a:hover {
 @media (min-width: 768px) {
   .welcome-sound-btn {
     bottom: 5rem;
-    padding: 1.25rem 2.5rem;
-    font-size: 1.1rem;
+    padding: 2.5rem 4rem;
+    font-size: 1.25rem;
+    gap: 1.25rem;
   }
 }
 
@@ -3092,9 +3085,16 @@ a:hover {
 }
 
 .welcome-sound-btn .sound-icon {
-  width: 24px;
-  height: 24px;
+  width: 28px;
+  height: 28px;
   animation: soundPulse 2s ease-in-out infinite;
+}
+
+@media (min-width: 768px) {
+  .welcome-sound-btn .sound-icon {
+    width: 32px;
+    height: 32px;
+  }
 }
 
 @keyframes soundPulse {
@@ -3183,7 +3183,6 @@ a:hover {
 /* Video Controls */
 .video-controls {
   position: absolute;
-  inset: 0;
   z-index: 20;
   pointer-events: none;
   opacity: 1;
@@ -3194,68 +3193,49 @@ a:hover {
   opacity: 0;
 }
 
-.video-controls.hidden .control-btn {
+.video-controls.hidden .mute-btn {
   pointer-events: none;
 }
 
-.control-btn {
+/* Mute Button - Top Right */
+.mute-btn {
+  position: absolute;
+  top: 1.5rem;
+  right: 1.5rem;
   pointer-events: auto;
   display: flex;
   align-items: center;
   justify-content: center;
-  background: rgba(13, 27, 42, 0.8);
-  border: 1px solid rgba(201, 168, 76, 0.3);
+  width: 3.5rem;
+  height: 3.5rem;
+  background: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: none;
   border-radius: 50%;
-  color: var(--gold);
+  color: white;
   cursor: pointer;
   transition: all 0.3s ease;
 }
 
-.control-btn:hover {
-  background: rgba(201, 168, 76, 0.2);
-  border-color: var(--gold);
-  transform: scale(1.1);
-}
-
-.control-btn svg {
-  width: 20px;
-  height: 20px;
-}
-
-/* Top right controls */
-.controls-top-right {
-  position: absolute;
-  top: 1.5rem;
-  right: 1.5rem;
-  display: flex;
-  gap: 0.75rem;
-}
-
-.controls-top-right .control-btn {
-  width: 44px;
-  height: 44px;
-}
-
-/* Mute button - Updated sizing */
-.controls-top-right .mute-btn {
-  width: 3.5rem;
-  height: 3.5rem;
-}
-
 @media (min-width: 768px) {
-  .controls-top-right .mute-btn {
+  .mute-btn {
     width: 4rem;
     height: 4rem;
   }
 }
 
-.controls-top-right .mute-btn svg {
+.mute-btn:hover {
+  background: rgba(201, 168, 76, 0.8);
+}
+
+.mute-btn svg {
   width: 1.75rem;
   height: 1.75rem;
 }
 
 @media (min-width: 768px) {
-  .controls-top-right .mute-btn svg {
+  .mute-btn svg {
     width: 2rem;
     height: 2rem;
   }
