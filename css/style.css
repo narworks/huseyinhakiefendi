@@ -3029,7 +3029,8 @@ a:hover {
 .video-welcome.hidden {
   opacity: 0;
   pointer-events: none;
-  transition: opacity 0.5s ease;
+  z-index: -1;
+  transition: opacity 0.5s ease, z-index 0s 0.5s;
 }
 
 /* Welcome Image */
