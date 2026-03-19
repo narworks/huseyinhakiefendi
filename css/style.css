@@ -3032,33 +3032,13 @@ a:hover {
   transition: opacity 0.5s ease;
 }
 
-/* Welcome Images */
+/* Welcome Image */
 .welcome-image {
   position: absolute;
   width: 100%;
   height: 100%;
   object-fit: contain;
   object-position: center;
-}
-
-/* Portrait/Mobile - Default (dikey cihazlar) */
-.welcome-image-portrait {
-  display: block;
-}
-
-.welcome-image-landscape {
-  display: none;
-}
-
-/* Landscape/Desktop - Override (yatay cihazlar) */
-@media (orientation: landscape) {
-  .welcome-image-portrait {
-    display: none;
-  }
-
-  .welcome-image-landscape {
-    display: block;
-  }
 }
 
 /* Fullscreen clickable area (behind button) */
