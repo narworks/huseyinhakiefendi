@@ -3112,7 +3112,7 @@ a:hover {
   background: #000;
 }
 
-/* Video Element - Responsive sizing */
+/* Video Element - YouTube iframe container */
 .video-element {
   position: absolute;
   top: 0;
@@ -3122,16 +3122,14 @@ a:hover {
   background: #000;
 }
 
-/* Portrait mode: contain (letterbox - video kesilmez) */
-.video-element {
-  object-fit: contain;
-}
-
-/* Landscape mode: cover (tam ekran) */
-@media (orientation: landscape) {
-  .video-element {
-    object-fit: cover;
-  }
+/* YouTube iframe fills container */
+.video-element iframe {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border: none;
 }
 
 /* Video Overlay - Logo */

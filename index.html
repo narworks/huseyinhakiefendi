@@ -88,15 +88,8 @@
 
     <!-- Video Player Container -->
     <div class="video-player-container">
-      <!-- Local Video Element -->
-      <video
-        id="videoPlayer"
-        class="video-element"
-        playsinline
-        webkit-playsinline="true"
-        preload="metadata"
-        poster="assets/images/video-1-poster.jpg"
-      ></video>
+      <!-- YouTube Player Container -->
+      <div id="ytPlayer" class="video-element"></div>
 
       <!-- Loading Spinner -->
       <div class="video-loading" style="display: none;">
@@ -1213,6 +1206,7 @@
 
   <!-- Scripts -->
   <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+  <script src="https://www.youtube.com/iframe_api"></script>
   <script src="js/main.js"></script>
   <script>
     AOS.init({

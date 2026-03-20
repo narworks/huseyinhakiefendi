@@ -335,19 +335,19 @@
     });
   }
 
-  // --- Video Gallery - Local Video Experience ---
+  // --- Video Gallery - YouTube API Experience ---
   function initVideoGallery() {
-    // Video configuration - local video files
+    // Video configuration - YouTube video IDs
     const GALLERY_VIDEOS = [
       {
         id: 'video-1',
-        src: 'assets/videos/video-1.mp4',
+        youtubeId: 'IH-Ntd8GlKE',
         title: 'İstanbul Boğazı',
         subtitle: 'Tarihi Bir Yolculuk'
       },
       {
         id: 'video-2',
-        src: 'assets/videos/video-2.mp4',
+        youtubeId: 'f1tcRcxX_5c',
         title: 'Şirket-i Hayriye',
         subtitle: 'Osmanlı Denizcilik Mirası'
       }
@@ -368,6 +368,7 @@
     // Timers
     let progressInterval = null;
     let mouseTimer = null;
+    let player = null; // YouTube player instance
 
     // DOM Elements
     const gallery = document.getElementById('videoGallery');
@@ -375,7 +376,7 @@
 
     const welcomeScreen = gallery.querySelector('.video-welcome');
     const soundBtn = gallery.querySelector('.welcome-sound-btn');
-    const videoElement = document.getElementById('videoPlayer');
+    const playerContainer = document.getElementById('ytPlayer');
     const videoOverlay = gallery.querySelector('.video-overlay');
     const videoControls = gallery.querySelector('.video-controls');
     const muteBtn = gallery.querySelector('.mute-btn');
@@ -494,13 +495,26 @@
       welcomeScreen.classList.add('hidden');
       gallery.classList.add('playing');
       if (loadingSpinner) loadingSpinner.style.display = 'block';
-      loadVideo(0);
+
+      // Wait for YouTube API to be ready
+      if (window.YT && window.YT.Player) {
+        loadVideo(0);
+      } else {
+        window.onYouTubeIframeAPIReady = () => {
+          loadVideo(0);
+        };
+      }
     }
 
     // Mute button
     muteBtn.addEventListener('click', () => {
+      if (!player) return;
       state.isMuted = !state.isMuted;
-      videoElement.muted = state.isMuted;
+      if (state.isMuted) {
+        player.mute();
+      } else {
+        player.unMute();
+      }
       updateMuteIcon();
     });
 
@@ -541,8 +555,13 @@
         e.preventDefault();
         prevVideo();
       } else if (e.key === 'm' || e.key === 'M') {
+        if (!player) return;
         state.isMuted = !state.isMuted;
-        videoElement.muted = state.isMuted;
+        if (state.isMuted) {
+          player.mute();
+        } else {
+          player.unMute();
+        }
         updateMuteIcon();
       }
     });
@@ -560,60 +579,85 @@
       // Update progress dots
       updateProgressRing(0);
 
-      // Set video source
-      videoElement.src = video.src;
-      videoElement.currentTime = 0;
-      videoElement.muted = state.isMuted;
+      // Destroy existing player
+      if (player) {
+        player.destroy();
+        player = null;
+      }
 
-      // Mobile autoplay requires muted start
-      videoElement.play().then(() => {
-        state.isPlaying = true;
-        if (loadingSpinner) loadingSpinner.style.display = 'none';
-        startProgressTracking();
-      }).catch((err) => {
-        // Autoplay blocked - try muted
-        console.log('Autoplay blocked, trying muted:', err);
-        videoElement.muted = true;
-        state.isMuted = true;
-        updateMuteIcon();
-        videoElement.play().then(() => {
-          state.isPlaying = true;
-          if (loadingSpinner) loadingSpinner.style.display = 'none';
-          startProgressTracking();
-        });
+      // Create new YouTube player
+      player = new YT.Player('ytPlayer', {
+        videoId: video.youtubeId,
+        playerVars: {
+          autoplay: 1,
+          controls: 0,
+          showinfo: 0,
+          rel: 0,
+          modestbranding: 1,
+          playsinline: 1,
+          iv_load_policy: 3,
+          fs: 0,
+          disablekb: 1
+        },
+        events: {
+          onReady: onPlayerReady,
+          onStateChange: onPlayerStateChange,
+          onError: onPlayerError
+        }
       });
     }
 
-    // Video events
-    videoElement.addEventListener('canplay', () => {
+    function onPlayerReady(event) {
       if (loadingSpinner) loadingSpinner.style.display = 'none';
-    });
 
-    videoElement.addEventListener('playing', () => {
+      // Set initial volume state
+      if (state.isMuted) {
+        event.target.mute();
+      } else {
+        event.target.unMute();
+        event.target.setVolume(100);
+      }
+
       state.isPlaying = true;
-      if (loadingSpinner) loadingSpinner.style.display = 'none';
-    });
+      startProgressTracking();
+    }
 
-    videoElement.addEventListener('ended', () => {
+    function onPlayerStateChange(event) {
+      // YT.PlayerState: ENDED=0, PLAYING=1, PAUSED=2, BUFFERING=3, CUED=5
+      if (event.data === YT.PlayerState.ENDED) {
+        nextVideo();
+      } else if (event.data === YT.PlayerState.PLAYING) {
+        state.isPlaying = true;
+        if (loadingSpinner) loadingSpinner.style.display = 'none';
+      } else if (event.data === YT.PlayerState.BUFFERING) {
+        if (loadingSpinner) loadingSpinner.style.display = 'block';
+      } else if (event.data === YT.PlayerState.PAUSED) {
+        state.isPlaying = false;
+      }
+    }
+
+    function onPlayerError(event) {
+      console.error('YouTube player error:', event.data);
+      // Skip to next video on error
       nextVideo();
-    });
-
-    videoElement.addEventListener('waiting', () => {
-      if (loadingSpinner) loadingSpinner.style.display = 'block';
-    });
+    }
 
     function startProgressTracking() {
       clearInterval(progressInterval);
 
       progressInterval = setInterval(() => {
-        if (!videoElement || videoElement.paused) return;
+        if (!player || !player.getCurrentTime || !player.getDuration) return;
 
-        const currentTime = videoElement.currentTime;
-        const duration = videoElement.duration;
+        try {
+          const currentTime = player.getCurrentTime();
+          const duration = player.getDuration();
 
-        if (duration > 0) {
-          state.progress = Math.min((currentTime / duration) * 100, 100);
-          updateProgressRing(state.progress);
+          if (duration > 0) {
+            state.progress = Math.min((currentTime / duration) * 100, 100);
+            updateProgressRing(state.progress);
+          }
+        } catch (e) {
+          // Player not ready yet
         }
       }, 100);
     }
@@ -657,10 +701,10 @@
       clearInterval(progressInterval);
       clearTimeout(mouseTimer);
 
-      // Stop video
-      if (videoElement) {
-        videoElement.pause();
-        videoElement.src = '';
+      // Destroy YouTube player
+      if (player) {
+        player.destroy();
+        player = null;
       }
 
       if (immediate) {
