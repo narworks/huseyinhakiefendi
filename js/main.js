@@ -618,6 +618,9 @@
         event.target.setVolume(100);
       }
 
+      // Explicitly start playback for mobile devices
+      event.target.playVideo();
+
       state.isPlaying = true;
       startProgressTracking();
     }
